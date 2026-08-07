@@ -172,7 +172,7 @@ html {
     overflow: visible;
     background-color: #0c1210;
     isolation: isolate;
-    padding-top: 56.25%;
+    padding-top: min(56.25vw, 900px);
     min-height: calc(100vh - 80px);
     min-height: calc(100dvh - 80px);
 }
@@ -180,9 +180,12 @@ html {
 .hero__bg {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
     bottom: auto;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1600px;
     height: auto;
     aspect-ratio: 16 / 9;
     background-image: url(../img/img__home.jpg);
@@ -204,10 +207,12 @@ html {
     display: block;
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
     bottom: auto;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 1600px;
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
@@ -230,9 +235,12 @@ html {
 .hero__overlay {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
     bottom: auto;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1600px;
     height: auto;
     aspect-ratio: 16 / 9;
     background: linear-gradient(180deg, rgba(10, 16, 14, .1) 0%, rgba(10, 16, 14, .3) 55%, #0c1210 100%);
@@ -1130,6 +1138,9 @@ footer a:hover {
 
     .hero--video .hero__video {
         position: static;
+        left: auto;
+        transform: none;
+        max-width: none;
         height: 210px;
     }
 
