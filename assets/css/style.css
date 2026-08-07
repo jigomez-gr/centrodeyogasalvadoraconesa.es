@@ -172,7 +172,7 @@ html {
     overflow: visible;
     background-color: #0c1210;
     isolation: isolate;
-    padding-top: min(58vh, 65vw, 900px);
+    padding-top: min(38vh, 48vw, 560px);
     min-height: calc(100vh - 80px);
     min-height: calc(100dvh - 80px);
 }
@@ -186,7 +186,7 @@ html {
     transform: translateX(-50%);
     width: auto;
     max-width: 100%;
-    height: min(58vh, 65vw, 900px);
+    height: min(38vh, 48vw, 560px);
     aspect-ratio: 16 / 9;
     background-image: url(../img/img__home.jpg);
     background-position: center;
@@ -213,7 +213,7 @@ html {
     transform: translateX(-50%);
     width: auto;
     max-width: 100%;
-    height: min(58vh, 65vw, 900px);
+    height: min(38vh, 48vw, 560px);
     aspect-ratio: 16 / 9;
     object-fit: cover;
     background-color: #000;
@@ -241,7 +241,7 @@ html {
     transform: translateX(-50%);
     width: auto;
     max-width: 100%;
-    height: min(58vh, 65vw, 900px);
+    height: min(38vh, 48vw, 560px);
     aspect-ratio: 16 / 9;
     background: linear-gradient(180deg, rgba(10, 16, 14, .1) 0%, rgba(10, 16, 14, .3) 55%, #0c1210 100%);
     z-index: -2;
@@ -322,9 +322,9 @@ html {
 }
 
 .hero__btn {
-    padding: 9px 20px;
+    padding: 6px 14px;
     border-radius: 100px;
-    font-size: .8em;
+    font-size: .68em;
     letter-spacing: .04em;
     transition: transform .25s ease, background-color .25s ease, color .25s ease, box-shadow .25s ease;
     display: inline-block;
