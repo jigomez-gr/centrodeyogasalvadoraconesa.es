@@ -217,6 +217,14 @@ html {
     background-image: url(../img/img__sobre.jpg);
 }
 
+.hero--practica .hero__bg {
+    background-image: url(../img/slider_practica_yoga.jpg);
+}
+
+.hero--gong .hero__bg {
+    background-image: url(../img/img__gong.jpg);
+}
+
 .hero__overlay {
     position: absolute;
     top: 0;
