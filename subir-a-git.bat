@@ -32,6 +32,13 @@ git push origin master
 
 echo.
 echo ============================================
-echo   Listo.
+echo   Listo. Cambios subidos a GitHub (master).
+echo.
+echo   Dokploy tiene activado "Autodeploy: On Push",
+echo   asi que deberia desplegar solo en unos minutos.
+echo   Si no ves el cambio en la web, entra al panel:
+echo   http://192.168.1.17:3000
+echo   y dale a "Deploy" a mano en la app
+echo   centrodeyogasalvadoraconesa.
 echo ============================================
 pause
