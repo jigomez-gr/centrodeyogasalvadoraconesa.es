@@ -194,6 +194,20 @@ html {
     display: none;
 }
 
+.hero--video .hero__bg {
+    display: none;
+}
+
+.hero--video .hero__video {
+    display: block;
+    position: absolute;
+    inset: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    object-fit: cover;
+    z-index: -3;
+}
+
 .hero--sobre .hero__bg {
     background-image: url(../img/img__sobre.jpg);
 }
