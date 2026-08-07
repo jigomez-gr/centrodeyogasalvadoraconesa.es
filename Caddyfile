@@ -1,0 +1,6 @@
+:3000 {
+    root * /app
+    file_server
+
+    # Si este sitio necesita backend, añadir aquí un reverse_proxy /api/* hacia el servicio en Dokploy
+}

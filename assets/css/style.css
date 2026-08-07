@@ -1,0 +1,762 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+.overflow {
+    overflow: hidden;
+}
+
+.u-clear {
+    clear: left;
+}
+.bold{
+    font-weight:600;
+}
+
+.parrafo__detalle__after {
+    content: "";
+    display: block;
+    clear: both;
+    padding-top: 30px;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: bolder;
+    color: #333;
+    float: left;
+}
+
+.container {
+    background-color: #008a93;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    padding: 10px 30px 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    width: 100%;
+}
+
+.navbar {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    width: 20%;
+}
+
+header div img {
+    width: 65px;
+    margin-right: 10px;
+}
+
+header .navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+header .navbar ul li {
+    position: relative;
+    float: right;
+}
+
+.relative {
+    position: relative;
+}
+
+/*header .navbar ul li:focus-within > ul,*/
+header .navbar ul li:hover > ul {
+    display: initial;
+}
+
+header .navbar ul li a:focus-within {
+    background: #333;
+    color: aliceblue;
+}
+
+#menu-bar {
+    display: none;
+}
+
+header label {
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+    display: none;
+}
+
+header .navbar ul li a {
+    font-size: 16px;
+    padding: 20px 20px;
+    display: block;
+    color: #333;
+}
+
+.icon__plus {
+    font-size: 1.8em;
+    float: right;
+    position: relative;
+    top: -8px;
+    padding-left: 10px
+}
+
+header .navbar ul li a:hover {
+    background: #333;
+    color: #fff;
+}
+
+header .navbar ul li ul {
+    position: absolute;
+    width: 200px;
+    background: #fff;
+    display: none;
+}
+
+header .navbar ul li ul li {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+header .navbar ul li ul li ul {
+    left: 208px;
+    width: 240px;
+    top: 0;
+}
+
+header .navbar ul li ul {
+    width: 100%;
+}
+
+/*-------Comienza el Main-------*/
+main {
+    display: block;
+    position: relative;
+    top: 80px;
+    width: 100%;
+}
+
+.slider {
+    box-sizing: border-box;
+    margin: 50px 0px 100px 0px;
+    width: 100%;
+}
+
+.noticias__content {
+    overflow: hidden;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.articulo {
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 80px;
+    align-items: center;
+}
+
+.img__noticia {
+    width: 50%;
+    box-sizing: border-box;
+    margin-right: 15px;
+}
+
+.imagen__noti {
+    width: 100%;
+}
+
+.textos__noticia {
+    width: 50%;
+    margin-left: 15px;
+}
+
+.entradilla__h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.parrafo__noti {
+    text-align: left;
+    letter-spacing: .03em;
+    line-height: 25px;
+    margin-bottom: 30px;
+}
+
+.btn_leer_mas {
+    background-color: #434343;
+    color: #fff;
+    padding: 10px 20px 10px 20px;
+    border-radius: 4px;
+    display: block;
+    width: 140px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.modulo__eventos {
+    padding: 80px 0px;
+    background-color: #e8e8e8;
+}
+
+.eventos {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.h2__eventos {
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.eventos__news {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 20px 0px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.container__img__event {
+    width: 20%;
+    margin-right: 30px;
+    overflow: hidden;
+}
+
+.container__text__event {
+    width: 80%;
+}
+
+.img__event {
+    width: 100%;
+}
+
+.title__new {
+    font-size: 2em;
+    color: #19089d;
+    margin-bottom: 20px;
+}
+
+.parrafo__new {
+    text-align: left;
+    letter-spacing: .03em;
+    line-height: 23px;
+    margin-bottom: 20px;
+}
+
+.date {
+    color: darkcyan;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.container__testimonios {
+    padding: 60px 0px;
+    overflow: hidden;
+}
+
+.testimonios {
+    width: 97%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container__testimonios {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.titulo__testimonios {
+    width: 97%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.persona_testimonio {
+    width: 32%;
+    padding: 40px;
+    background-color: #efefef;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.2);
+    line-height: 23px;
+}
+
+.h2__testimonios {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.parrafo__testimonios {
+    margin-bottom: 20px;
+}
+
+.parrafo__testimonios:last-child {
+    margin-bottom: 0px;
+}
+
+.container__footer {
+    background-color: #25272a;
+    color: #ffffff;
+    padding: 40px;
+}
+
+.datos__tecnicos ul li a {
+    color: #ffffff;
+}
+
+.datos__tecnicos ul {
+    list-style: none;
+}
+
+.datos__tecnicos {
+    line-height: 2em;
+    text-align: center;
+}
+
+.texto-pie {
+    text-align: center;
+    margin: 20px 0px 0px 0px;
+    line-height: 2em;
+}
+
+.texto-pie a {
+    color: aqua;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.img__noticia__reverse {
+    width: 50%;
+    margin-left: 15px;
+}
+
+.textos__noticia__reverse {
+    width: 50%;
+    margin-right: 15px;
+}
+
+.row-reverse {
+    flex-direction: row-reverse;
+}
+
+.u-clearfix {
+    clear: left;
+}
+
+.u-clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/*-------Comienza Sobre Mí-------*/
+
+.content__slider__sobre {
+    background-image: url(../img/img__sobre.jpg);
+    background-color: #cccccc;
+    width: 70%;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+
+
+/*-------Termina Sobre Mí-------*/
+
+/*-------Comienza Practica Yoga-------*/
+
+.content__slider__practica {
+    background-image: url(../img/slider_practica_yoga.jpg);
+    background-color: #cccccc;
+    width: 70%;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+.img__practica {
+    float: left;
+    width: 400px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 10px #808080;
+    -moz-box-shadow: 0px 0px 10px #808080;
+    box-shadow: 0px 0px 10px #808080;
+}
+
+.img__practica2{
+    float: right;
+    width: 400px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 10px #808080;
+    -moz-box-shadow: 0px 0px 10px #808080;
+    box-shadow: 0px 0px 10px #808080;
+}
+
+.practica__beneficios__h2 {
+    margin-bottom: 10px;
+}
+
+.practica__li{
+    list-style: disc;
+    padding-left: 30px;
+}
+
+/*-------Termina Practica Yoga-------*/
+
+
+
+
+
+/*-------Comienza Baños de Gong-------*/
+
+.content__slider {
+    background-image: url(../img/img__home.jpg);
+    background-color: #cccccc;
+    width: 70%;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+
+.content__slider__gong {
+    background-image: url(../img/img__gong.jpg);
+    background-color: #cccccc;
+    width: 70%;
+    height: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+
+.seccion__detalle {
+    display: flex;
+    justify-content: center;
+}
+
+.articulo__detalle {
+    width: 60%;
+    line-height: 23px;
+    margin-bottom: 80px;
+    padding-top: 5px;
+}
+
+.parrafo__detalle {
+    text-align: left;
+    letter-spacing: .03em;
+    line-height: 23px;
+    margin-bottom: 20px;
+}
+
+.lista__detalle__texto{
+    padding-left: 30px;
+    box-sizing: border-box;
+    display: block;
+    overflow: hidden;
+}
+
+.parrafo__detalle:last-child {
+    margin-bottom: 0;
+}
+
+.img__detalle {
+    width: 100%;
+    margin: 40px 0px;
+}
+
+/*-------Termina Baños de Gong-------*/
+
+
+
+
+
+
+
+
+
+/*-------Responsive-------*/
+
+@media (max-width: 1515px) {
+    main {
+        top: 55px;
+    }
+
+    .btn__menu {
+        text-align: center;
+    }
+
+    .container {
+        padding: 20px 10px 0px 10px;
+        display: block;
+        text-align: center;
+    }
+
+    .container .logo {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    header div img {
+        margin: 10px 0px 10px 0px;
+        width: 100px;
+    }
+
+    header label {
+        display: initial;
+    }
+
+    header label .btn__menu {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    header .navbar ul li ul li {
+        border-top: 0px;
+    }
+
+    .navbar {
+        display: none;
+        width: 100%;
+    }
+
+    header .navbar ul li {
+        border-bottom: solid 1px #b7b7b7;
+        text-align: left;
+    }
+
+    header .navbar ul li a {
+        padding: 15px 10px 15px 10px;
+    }
+
+    .navbar ul li:first-child {
+        border-top: solid 1px #b7b7b7;
+    }
+
+    header .navbar ul li {
+        float: none;
+    }
+
+    header .navbar ul {
+        justify-content: center;
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    header .navbar ul li ul {
+        position: relative;
+        width: 100%;
+        left: 0;
+    }
+
+    header .navbar ul li ul li ul {
+        position: relative;
+        left: 0px;
+    }
+
+    header .navbar ul li ul li ul a {
+        background: #656565;
+        color: aliceblue;
+    }
+
+    header .navbar ul li ul li a {
+        position: relative;
+        background: #d3d2d2;
+    }
+
+    #menu-bar:checked ~ .navbar {
+        display: initial;
+    }
+}
+
+@media (max-width: 1180px) {
+    .container {
+        padding: 10px;
+        margin: 0px;
+    }
+
+    header .navbar ul {
+        display: block;
+        border: none;
+        margin-top: 50px;
+    }
+
+    header .navbar ul li ul {
+        width: 100%;
+        left: 0;
+    }
+
+    header .navbar ul li ul li ul {
+        position: relative;
+        width: 100%;
+        left: 0px;
+        background: red;
+    }
+
+    header .navbar ul li ul li ul a {
+        position: relative;
+        width: 100%;
+        left: 0px;
+        background: #656565;
+    }
+
+    header .navbar ul li ul li a {
+        position: relative;
+        background: #d3d2d2;
+    }
+
+    header .navbar ul li ul li {
+        border-top: 0px;
+    }
+
+    header .navbar ul li a {
+        padding: 15px 10px;
+    }
+
+    .container .logo {
+        flex-direction: row;
+        justify-content: center;
+        margin: 0px 0px 0px 0px;
+    }
+
+    .container .logo img {
+        margin: 0px 10px 0px 0px;
+    }
+
+    header label .btn__menu {
+        float: right;
+    }
+
+    .slider {
+        margin: 0px 0px 20px 0px;
+    }
+
+    .noticias__content {
+        width: 92%;
+    }
+
+    .entradilla__h2 {
+        display: block;
+    }
+
+    .articulo {
+        flex-direction: column;
+        margin: 20px 0px;
+    }
+
+    .img__noticia {
+        width: 100%;
+        margin: 10px 0px 20px 0px;
+    }
+
+    .img__noticia__reverse {
+        width: 100%;
+        margin: 0px;
+        margin: 10px 0px 20px 0px;
+    }
+
+    .textos__noticia__reverse {
+        margin: 0px;
+        width: 100%;
+    }
+
+    .textos__noticia {
+        margin: 0px;
+        width: 100%;
+    }
+
+    .parrafo__noti {
+        width: 100%;
+    }
+
+    .modulo__eventos {
+        padding: 20px 0px 20px 0px;
+    }
+
+    .h2__eventos {
+        font-size: 1.6em;
+    }
+
+    .testimonios {
+        width: 92%;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .persona_testimonio {
+        width: 100%;
+        margin-bottom: 40px;
+        line-height: 23px;
+    }
+
+    .persona_testimonio:last-child {
+        margin-bottom: 0px;
+    }
+
+    .eventos__news {
+        flex-direction: column;
+    }
+
+    .container__img__event {
+        width: 100%;
+        margin: 0px 0px 30px 0px;
+    }
+
+    .container__text__event {
+        width: 100%;
+        margin: 0px 0px 0px 0px;
+    }
+
+    .h2__testimonios {
+        margin-bottom: 10px;
+    }
+}
