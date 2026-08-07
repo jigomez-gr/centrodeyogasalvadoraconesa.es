@@ -172,7 +172,7 @@ html {
     overflow: visible;
     background-color: #0c1210;
     isolation: isolate;
-    padding-top: 720px;
+    padding-top: 56.25%;
     min-height: calc(100vh - 80px);
     min-height: calc(100dvh - 80px);
 }
@@ -183,7 +183,8 @@ html {
     left: 0;
     right: 0;
     bottom: auto;
-    height: 720px;
+    height: auto;
+    aspect-ratio: 16 / 9;
     background-image: url(../img/img__home.jpg);
     background-position: center;
     background-repeat: no-repeat;
@@ -207,7 +208,8 @@ html {
     right: 0;
     bottom: auto;
     width: 100%;
-    height: 720px;
+    height: auto;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     background-color: #000;
     z-index: -3;
@@ -231,7 +233,8 @@ html {
     left: 0;
     right: 0;
     bottom: auto;
-    height: 720px;
+    height: auto;
+    aspect-ratio: 16 / 9;
     background: linear-gradient(180deg, rgba(10, 16, 14, .1) 0%, rgba(10, 16, 14, .3) 55%, #0c1210 100%);
     z-index: -2;
     pointer-events: none;
