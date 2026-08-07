@@ -6,6 +6,15 @@
     text-decoration: none;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
 .overflow {
     overflow: hidden;
 }
@@ -78,7 +87,7 @@ header .navbar ul li {
     position: relative;
 }
 
-/*header .navbar ul li:focus-within > ul,*/
+header .navbar ul li:focus-within > ul,
 header .navbar ul li:hover > ul {
     display: initial;
 }
@@ -149,11 +158,236 @@ main {
     width: 100%;
 }
 
-.slider {
-    box-sizing: border-box;
-    margin: 50px 0px 100px 0px;
-    width: 100%;
+/*-------Hero cinematográfico (Inicio)-------*/
+
+html {
+    scroll-behavior: smooth;
 }
+
+.hero {
+    position: relative;
+    height: calc(100vh - 80px);
+    height: calc(100dvh - 80px);
+    min-height: 560px;
+    max-height: 980px;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0c1210;
+    isolation: isolate;
+}
+
+.hero__bg {
+    position: absolute;
+    inset: -20px;
+    background-image: url(../img/img__home.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: hero-kenburns 24s ease-in-out infinite alternate;
+    z-index: -3;
+}
+
+.hero__video {
+    display: none;
+}
+
+.hero--sobre .hero__bg {
+    background-image: url(../img/img__sobre.jpg);
+}
+
+.hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 16, 14, .55) 0%, rgba(10, 16, 14, .22) 35%, rgba(10, 16, 14, .5) 75%, rgba(10, 16, 14, .92) 100%);
+    z-index: -2;
+}
+
+.hero__vignette {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 180px rgba(0, 0, 0, .55);
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes hero-kenburns {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        transform: scale(1.15) translate(-1.5%, -1.5%);
+    }
+}
+
+.hero__content {
+    position: relative;
+    max-width: 720px;
+    padding: 0 30px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.hero__eyebrow {
+    display: inline-block;
+    font-size: .8em;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #cfe8c8;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: hero-fade-up .9s ease-out .2s forwards;
+}
+
+.hero__title {
+    float: none;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: clamp(2.6em, 6vw, 4.6em);
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: hero-fade-up 1s ease-out .45s forwards;
+}
+
+.hero__title em {
+    font-style: italic;
+    color: #d9c27e;
+}
+
+.hero__subtitle {
+    font-size: 1.15em;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, .88);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: hero-fade-up 1s ease-out .7s forwards;
+}
+
+.hero__cta {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: hero-fade-up 1s ease-out .95s forwards;
+}
+
+.hero__btn {
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: .95em;
+    letter-spacing: .04em;
+    transition: transform .25s ease, background-color .25s ease, color .25s ease, box-shadow .25s ease;
+    display: inline-block;
+}
+
+.hero__btn--primary {
+    background-color: #ffffff;
+    color: #14201c;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+.hero__btn--primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, .35);
+}
+
+.hero__btn--ghost {
+    border: 1px solid rgba(255, 255, 255, .6);
+    color: #ffffff;
+}
+
+.hero__btn--ghost:hover {
+    background-color: rgba(255, 255, 255, .12);
+    transform: translateY(-3px);
+}
+
+@keyframes hero-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero__scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    animation: hero-fade-up .9s ease-out 1.3s forwards;
+}
+
+.hero__scroll-mouse {
+    width: 26px;
+    height: 42px;
+    border: 2px solid rgba(255, 255, 255, .7);
+    border-radius: 20px;
+    display: block;
+    position: relative;
+}
+
+.hero__scroll-dot {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 4px;
+    height: 8px;
+    margin-left: -2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    animation: hero-scroll-dot 1.8s ease-in-out infinite;
+}
+
+@keyframes hero-scroll-dot {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    70% {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero__bg,
+    .hero__scroll-dot {
+        animation: none;
+    }
+
+    .hero__eyebrow,
+    .hero__title,
+    .hero__subtitle,
+    .hero__cta,
+    .hero__scroll {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/*-------Termina Hero-------*/
 
 .noticias__content {
     overflow: hidden;
@@ -440,6 +674,16 @@ footer a:hover {
     padding-left: 30px;
 }
 
+.practica__li a {
+    color: #1c3a30;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+}
+
+.practica__li a:hover {
+    border-bottom-color: #1c3a30;
+}
+
 /*-------Termina Practica Yoga-------*/
 
 
@@ -516,6 +760,105 @@ footer a:hover {
 
 
 
+/*-------Comienza Nagna Yoga-------*/
+
+.hero__nagna {
+    position: relative;
+    width: 70%;
+    min-height: 420px;
+    margin: 80px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0c1210 0%, #1c3a30 42%, #3c6e5e 75%, #d9c27e 100%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+}
+
+.hero__nagna__content {
+    position: relative;
+    max-width: 640px;
+    padding: 40px;
+}
+
+.hero__nagna__eyebrow {
+    display: inline-block;
+    font-size: .8em;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #d9c27e;
+    margin-bottom: 18px;
+}
+
+.hero__nagna__title {
+    float: none;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 2.6em;
+    color: #ffffff;
+    margin-bottom: 18px;
+}
+
+.hero__nagna__title em {
+    font-style: italic;
+    color: #d9c27e;
+}
+
+.hero__nagna__subtitle {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, .9);
+}
+
+.nagna__intro {
+    margin-bottom: 20px;
+}
+
+.nagna__videos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin: 30px 0 40px 0;
+}
+
+.nagna__video__card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0px 0px 10px #d9d9d9;
+}
+
+.nagna__video__card video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #0c1210;
+}
+
+.nagna__video__card__body {
+    padding: 18px 22px;
+}
+
+.nagna__video__card__body h3 {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+    color: #14201c;
+}
+
+.nagna__video__card__body p {
+    font-size: .92em;
+    line-height: 1.5;
+    color: #5c5c5c;
+}
+
+/*-------Termina Nagna Yoga-------*/
+
+
+
+
 
 
 
@@ -525,39 +868,102 @@ footer a:hover {
 
 @media (max-width: 1515px) {
     main {
-        top: 55px;
+        top: 64px;
     }
 
-    .btn__menu {
-        text-align: center;
+    .hero {
+        height: calc(100vh - 64px);
+        height: calc(100dvh - 64px);
     }
 
     .container {
-        padding: 20px 10px 0px 10px;
-        display: block;
-        text-align: center;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        flex-wrap: wrap;
     }
 
     .container .logo {
         display: flex;
-        width: 100%;
-        flex-direction: column;
-        margin-bottom: 20px;
-        display: none;
+        align-items: center;
+        flex-direction: row;
+        width: auto;
+        margin-bottom: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    .container .logo a {
+        pointer-events: auto;
     }
 
     header div img {
-        margin: 10px 0px 10px 0px;
-        width: 100px;
+        margin: 0px 10px 0px 0px;
+        width: 44px;
+    }
+
+    .container .logo h1 {
+        font-size: 15px;
+        line-height: 1.3;
     }
 
     header label {
-        display: initial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        z-index: 1;
     }
 
     header label .btn__menu {
-        font-size: 1.5em;
-        font-weight: bold;
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: #333;
+        text-indent: -9999px;
+        overflow: hidden;
+        transition: background-color .2s ease;
+    }
+
+    header label .btn__menu::before,
+    header label .btn__menu::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        width: 24px;
+        height: 2px;
+        background-color: #333;
+        transition: transform .25s ease, top .25s ease;
+    }
+
+    header label .btn__menu::before {
+        top: 12px;
+    }
+
+    header label .btn__menu::after {
+        top: 26px;
+    }
+
+    #menu-bar:checked ~ label .btn__menu {
+        background-color: transparent;
+    }
+
+    #menu-bar:checked ~ label .btn__menu::before {
+        top: 19px;
+        transform: rotate(45deg);
+    }
+
+    #menu-bar:checked ~ label .btn__menu::after {
+        top: 19px;
+        transform: rotate(-45deg);
     }
 
     header .navbar ul li ul li {
@@ -567,6 +973,7 @@ footer a:hover {
     .navbar {
         display: none;
         width: 100%;
+        order: 3;
     }
 
     header .navbar ul li {
@@ -639,7 +1046,7 @@ footer a:hover {
         position: relative;
         width: 100%;
         left: 0px;
-        background: red;
+        background: #656565;
     }
 
     header .navbar ul li ul li ul a {
@@ -662,22 +1069,114 @@ footer a:hover {
         padding: 15px 10px;
     }
 
-    .container .logo {
-        flex-direction: row;
+    .hero__nagna {
+        width: 92%;
+        min-height: 320px;
+        margin: 40px auto;
+    }
+
+    .hero__nagna__title {
+        font-size: 1.8em;
+    }
+
+    .nagna__videos {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100dvh - 64px);
+        max-height: none;
+        overflow: visible;
+        background-color: #0c1210;
+        padding-top: 210px;
+    }
+
+    .hero--video {
+        padding-top: 0;
+    }
+
+    .hero__bg {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        height: 210px;
+        animation: none;
+        background-position: center 30%;
+    }
+
+    .hero__overlay {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        height: 210px;
+        background: linear-gradient(180deg, rgba(10, 16, 14, .1) 0%, rgba(10, 16, 14, .3) 55%, #0c1210 100%);
+    }
+
+    .hero__vignette {
+        display: none;
+    }
+
+    .hero--video .hero__bg {
+        display: none;
+    }
+
+    .hero--video .hero__video {
+        display: block;
+        position: static;
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        background-color: #000;
+    }
+
+    .hero--video .hero__overlay {
+        display: none;
+    }
+
+    .hero__scroll {
+        display: none;
+    }
+
+    .hero__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
-        margin: 0px 0px 0px 0px;
+        padding: 20px 20px 28px;
+        max-width: 100%;
     }
 
-    .container .logo img {
-        margin: 0px 10px 0px 0px;
+    .hero__eyebrow {
+        margin-bottom: 10px;
+        letter-spacing: .2em;
+        margin-bottom: 14px;
     }
 
-    header label .btn__menu {
-        float: right;
+    .hero__title {
+        font-size: 1.8em;
+        margin-bottom: 12px;
     }
 
-    .slider {
-        margin: 0px 0px 20px 0px;
+    .hero__subtitle {
+        font-size: .92em;
+        line-height: 1.5;
+        margin-bottom: 18px;
+    }
+
+    .hero__cta {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .hero__btn {
+        width: 100%;
+        padding: 12px 24px;
     }
 
     .noticias__content {
@@ -758,5 +1257,34 @@ footer a:hover {
 
     .h2__testimonios {
         margin-bottom: 10px;
+    }
+
+    .seccion__detalle {
+        width: 92%;
+        margin: 0 auto;
+    }
+
+    .articulo__detalle {
+        width: 100%;
+    }
+
+    .img__practica,
+    .img__practica2 {
+        float: none;
+        width: 100%;
+        margin: 20px 0px;
+    }
+
+    .content__slider__sobre,
+    .content__slider__practica,
+    .content__slider__gong,
+    .content__slider {
+        width: 92%;
+        height: 260px;
+        margin: 40px auto;
+    }
+
+    .hero__nagna__content {
+        padding: 24px;
     }
 }

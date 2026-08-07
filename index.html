@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Centro de Yoga Salvadora Conesa</title>
-    <meta name="viewport" content="whidth=device-width, user-scalable=no, initial-scale=1, maximun-scale=1, minimun-scale=1">
-    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css?v=6" type="text/css">
     <link rel="stylesheet" href="https://salvadoraconesa.es/js/menu/menu.js">
 </head>
 
@@ -28,6 +28,8 @@
                     <ul class="sub-menu">
                         <li><a href="pages/practica__yoga.html">Practica Yoga</a>
                         </li>
+                        <li><a href="pages/nagna__yoga.html">Nagna Yoga</a></li>
+                        <li><a href="pages/espacio__asanas.html">El Espacio para Mejorar las Asanas</a></li>
                         <li><a href="index.html#">Meditación</a></li>
                         <li><a href="index.html#">Terapia Gestalt</a></li>
                         <li><a href="index.html#">Constelaciones Familiares</a></li>
@@ -55,10 +57,25 @@
         </nav>
     </header>
     <main class="">
-        <section>
-            <img class="slider" src="assets/img/img__home.jpg" alt="">
+        <section class="hero hero--video">
+            <div class="hero__bg"></div>
+            <video class="hero__video" src="videos/prologo.mp4" controls autoplay muted loop preload="auto" playsinline poster="assets/img/img__home.jpg"></video>
+            <div class="hero__overlay"></div>
+            <div class="hero__vignette"></div>
+            <div class="hero__content">
+                <span class="hero__eyebrow">Centro de Yoga · Fuenlabrada</span>
+                <h2 class="hero__title">Encuentra tu <em>calma</em></h2>
+                <p class="hero__subtitle">Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Fuenlabrada.</p>
+                <div class="hero__cta">
+                    <a href="pages/sobre__mi.html" class="hero__btn hero__btn--primary">Conóceme</a>
+                    <a href="pages/practica__yoga.html" class="hero__btn hero__btn--ghost">Practica Yoga</a>
+                </div>
+            </div>
+            <a href="#contenido" class="hero__scroll" aria-label="Bajar al contenido">
+                <span class="hero__scroll-mouse"><span class="hero__scroll-dot"></span></span>
+            </a>
         </section>
-        <div class="noticias__content">
+        <div class="noticias__content" id="contenido">
             <section class="overflow">
                 <article class="row-reverse articulo">
                     <div class="img__noticia__reverse">
