@@ -290,7 +290,7 @@ html {
     float: none;
     font-family: Georgia, 'Times New Roman', serif;
     font-weight: 400;
-    font-size: clamp(2.6em, 6vw, 4.6em);
+    font-size: clamp(1.3em, 3vw, 2.3em);
     line-height: 1.1;
     color: #ffffff;
     margin-bottom: 24px;
@@ -322,7 +322,7 @@ html {
 }
 
 .hero__btn {
-    padding: 12px 42px;
+    padding: 36px 126px;
     border-radius: 100px;
     font-size: .51em;
     letter-spacing: .04em;
