@@ -172,7 +172,7 @@ html {
     overflow: visible;
     background-color: #0c1210;
     isolation: isolate;
-    padding-top: min(56.25vw, 900px);
+    padding-top: min(56.25vw, 450px);
     min-height: calc(100vh - 80px);
     min-height: calc(100dvh - 80px);
 }
@@ -185,7 +185,7 @@ html {
     bottom: auto;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 1600px;
+    max-width: 800px;
     height: auto;
     aspect-ratio: 16 / 9;
     background-image: url(../img/img__home.jpg);
@@ -212,7 +212,7 @@ html {
     bottom: auto;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 1600px;
+    max-width: 800px;
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
@@ -240,7 +240,7 @@ html {
     bottom: auto;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 1600px;
+    max-width: 800px;
     height: auto;
     aspect-ratio: 16 / 9;
     background: linear-gradient(180deg, rgba(10, 16, 14, .1) 0%, rgba(10, 16, 14, .3) 55%, #0c1210 100%);
@@ -270,7 +270,7 @@ html {
     justify-content: center;
     max-width: 720px;
     margin: 0 auto;
-    padding: 64px 30px 96px;
+    padding: 40px 30px 56px;
     text-align: center;
     color: #ffffff;
 }
