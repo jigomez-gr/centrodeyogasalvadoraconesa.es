@@ -294,7 +294,7 @@ html {
 
 .hero__eyebrow {
     display: inline-block;
-    font-size: .8em;
+    font-size: 1em;
     letter-spacing: .35em;
     text-transform: uppercase;
     color: #cfe8c8;
@@ -307,7 +307,7 @@ html {
     float: none;
     font-family: Georgia, 'Times New Roman', serif;
     font-weight: 400;
-    font-size: clamp(1.3em, 3vw, 2.3em);
+    font-size: clamp(1.625em, 3.75vw, 2.875em);
     line-height: 1.1;
     color: #ffffff;
     margin-bottom: 24px;
@@ -1186,6 +1186,7 @@ footer a:hover {
     }
 
     .hero__eyebrow {
+        font-size: .8em;
         margin-bottom: 10px;
         letter-spacing: .2em;
         margin-bottom: 14px;
