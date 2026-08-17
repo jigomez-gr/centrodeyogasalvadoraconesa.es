@@ -153,7 +153,7 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-14 sm:pt-16 pb-4 sm:pb-5 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-20 sm:pt-24 pb-16 sm:pb-20 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -163,12 +163,12 @@ export default async function Home() {
             <span>Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1.5 select-none">
+          <h1 className="font-serif text-2xl sm:text-4xl md:text-[52px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1.5 select-none">
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="font-serif text-sm sm:text-base text-stone-400 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-0.5">
-            Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur). Salvadora Conesa
+          <p className="font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-500 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
+            Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
