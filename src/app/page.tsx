@@ -26,6 +26,9 @@ function checkVideosExist() {
     "itinerario-4": fs.existsSync(path.join(publicVideosDir, "itinerario-4.mp4")),
     "itinerario-5": fs.existsSync(path.join(publicVideosDir, "itinerario-5.mp4")),
     "itinerario-6": fs.existsSync(path.join(publicVideosDir, "itinerario-6.mp4")),
+    "itinerario-7": fs.existsSync(path.join(publicVideosDir, "itinerario-7.mp4")),
+    "itinerario-8": fs.existsSync(path.join(publicVideosDir, "itinerario-8.mp4")),
+    "itinerario-9": fs.existsSync(path.join(publicVideosDir, "itinerario-9.mp4")),
     resumen: fs.existsSync(path.join(publicVideosDir, "resumen.mp4")),
   };
 }
@@ -103,6 +106,42 @@ export default async function Home() {
     },
     {
       dayNum: 5,
+      title: "Terapia Gestalt",
+      subtitle: "Acompañamiento y terapia individual",
+      href: "#itinerario",
+      mainImage: "/imagenes/gestalt/01_gestalt_consulta_intima_1920x1080.jpg",
+      subImages: [
+        "/imagenes/gestalt/02_gestalt_espacio_consulta_1920x1080.jpg",
+        "/imagenes/gestalt/03_gestalt_escucha_y_acompanamiento_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 6,
+      title: "Constelaciones Familiares",
+      subtitle: "Sanación sistémica y vínculos de amor",
+      href: "#itinerario",
+      mainImage: "/imagenes/constelaciones/101_constelaciones_circulo_sereno_1920x1080.jpg",
+      subImages: [
+        "/imagenes/constelaciones/102_constelaciones_vinculos_grupo_1920x1080.jpg",
+        "/imagenes/constelaciones/103_constelaciones_trabajo_relacional_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 7,
+      title: "Encuentro de Mujeres",
+      subtitle: "Sororidad, naturaleza y círculos",
+      href: "#itinerario",
+      mainImage: "/imagenes/encuentro_mujeres/01_encuentro_mujeres_movimiento_naturaleza.jpeg",
+      subImages: [
+        "/imagenes/encuentro_mujeres/02_encuentro_mujeres_grupo.jpeg",
+        "/imagenes/encuentro_mujeres/03_encuentro_mujeres_senderismo.jpeg",
+        "/imagenes/encuentro_mujeres/04_encuentro_mujeres_hoguera.jpeg",
+        "/imagenes/encuentro_mujeres/05_encuentro_mujeres_paisaje.jpeg",
+        "/imagenes/encuentro_mujeres/06_encuentro_mujeres_circulo_bosque.jpeg"
+      ]
+    },
+    {
+      dayNum: 8,
       title: "Ayuno Terapéutico",
       subtitle: "Naturaleza, silencio y descanso",
       href: "#itinerario",
@@ -119,7 +158,7 @@ export default async function Home() {
       ]
     },
     {
-      dayNum: 6,
+      dayNum: 9,
       title: "Colaboradores y Otras Disciplinas",
       subtitle: "Ninjutsú, Defensa personal y Taichí",
       href: "#itinerario",

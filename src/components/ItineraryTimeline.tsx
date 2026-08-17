@@ -119,6 +119,75 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 5,
+        date: "Gestalt",
+        dayName: "Terapia Gestalt",
+        title: "Espacio de Presencia, Autoconocimiento y Acompañamiento Gestáltico",
+        desc: "",
+        events: [
+            {
+                time: "Consulta",
+                title: "Sesión Individual de Terapia",
+                description: "Espacio terapéutico personalizado enfocado en el aquí y ahora, ayudando a resolver bloqueos y potenciar la automaternidad.",
+                type: "visit",
+                venue: "Sala de Terapia",
+            },
+            {
+                time: "Gestalt",
+                title: "Acompañamiento en Procesos",
+                description: "Enfoque humanista para transitar duelos, relaciones conflictivas, ansiedad o procesos de cambio personal.",
+                type: "visit",
+                venue: "Sala de Terapia",
+            },
+        ],
+    },
+    {
+        id: 6,
+        date: "Constelaciones",
+        dayName: "Constelaciones Familiares",
+        title: "Sanación Transgeneracional y Ordenación de los Vínculos del Corazón",
+        desc: "",
+        events: [
+            {
+                time: "Talleres",
+                title: "Taller para Constelar y Participar",
+                description: "Representación grupal de dinámicas familiares inconscientes para traer claridad, orden y reconciliación a los lazos.",
+                type: "visit",
+                venue: "Sala Principal",
+            },
+            {
+                time: "Sistémica",
+                title: "Mirada y Comprensión Familiar",
+                description: "Ejercicios sistémicos de integración y reconciliación para sanar implicaciones profundas transgeneracionales.",
+                type: "visit",
+                venue: "Sala Principal",
+            },
+        ],
+    },
+    {
+        id: 7,
+        date: "Encuentros Mujeres",
+        dayName: "Encuentros de Mujeres",
+        title: "Espacios de Sororidad, Cuidado Compartido y Reconexión Femenina",
+        desc: "",
+        events: [
+            {
+                time: "Círculos",
+                title: "Dinámica y Diálogos al Fuego",
+                description: "Espacio circular de escucha empática, silencio y rituales compartidos frente a la hoguera en naturaleza.",
+                type: "visit",
+                venue: "Hospedería del Retiro",
+            },
+            {
+                time: "Naturaleza",
+                title: "Movimiento y Senderismo Consciente",
+                description: "Paseos grupales combinando respiración, expresión corporal y conexión profunda con los elementos terrestres.",
+                type: "visit",
+                venue: "Entorno Natural",
+            },
+        ],
+    },
+    {
+        id: 8,
         date: "Retiro Ayuno Terapéutico",
         dayName: "Ayuno Terapéutico y Retiros",
         title: "Procesos de Depuración Orgánica, Desintoxicación y Meditación en la Naturaleza",
@@ -140,7 +209,7 @@ const ITIN_DATA: TimelineDay[] = [
         ],
     },
     {
-        id: 6,
+        id: 9,
         date: "Nuestros Colaboradores y Centro",
         dayName: "Colaboradores y Otras Disciplinas",
         title: "Formaciones Complementarias y Salud con Diversos Especialistas",
@@ -172,6 +241,9 @@ interface ItineraryTimelineProps {
         "itinerario-4": boolean;
         "itinerario-5": boolean;
         "itinerario-6": boolean;
+        "itinerario-7": boolean;
+        "itinerario-8": boolean;
+        "itinerario-9": boolean;
         resumen: boolean;
     };
 }
@@ -194,10 +266,22 @@ const DAY_THUMBNAILS: { [key: number]: { src: string; caption: string } } = {
         caption: "La Ceremonia de la Puja de Gong"
     },
     5: {
+        src: "/imagenes/gestalt/01_gestalt_consulta_intima_1920x1080.jpg",
+        caption: "Acompañamiento Gestalt"
+    },
+    6: {
+        src: "/imagenes/constelaciones/101_constelaciones_circulo_sereno_1920x1080.jpg",
+        caption: "Constelaciones Familiares"
+    },
+    7: {
+        src: "/imagenes/encuentro_mujeres/01_encuentro_mujeres_movimiento_naturaleza.jpeg",
+        caption: "Encuentros de Mujeres"
+    },
+    8: {
         src: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
         caption: "Retiros de Ayuno Terapéutico"
     },
-    6: {
+    9: {
         src: "/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg",
         caption: "Nuestros Colaboradores y Centro"
     }
@@ -229,12 +313,30 @@ const DAY_OVERLAY_DETAILS: { [key: number]: { title: string; category: string; d
         date: "Eventos Especiales"
     },
     5: {
+        title: "Terapia Gestalt",
+        category: "ACOMPAÑAMIENTO HUMANISTA",
+        description: "Sesiones terapéuticas presenciales y online de autoconocimiento",
+        date: "Consulta Semanal"
+    },
+    6: {
+        title: "Constelaciones Familiares",
+        category: "TERAPIA SISTÉMICA",
+        description: "Talleres vivenciales para ordenar e integrar los vínculos amorosos",
+        date: "Talleres Populares"
+    },
+    7: {
+        title: "Encuentros de Mujeres",
+        category: "SENDERISMO Y COMUNIDAD",
+        description: "Círculos de diálogo empático, naturaleza, risas y sororidad",
+        date: "Encuentros Trimestrales"
+    },
+    8: {
         title: "Ayuno Terapéutico",
         category: "RETIROS EN LA NATURALEZA",
         description: "Limpieza orgánica, senderismo consciente y descanso integral",
         date: "Retiros Anuales"
     },
-    6: {
+    9: {
         title: "Otras Disciplinas y Más",
         category: "COLABORADORES Y FORMACIONES",
         description: "Taichí, Ninjutsú, Defensa personal y talleres de salud",
@@ -256,20 +358,29 @@ const ITINERARY_VIDEOS: { [key: number]: { title: string; filePath: string; yout
         { title: "Vídeo Puja Gong", filePath: "/videos/itinerario-4.mp4" }
     ],
     5: [
-        { title: "Vídeo Ayuno", filePath: "/videos/itinerario-5.mp4" }
+        { title: "Vídeo Gestalt", filePath: "/videos/itinerario-5.mp4" }
     ],
     6: [
-        { title: "Vídeo Centro", filePath: "/videos/itinerario-6.mp4" }
+        { title: "Vídeo Constelaciones", filePath: "/videos/itinerario-6.mp4" }
+    ],
+    7: [
+        { title: "Vídeo Encuentros", filePath: "/videos/itinerario-7.mp4" }
+    ],
+    8: [
+        { title: "Vídeo Ayuno", filePath: "/videos/itinerario-8.mp4" }
+    ],
+    9: [
+        { title: "Vídeo Centro", filePath: "/videos/itinerario-9.mp4" }
     ]
 };
 
 
 export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProps) {
     const [activeVideoIndexes, setActiveVideoIndexes] = useState<{ [key: number]: number }>({
-        1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0
+        1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
     });
     const [timelineMediaTypes, setTimelineMediaTypes] = useState<{ [key: number]: "completo" | "resumen" }>({
-        1: "completo", 2: "completo", 3: "completo", 4: "completo", 5: "completo", 6: "completo"
+        1: "completo", 2: "completo", 3: "completo", 4: "completo", 5: "completo", 6: "completo", 7: "completo", 8: "completo", 9: "completo"
     });
 
     const [activeDay, setActiveDay] = useState(1);
@@ -279,7 +390,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
             const hash = window.location.hash;
             if (hash.startsWith("#dia-")) {
                 const dayNum = parseInt(hash.replace("#dia-", ""), 10);
-                if (dayNum >= 1 && dayNum <= 6) {
+                if (dayNum >= 1 && dayNum <= 9) {
                     setActiveDay(dayNum);
                     setTimeout(() => {
                         const el = document.getElementById("itinerario");
@@ -302,7 +413,10 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
         3: "summary",
         4: "summary",
         5: "summary",
-        6: "summary"
+        6: "summary",
+        7: "summary",
+        8: "summary",
+        9: "summary"
     });
 
     const currentMode = selectedModes[activeDay] || "summary";
@@ -340,20 +454,20 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
             </div>
 
             {/* Desktop Day Selector (Tabs) */}
-            <div className="hidden sm:flex justify-between border-b border-[#C5A059]/30 mb-8 px-4 sm:px-0">
+            <div className="hidden sm:flex flex-wrap md:flex-nowrap justify-between border-b border-[#C5A059]/30 mb-8 px-4 sm:px-0 gap-y-3">
                 {ITIN_DATA.map((day) => (
                     <button
                         key={day.id}
                         onClick={() => {
                             setActiveDay(day.id);
                         }}
-                        className={`pb-4 px-2 text-center border-b-2 text-sm transition-all focus:outline-none ${activeDay === day.id
+                        className={`pb-3 px-1.5 md:px-2 text-center border-b-2 text-sm transition-all focus:outline-none shrink-0 ${activeDay === day.id
                             ? "border-[#800020] text-[#800020] font-bold"
                             : "border-transparent text-[#1C1C1C]/60 hover:text-[#800020]"
                             }`}
                     >
-                        <span className="block font-serif text-lg">Pilar {day.id}</span>
-                        <span className="block text-xs uppercase tracking-widest mt-1 font-semibold">{day.date}</span>
+                        <span className="block font-serif text-base md:text-lg">Pilar {day.id}</span>
+                        <span className="block text-[10px] md:text-xs uppercase tracking-wider mt-0.5 font-semibold">{day.date}</span>
                     </button>
                 ))}
             </div>
