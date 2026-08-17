@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 import { User, Mail, Phone, Users, Home, MessageSquare, ShieldCheck, ArrowRight, Loader2, KeyRound, LogOut, CheckCircle, CreditCard, RefreshCw } from "lucide-react";
 
-interface BookingFormProps {
-    initialAvailablePlazas: number;
-}
+// No props needed
 
 interface UserSession {
     loggedIn: boolean;
@@ -43,7 +41,7 @@ interface UserSession {
     totalPaid?: number;
 }
 
-export default function BookingForm({ initialAvailablePlazas }: BookingFormProps) {
+export default function BookingForm() {
     // Auth Session State
     const [session, setSession] = useState<UserSession | null>(null);
     const [sessionLoading, setSessionLoading] = useState(true);
@@ -79,7 +77,6 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
     const [customAmount, setCustomAmount] = useState("50");
     const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-    const [availablePlazas, setAvailablePlazas] = useState(initialAvailablePlazas);
     const [formLoading, setFormLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -118,20 +115,8 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
         }
     };
 
-    // Load session and available plazas on mount
+    // Load session on mount
     useEffect(() => {
-        async function fetchPlazas() {
-            try {
-                const res = await fetch("/api/reservas");
-                if (res.ok) {
-                    const data = await res.json();
-                    setAvailablePlazas(data.availablePlazas);
-                }
-            } catch (err) {
-                console.error("Error al consultar plazas:", err);
-            }
-        }
-        fetchPlazas();
         loadSession();
     }, []);
 
@@ -151,8 +136,7 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
         ? Math.max(0, session.reserva.importeTotal - (session.totalPaid ?? 0))
         : 0;
 
-    // Maximum plazas selection is minimum of availablePlazas and 14
-    const maxPlazasSelectable = Math.min(availablePlazas, 14);
+    // Capacity limits removed
 
     // Step 1: Send OTP code email
     const handleSendOtp = async (e: React.FormEvent) => {
@@ -289,10 +273,7 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
             return;
         }
 
-        if (numeroPlazas > availablePlazas) {
-            setError(`Lo sentimos, solo quedan ${availablePlazas} plaza(s) disponible(s).`);
-            return;
-        }
+        // Limit checking removed
 
         if (!condiciones || !privacidad) {
             setError("Debe aceptar las condiciones de inscripción y la política de privacidad.");
@@ -691,15 +672,11 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
                                         onChange={(e) => setNumeroPlazas(parseInt(e.target.value, 10))}
                                         className="block w-full pl-10 pr-3 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-[#1C1C1C] focus:outline-none focus:ring-2 focus:ring-[#800020] focus:border-transparent transition appearance-none"
                                     >
-                                        {availablePlazas === 0 ? (
-                                            <option value={0}>No hay plazas disponibles (Completo)</option>
-                                        ) : (
-                                            Array.from({ length: maxPlazasSelectable }, (_, i) => i + 1).map((n) => (
-                                                <option key={n} value={n}>
-                                                    {n} plaza{n > 1 ? "s" : ""}
-                                                </option>
-                                            ))
-                                        )}
+                                        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                                            <option key={n} value={n}>
+                                                {n} plaza{n > 1 ? "s" : ""}
+                                            </option>
+                                        ))}
                                     </select>
                                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-500">
                                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -905,7 +882,7 @@ export default function BookingForm({ initialAvailablePlazas }: BookingFormProps
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={formLoading || availablePlazas === 0}
+                            disabled={formLoading}
                             className="w-full inline-flex items-center justify-center px-6 py-3.5 border border-transparent text-base font-medium rounded-md shadow-md text-white bg-[#800020] hover:bg-[#800020]/95 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#800020] disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wider"
                         >
                             {formLoading ? (

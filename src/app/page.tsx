@@ -170,22 +170,6 @@ export default async function Home() {
       ]
     }
   ];
-
-  // Database queries for occupancy limits
-  let remainingPlazas = 14;
-  let totalPaidPlazas = 0;
-  try {
-    const paidReservations = await prisma.reserva.findMany({
-      where: {
-        estado: "pagada",
-      },
-    });
-    totalPaidPlazas = paidReservations.reduce((acc: number, curr: { numeroPlazas: number }) => acc + curr.numeroPlazas, 0);
-    remainingPlazas = Math.max(0, 14 - totalPaidPlazas);
-  } catch (err) {
-    console.error("Database query failed inside Home:", err);
-  }
-
   return (
     <div className="bg-[#FAF9F6] text-[#1C1C1C] min-h-screen selection:bg-[#800020] selection:text-white">
       {/* 1. Header Fijo */}
@@ -584,19 +568,9 @@ export default async function Home() {
 
           <div className="space-y-4 max-w-xl mx-auto text-sm text-[#1C1C1C]/85">
             <div className="flex justify-between items-center sm:px-12">
-              <span className="font-semibold text-left">Aforo límite por sesión regular:</span>
-              <span className="font-bold text-[#800020]">14 alumnos</span>
-            </div>
-            <div className="flex justify-between items-center sm:px-12">
               <span className="font-semibold text-left">Frecuencia de la Puja de Gong:</span>
               <span className="font-bold text-[#800020]">2 veces al año</span>
             </div>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-stone-100 text-xs text-stone-500">
-            <p className="italic">
-              * Nota: Las inscripciones están supeditadas a la disponibilidad de aforo en sala. Es necesario reservar plaza online previamente.
-            </p>
           </div>
         </div>
       </section>
@@ -677,12 +651,9 @@ export default async function Home() {
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
               Inscribirse en las Actividades
             </h2>
-            <p className="text-xs sm:text-sm text-[#1C1C1C]/65 mt-3">
-              Actualmente disponemos de <strong className="text-[#800020]">{remainingPlazas} plaza(s) libres</strong> en el grupo regular de 14.
-            </p>
           </div>
 
-          <BookingForm initialAvailablePlazas={remainingPlazas} />
+          <BookingForm />
         </div>
       </section>
 

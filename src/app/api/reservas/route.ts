@@ -3,23 +3,14 @@ import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const MAX_PLAZAS = 14;
+const MAX_PLAZAS = 999999;
 
 export async function GET() {
     try {
-        const paidReservations = await prisma.reserva.findMany({
-            where: {
-                estado: "pagada",
-            },
-        });
-
-        const totalPaidPlazas = paidReservations.reduce((acc: number, curr: { numeroPlazas: number }) => acc + curr.numeroPlazas, 0);
-        const availablePlazas = Math.max(0, MAX_PLAZAS - totalPaidPlazas);
-
         return NextResponse.json({
             maxPlazas: MAX_PLAZAS,
-            totalPaidPlazas,
-            availablePlazas,
+            totalPaidPlazas: 0,
+            availablePlazas: MAX_PLAZAS,
         });
     } catch (error: any) {
         console.error("Error at reservations query API:", error);
@@ -59,24 +50,7 @@ export async function POST(request: Request) {
             );
         }
 
-        // Check availability (sum of 'pagada' reservations)
-        const paidReservations = await prisma.reserva.findMany({
-            where: {
-                estado: "pagada",
-            },
-        });
-
-        const totalPaidPlazas = paidReservations.reduce((acc: number, curr: { numeroPlazas: number }) => acc + curr.numeroPlazas, 0);
-        const availablePlazas = MAX_PLAZAS - totalPaidPlazas;
-
-        if (plazasCount > availablePlazas) {
-            return NextResponse.json(
-                {
-                    error: `Lo sentimos, no hay suficientes plazas disponibles. Plazas libres: ${availablePlazas}.`
-                },
-                { status: 400 }
-            );
-        }
+        // Availability check removed
 
         // Price calculation
         let unitPrice = 60;
