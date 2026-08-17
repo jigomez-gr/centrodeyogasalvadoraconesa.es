@@ -192,52 +192,57 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-20 sm:pt-24 pb-16 sm:pb-20 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-24 sm:pb-20 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
-          <div className="inline-flex items-center space-x-2 text-[10px] sm:text-xs tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-5">
-            <span>Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
+          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-2.5 sm:mb-5">
+            <span className="hidden sm:inline">Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
+            <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
           </div>
 
-          <h1 className="font-serif text-2xl sm:text-4xl md:text-[52px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1.5 select-none">
+          <h1 className="font-serif text-xl sm:text-4xl md:text-[52px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-600 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
+          <p className="hidden sm:block font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-600 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
             Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
+          </p>
+          <p className="block sm:hidden font-serif text-[11.5px] leading-relaxed text-stone-600 max-w-sm mb-2.5 italic text-center font-medium px-4">
+            Yoga y bienestar en Fuenlabrada desde 1986.<br />
+            Calle Holanda, 1 · Metro Parque Europa (L12).
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-6xl w-full bg-white p-2 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-3 hover:shadow-2xl transition duration-500">
+          <div className="max-w-6xl w-full bg-white p-1.5 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 sm:mb-3 hover:shadow-2xl transition duration-500">
             <HeroMedia />
             {/* Caption in the ccmfalla.com Painting Style */}
-            <div className="mt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10 pt-4">
-              <p className="font-serif italic font-bold text-[#800020] text-sm sm:text-base">
+            <div className="mt-2.5 pt-2.5 sm:mt-4 sm:pt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10">
+              <p className="font-serif italic font-bold text-[#800020] text-xs sm:text-base">
                 "Centro de Yoga Salvadora Conesa"
               </p>
-              <p className="tracking-widest uppercase text-[9px] sm:text-[10px] text-stone-500 font-semibold">
+              <p className="tracking-widest uppercase text-[8px] sm:text-[10px] text-stone-500 font-semibold">
                 Vídeo Promocional
               </p>
-              <p className="text-[9px] text-stone-400">
+              <p className="text-[7px] sm:text-[9px] text-stone-400">
                 Copyright © Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
               </p>
             </div>
           </div>
 
           {/* Call to Actions in Editorial Style */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center mt-6">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-3 sm:mt-6 px-4 sm:px-0">
             <a
               href="#reserva"
-              className="inline-flex items-center justify-center px-8 py-3.5 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200"
+              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200"
             >
               Inscribirse
             </a>
             <a
               href="#itinerario"
-              className="inline-flex items-center justify-center px-8 py-3.5 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
+              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
             >
               Ver Actividades
             </a>
@@ -245,7 +250,7 @@ export default async function Home() {
         </div>
 
         {/* Scroll indicator - refined */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-stone-400 text-[10px] tracking-widest uppercase flex flex-col items-center gap-1.5 animate-bounce select-none">
+        <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 text-stone-400 text-[10px] tracking-widest uppercase flex-col items-center gap-1.5 animate-bounce select-none">
           <svg className="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

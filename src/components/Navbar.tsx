@@ -62,7 +62,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Header Layout */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between md:hidden relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between md:hidden relative">
                 {/* Left side: Hamburger toggle button */}
                 <div className="w-10 flex justify-start">
                     <button
@@ -80,11 +80,11 @@ export default function Navbar() {
                         <img
                             src="/imagenes/logo/logo.png"
                             alt="Logo Centro de Yoga Salvadora Conesa"
-                            className="h-10 w-auto object-contain"
+                            className="h-8 w-auto object-contain"
                         />
                         <div className="flex flex-col items-center leading-tight">
-                            <span className="text-[6.5px] tracking-wider text-[#C5A059] uppercase font-bold">CENTRO DE YOGA FUENLABRADA</span>
-                            <span className="font-serif text-[11px] font-black text-[#800020] uppercase tracking-wide leading-none">Salvadora Conesa</span>
+                            <span className="text-[5.5px] tracking-wider text-[#C5A059] uppercase font-bold">CENTRO DE YOGA FUENLABRADA</span>
+                            <span className="font-serif text-[9.5px] font-black text-[#800020] uppercase tracking-wide leading-none">Salvadora Conesa</span>
                         </div>
                     </a>
                 </div>
