@@ -167,8 +167,8 @@ export default async function Home() {
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="font-serif text-lg sm:text-xl text-stone-400 max-w-4xl mb-4 sm:mb-5 italic tracking-wide mt-1">
-            Salvadora Conesa
+          <p className="font-serif text-sm sm:text-base text-stone-400 max-w-4xl mb-4 sm:mb-5 italic tracking-wide mt-1">
+            Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur). Salvadora Conesa
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
