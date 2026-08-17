@@ -334,7 +334,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                             : "bg-white text-[#1C1C1C]/75 border-stone-200"
                             }`}
                     >
-                        Día {day.id} ({day.date})
+                        Pilar {day.id} ({day.date})
                     </button>
                 ))}
             </div>
@@ -352,7 +352,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                             : "border-transparent text-[#1C1C1C]/60 hover:text-[#800020]"
                             }`}
                     >
-                        <span className="block font-serif text-lg">Día {day.id}</span>
+                        <span className="block font-serif text-lg">Pilar {day.id}</span>
                         <span className="block text-xs uppercase tracking-widest mt-1 font-semibold">{day.date}</span>
                     </button>
                 ))}
