@@ -1,0 +1,728 @@
+import fs from "fs";
+import path from "path";
+import Link from "next/link";
+import { prisma } from "@/lib/db";
+import Navbar from "@/components/Navbar";
+import ItineraryTimeline from "@/components/ItineraryTimeline";
+import VideoGallery from "@/components/VideoGallery";
+import BookingForm from "@/components/BookingForm";
+import HeroMedia from "@/components/HeroMedia";
+import PrologoGallery from "@/components/PrologoGallery";
+import AtmosphereGallery from "@/components/AtmosphereGallery";
+
+export const dynamic = "force-dynamic";
+import {
+  Calendar, MapPin, Shield, Compass, FileText, CheckCircle2,
+  HelpCircle, Mail, Phone, Clock, Award, Users, Music
+} from "lucide-react";
+
+// Server-side helper to check if mp4 videos exist in /public/videos
+function checkVideosExist() {
+  const publicVideosDir = path.join(process.cwd(), "public", "videos");
+  return {
+    "itinerario-1": fs.existsSync(path.join(publicVideosDir, "itinerario-1.mp4")),
+    "itinerario-2": fs.existsSync(path.join(publicVideosDir, "itinerario-2.mp4")),
+    "itinerario-3": fs.existsSync(path.join(publicVideosDir, "itinerario-3.mp4")),
+    "itinerario-4": fs.existsSync(path.join(publicVideosDir, "itinerario-4.mp4")),
+    "itinerario-5": fs.existsSync(path.join(publicVideosDir, "itinerario-5.mp4")),
+    "itinerario-6": fs.existsSync(path.join(publicVideosDir, "itinerario-6.mp4")),
+    resumen: fs.existsSync(path.join(publicVideosDir, "resumen.mp4")),
+  };
+}
+
+// Server-side helper to read all images inside public/imagenes/diaX subdirectories
+function getSubImages(dayNum: number): string[] {
+  const publicDir = path.join(process.cwd(), "public", "imagenes", `dia${dayNum}`);
+  if (!fs.existsSync(publicDir)) return [];
+  try {
+    return fs.readdirSync(publicDir)
+      .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+      .map((file) => `/imagenes/dia${dayNum}/${file}`);
+  } catch (e) {
+    return [];
+  }
+}
+
+export default async function Home() {
+  const videosExist = checkVideosExist();
+
+  const atmosphereDays = [
+    {
+      dayNum: 1,
+      title: "Hatha Yoga & Yoga Nidra",
+      subtitle: "Clases regulares corporales",
+      href: "#itinerario",
+      mainImage: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
+      subImages: [
+        "/imagenes/yoga/02_08_yoga_sonrisa_1920x1080.jpg",
+        "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
+        "/imagenes/yoga/04_03_yoga_postura_triangular_1920x1080.jpg",
+        "/imagenes/yoga/05_01_yoga_postura_lateral_1920x1080.jpg",
+        "/imagenes/yoga/06_07_yoga_apertura_1920x1080.jpg",
+        "/imagenes/yoga/07_04_yoga_respiracion_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 2,
+      title: "Kundalini & Meditación",
+      subtitle: "Silencio y autoconocimiento",
+      href: "#itinerario",
+      mainImage: "/imagenes/meditacion/01_meditacion_silencio_ventana_1920x1080.jpg",
+      subImages: [
+        "/imagenes/meditacion/02_meditacion_salvadora_1920x1080.jpg",
+        "/imagenes/meditacion/03_meditacion_grupal_luz_calida_1920x1080.jpg",
+        "/imagenes/meditacion/04_meditacion_respiracion_1920x1080.jpg",
+        "/imagenes/meditacion/05_meditacion_grupal_serena_1920x1080.jpg",
+        "/imagenes/meditacion/06_meditacion_espacio_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 3,
+      title: "Baños de Gong",
+      subtitle: "Vibración sonora relajante",
+      href: "#itinerario",
+      mainImage: "/imagenes/gong/04_maria_con_cuenco_y_gong_1920x1080.jpg",
+      subImages: [
+        "/imagenes/gong/01_presentacion_terapeutas_1920x1080.jpg",
+        "/imagenes/gong/02_terapeutas_con_instrumentos_1920x1080.jpg",
+        "/imagenes/gong/03_sesion_en_grupo_movimiento_1920x1080.jpg",
+        "/imagenes/gong/05_preparacion_del_espacio_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 4,
+      title: "La Puja de Gong",
+      subtitle: "Ceremonia nocturna especial",
+      href: "#itinerario",
+      mainImage: "/imagenes/gong/06_experiencia_de_relajacion_sonora_1920x1080.jpg",
+      subImages: [
+        "/imagenes/gong/07_sesion_en_grupo_en_sala_1920x1080.jpg",
+        "/imagenes/gong/02_terapeutas_con_instrumentos_1920x1080.jpg",
+        "/imagenes/gong/05_preparacion_del_espacio_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 5,
+      title: "Ayuno Terapéutico",
+      subtitle: "Naturaleza, silencio y descanso",
+      href: "#itinerario",
+      mainImage: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
+      subImages: [
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/202_ayuno_energia_y_compania_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/203_ayuno_bano_de_mar_y_alegria_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/204_ayuno_masaje_y_cuidado_mutuo_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/205_ayuno_juego_y_complicidad_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/206_ayuno_paseo_junto_al_mar_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/207_ayuno_cocina_y_comunidad_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/208_ayuno_fiesta_y_desinhibicion_1920x1080.jpg",
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/209_ayuno_playa_descanso_y_paisaje_1920x1080.jpg"
+      ]
+    },
+    {
+      dayNum: 6,
+      title: "Colaboradores y Otras Disciplinas",
+      subtitle: "Ninjutsú, Defensa personal y Taichí",
+      href: "#itinerario",
+      mainImage: "/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg",
+      subImages: [
+        "/imagenes/centro/103_entrada_desde_metro_parque_europa_1920x1080.jpg",
+        "/imagenes/centro/204_entrada_principal_centro_1920x1080.jpg",
+        "/imagenes/centro/302_patio_centro_1920x1080.jpg"
+      ]
+    }
+  ];
+
+  // Database queries for occupancy limits
+  let remainingPlazas = 14;
+  let totalPaidPlazas = 0;
+  try {
+    const paidReservations = await prisma.reserva.findMany({
+      where: {
+        estado: "pagada",
+      },
+    });
+    totalPaidPlazas = paidReservations.reduce((acc: number, curr: { numeroPlazas: number }) => acc + curr.numeroPlazas, 0);
+    remainingPlazas = Math.max(0, 14 - totalPaidPlazas);
+  } catch (err) {
+    console.error("Database query failed inside Home:", err);
+  }
+
+  return (
+    <div className="bg-[#FAF9F6] text-[#1C1C1C] min-h-screen selection:bg-[#800020] selection:text-white">
+      {/* 1. Header Fijo */}
+      <Navbar />
+
+      {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
+      <section className="relative bg-[#FAF9F6] pt-24 sm:pt-28 pb-8 sm:pb-10 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+        {/* Subtle decorative background elements */}
+        <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+
+        {/* Hero Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
+          <div className="inline-flex items-center space-x-2 text-[10px] sm:text-xs tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-2">
+            <span>Clases Regulares, Baños de Gong, Talleres y Retiros</span>
+          </div>
+
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-2.5 select-none">
+            CENTRO DE YOGA FUENLABRADA
+          </h1>
+
+          <p className="font-serif text-lg sm:text-xl text-stone-400 max-w-4xl mb-4 sm:mb-5 italic tracking-wide mt-1">
+            Salvadora Conesa
+          </p>
+
+          {/* Framed Media Block mimicking ccmfalla.com Paintings */}
+          <div className="max-w-6xl w-full bg-white p-2 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-4 hover:shadow-2xl transition duration-500">
+            <HeroMedia />
+            {/* Caption in the ccmfalla.com Painting Style */}
+            <div className="mt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10 pt-4">
+              <p className="font-serif italic font-bold text-[#800020] text-sm sm:text-base">
+                "Centro de Yoga Salvadora Conesa"
+              </p>
+              <p className="tracking-widest uppercase text-[9px] sm:text-[10px] text-stone-500 font-semibold">
+                Vídeo Promocional
+              </p>
+              <p className="text-[9px] text-stone-400">
+                Copyright © Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
+              </p>
+            </div>
+          </div>
+
+          {/* Call to Actions in Editorial Style */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center mt-6">
+            <a
+              href="#reserva"
+              className="inline-flex items-center justify-center px-8 py-3.5 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200"
+            >
+              Inscribirse
+            </a>
+            <a
+              href="#itinerario"
+              className="inline-flex items-center justify-center px-8 py-3.5 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
+            >
+              Ver Actividades
+            </a>
+          </div>
+        </div>
+
+        {/* Scroll indicator - refined */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-stone-400 text-[10px] tracking-widest uppercase flex flex-col items-center gap-1.5 animate-bounce select-none">
+          <svg className="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </div>
+      </section>
+
+      {/* 3. Bloque de Confianza / Resumen Rápido */}
+      <section id="viaje" className="py-16 bg-white border-y border-[#C5A059]/25 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+
+            {/* Card 1 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#800020] mb-1">Clases Diarias</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Hatha y Kundalini</span>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#800020] mb-1 leading-tight">Baños Gong</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Relajación Sonora</span>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#800020] mb-1">La Puja</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Ceremonia Nocturna</span>
+            </div>
+
+            {/* Card 4 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#800020] mb-1">Retiros</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Ayuno y Bienestar</span>
+            </div>
+
+            {/* Card 5 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#800020] mb-1">Salud Integral</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Cuerpo y Mente</span>
+            </div>
+
+            {/* Card 6 */}
+            <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#c5a059]/25 text-center hover:shadow-md transition">
+              <span className="block text-lg font-serif font-bold text-[#2E5A44] mb-1">Desde 25 €</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Opciones Flexibles</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Introducción Emocional */}
+      <section className="pt-16 pb-4 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-mt-24">
+        <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-3">
+          Centro de Yoga Fuenlabrada
+        </span>
+        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+          Salvadora Conesa
+        </h2>
+      </section>
+
+      {/* 5. El Eje Histórico del Viaje */}
+      <section className="pt-12 pb-24 bg-white border-y border-[#C5A059]/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/75 leading-relaxed text-justify sm:text-center">
+              <p>
+                El Centro de Yoga Fuenlabrada de Salvadora Conesa es un espacio dedicado a la salud, el bienestar y el desarrollo integral de la persona en pleno corazón de Fuenlabrada. A través de la práctica regular de Hatha Yoga, Kundalini y meditación, ofrecemos herramientas reales para calmar la mente, fortalecer el cuerpo y reconectar con lo esencial.
+              </p>
+              <p>
+                Además de nuestras sesiones semanales, contamos con renombradas experiencias de terapia de sonido como los Baños de Gong y la transformadora Puja de Gong nocturna, ambas guiadas por sonoterapeutas profesionales. Ofrecemos también una variada propuesta de retiros de Ayuno Terapéutico en plena naturaleza, diseñados para resetear el organismo y descansar profundamente.
+              </p>
+              <p>
+                Colaboramos activamente con profesionales de disciplinas de salud y defensa como Entrenamiento Funcional, Taichí, Defensa Personal, Ninjutsú y Kai sai Budo, consolidando un espacio de crecimiento y comunidad.
+              </p>
+            </div>
+          </div>
+
+          {/* Grid Layout: Video on the left, Photos on the right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-12">
+
+            {/* Video Container (Left Column) */}
+            <div className="flex flex-col justify-center">
+              <div className="bg-white p-2.5 sm:p-3 rounded-xl border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 hover:shadow-2xl transition duration-500 font-sans w-full">
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black/5 border border-stone-200">
+                  <video
+                    src="/videos/prologo.mp4"
+                    poster="/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg"
+                    controls
+                    playsInline
+                    className="w-full h-full object-cover select-none"
+                  />
+                </div>
+                <div className="mt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10 pt-4">
+                  <p className="font-serif italic font-bold text-[#800020] text-sm sm:text-base">
+                    "Un espacio para la calma"
+                  </p>
+                  <p className="tracking-widest uppercase text-[9px] sm:text-[10px] text-stone-500 font-semibold">
+                    Presentación del Centro
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gallery (Right Column) */}
+            <div>
+              <PrologoGallery />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Itinerario Día por Día */}
+      <section id="itinerario" className="py-24 bg-[#FAF9F6] scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Programa Oficial
+            </span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+              Itinerario Detallado
+            </h2>
+          </div>
+
+          <ItineraryTimeline videosExist={videosExist} />
+        </div>
+      </section>
+
+      {/* 7. Experiencias Destacadas */}
+      <section className="py-24 bg-white border-y border-[#C5A059]/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Pilares del Centro
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
+              Experiencias y Disciplinas
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Block 1 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Compass className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Yoga y Meditación</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Práctica diaria y consciente de Hatha Yoga, Kundalini y técnicas de meditación profunda para calmar la mente y fortalecer el cuerpo.
+              </p>
+            </div>
+
+            {/* Block 2 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Music className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Terapia de Sonido</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Sumérgete en la vibración armónica de los Baños de Gong y las ceremonias nocturnas de Puja para restaurar tu equilibrio energético.
+              </p>
+            </div>
+
+            {/* Block 3 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Award className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Retiros de Ayuno</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Programas intensivos de fin de semana combinando ayuno terapéutico, paseos junto al mar y dinámicas de grupo de reconexión.
+              </p>
+            </div>
+
+            {/* Block 4 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Users className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Espacio Multidisciplinar</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Colaboraciones especiales de Entrenamiento Funcional, Taichí, Defensa Personal, Ninjutsú y terapias de salud integral.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Galería / Atmósfera Visual */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Atmósfera del Centro
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
+              Galería de Diapositivas del Centro de Yoga Fuenlabrada
+            </h2>
+          </div>
+
+          <AtmosphereGallery days={atmosphereDays} />
+        </div>
+      </section>
+
+      {/* 9. Sección de Vídeos del itinerario */}
+      <section id="videos" className="py-24 bg-white border-y border-[#C5A059]/20 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Auditorio Virtual
+            </span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+              Vídeos de Actividades
+            </h2>
+            <p className="text-sm text-[#1C1C1C]/60 mt-3 max-w-xl mx-auto">
+              Visualice las diferentes sesiones, clases y terapias sonoras que articulan el día a día en nuestro centro.
+            </p>
+          </div>
+
+          <VideoGallery videosExist={videosExist} />
+        </div>
+      </section>
+
+      {/* 9.5 Sección de Vídeos de Viajes Realizados */}
+      <section id="viajes-realizados" className="py-24 bg-[#FAF9F6] border-b border-[#C5A059]/20 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Recuerdos de Retiros
+            </span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+              Retiros ya Realizados
+            </h2>
+            <p className="text-sm text-[#1C1C1C]/60 mt-3 max-w-2xl mx-auto whitespace-pre-line">
+              Reviva la atmósfera de nuestros encuentros pasados a través de los vídeos de recuerdo de cada experiencia en régimen de retiro grupal.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Barcelona Enero 2026 */}
+            <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
+              <div className="relative aspect-video bg-[#1C1C1C] flex items-center justify-center border-b border-stone-100">
+                <video
+                  src="/videos/previoabarcelona.mp4"
+                  controls
+                  className="w-full h-full object-cover"
+                  poster="/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h4 className="font-serif text-lg font-bold text-[#800020]">
+                      Retiro de Ayuno (Enero 2026)
+                    </h4>
+                    <span className="text-[10px] bg-[#800020]/10 text-[#800020] border border-[#800020]/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-sans">
+                      Recuerdo
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
+                    Un recorrido completo por las dinámicas, paseos y vivencias compartidas en nuestro último retiro de ayuno conscientes del pasado enero de 2026.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Sevilla 2025 */}
+            <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition duration-300 flex flex-col">
+              <div className="relative aspect-video bg-[#1C1C1C] flex items-center justify-center border-b border-stone-100">
+                <video
+                  src="/videos/viajeprevioasevilla.mp4"
+                  controls
+                  className="w-full h-full object-cover"
+                  poster="/imagenes/gong/06_experiencia_de_relajacion_sonora_1920x1080.jpg"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <h4 className="font-serif text-lg font-bold text-[#800020]">
+                      Taller de Gong y Sonido (Año 2025)
+                    </h4>
+                    <span className="text-[10px] bg-[#800020]/10 text-[#800020] border border-[#800020]/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider font-sans">
+                      Recuerdo
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
+                    Las bellas resonancias y recuerdos de nuestro taller presencial de sonoterapia e iniciación a los cuencos celebrado en Sevilla en 2025.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. Precio y Plazas */}
+      <section id="precios" className="py-24 scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-white border border-[#C5A059]/30 rounded-xl p-8 sm:p-12 shadow-xl">
+          <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            Matrícula y Aportación
+          </span>
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#800020] mb-6">
+            Tarifas y Aportaciones
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-stone-100 mb-8 font-sans">
+            <div>
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Clases Mensuales</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">50 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Hatha o Kundalini</span>
+            </div>
+            <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Baño de Gong</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">25 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Por sesión individual</span>
+            </div>
+            <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Puja de Gong</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">80 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Ceremonia nocturna 8h</span>
+            </div>
+            <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Retiro Completo</span>
+              <span className="font-serif text-2xl font-black text-[#2E5A44]">450 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Fin de semana con alojamiento</span>
+            </div>
+          </div>
+
+          <div className="space-y-4 max-w-xl mx-auto text-sm text-[#1C1C1C]/85">
+            <div className="flex justify-between items-center sm:px-12">
+              <span className="font-semibold text-left">Aforo límite por sesión regular:</span>
+              <span className="font-bold text-[#800020]">14 alumnos</span>
+            </div>
+            <div className="flex justify-between items-center sm:px-12">
+              <span className="font-semibold text-left">Frecuencia de la Puja de Gong:</span>
+              <span className="font-bold text-[#800020]">2 veces al año</span>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-stone-100 text-xs text-stone-500">
+            <p className="italic">
+              * Nota: Las inscripciones están supeditadas a la disponibilidad de aforo en sala. Es necesario reservar plaza online previamente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. Qué Incluye / Qué No Incluye */}
+      <section id="incluye" className="py-24 bg-white border-y border-[#C5A059]/20 scroll-mt-24 font-sans">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Transparencia y Condiciones
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
+              Detalle de Condiciones
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+            {/* Column 1 - Qué incluye */}
+            <div className="bg-[#FAF9F6] p-8 rounded-xl border border-[#2E5A44]/15">
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#2E5A44] border-b border-stone-200 pb-3 mb-6 flex items-center">
+                ✓ Qué incluye la inscripción
+              </h3>
+
+              <ul className="space-y-4 text-xs sm:text-sm text-[#1C1C1C]/80">
+                <li className="flex items-start">
+                  <CheckCircle2 className="w-5 h-5 text-[#2E5A44] shrink-0 mr-3 mt-0.5" />
+                  <span>Acceso de uso a todo el material necesario de sala (esterillas, mantas, bloques, etc.).</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 className="w-5 h-5 text-[#2E5A44] shrink-0 mr-3 mt-0.5" />
+                  <span>Impartición por profesores certificados y profesionales de primer nivel.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 className="w-5 h-5 text-[#2E5A44] shrink-0 mr-3 mt-0.5" />
+                  <span>Terapia de sonido con instrumentos originales e importados de la más alta calidad.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 className="w-5 h-5 text-[#2E5A44] shrink-0 mr-3 mt-0.5" />
+                  <span>Infusiones ecológicas y agua purificada durante el desarrollo de las vivencias y talleres.</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle2 className="w-5 h-5 text-[#2E5A44] shrink-0 mr-3 mt-0.5" />
+                  <span>En los Retiros: Alojamiento en régimen concertado y alimentación específica (caldos, frutas, tés depurativos).</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 2 - Qué no incluye */}
+            <div className="bg-[#FAF9F6] p-8 rounded-xl border border-[#800020]/15">
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#800020] border-b border-stone-200 pb-3 mb-6 flex items-center">
+                ✗ Qué no incluye
+              </h3>
+
+              <ul className="space-y-4 text-xs sm:text-sm text-[#1C1C1C]/80">
+                <li className="flex items-start">
+                  <span className="w-5 h-5 bg-[#800020]/10 rounded-full text-[#800020] font-bold text-center flex items-center justify-center shrink-0 mr-3 mt-0.5 text-xs">-</span>
+                  <span>Traslado personal de los participantes hasta el centro de yoga Fuenlabrada o hasta la ubicación de los retiros.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-5 h-5 bg-[#800020]/10 rounded-full text-[#800020] font-bold text-center flex items-center justify-center shrink-0 mr-3 mt-0.5 text-xs">-</span>
+                  <span>Toallas personales y ropa de cambio para los retiros.</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 12. Formulario de Reserva */}
+      <section id="reserva" className="py-24 bg-[#FAF9F6] scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Solicitud de Inscripción
+            </span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+              Inscribirse en las Actividades
+            </h2>
+            <p className="text-xs sm:text-sm text-[#1C1C1C]/65 mt-3">
+              Actualmente disponemos de <strong className="text-[#800020]">{remainingPlazas} plaza(s) libres</strong> en el grupo regular de 14.
+            </p>
+          </div>
+
+          <BookingForm initialAvailablePlazas={remainingPlazas} />
+        </div>
+      </section>
+
+      {/* 13. Datos Directos de Contacto */}
+      <section className="py-24 bg-white border-t border-[#C5A059]/25 text-center font-sans">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold block mb-2">
+            Atención Especializada
+          </span>
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#800020] mb-4">
+            ¿Tiene alguna consulta antes de reservar?
+          </h2>
+          <p className="text-xs sm:text-sm text-[#1C1C1C]/70 max-w-xl mx-auto mb-10">
+            Póngase en contacto directamente con el Centro de Yoga Salvadora Conesa. Estaremos encantados de resolver sus preguntas sobre nuestras clases, baños de gong y retiros.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-8 text-sm sm:text-base font-semibold">
+
+            <a
+              href="mailto:salvadoraconesayoga@hotmail.com"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-[#800020]/20 rounded-md text-[#800020] bg-[#800020]/5 hover:bg-[#800020]/10 transition shadow-sm"
+            >
+              <Mail className="w-5 h-5 mr-2 text-[#800020]" />
+              salvadoraconesayoga@hotmail.com
+            </a>
+
+            <a
+              href="tel:660957863"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-[#2E5A44]/20 rounded-md text-[#2E5A44] bg-[#2E5A44]/5 hover:bg-[#2E5A44]/10 transition shadow-sm"
+            >
+              <Phone className="w-5 h-5 mr-2 text-[#2E5A44]" />
+              +34 660 957 863
+            </a>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 14. Footer Elegante */}
+      <footer className="bg-[#1C1C1C] text-white py-12 font-sans border-t-2 border-[#C5A059]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8 pb-10 border-b border-white/10">
+
+            {/* Left brand column */}
+            <div className="text-center md:text-left">
+              <h3 className="font-serif text-lg font-bold text-[#E9C168]">
+                Centro de Yoga Fuenlabrada
+              </h3>
+              <p className="text-xs text-white/50 mt-1 max-w-sm">
+                Dirigido por Salvadora Conesa. Espacio de crecimiento y bienestar dedicado a la práctica regular del yoga, la meditación y la sonoterapia.
+              </p>
+            </div>
+
+            {/* Right actions links */}
+            <div className="flex flex-wrap justify-center gap-4 text-xs font-semibold uppercase tracking-wider">
+              <a
+                href="#itinerario"
+                className="px-4 py-2 border border-white/20 hover:border-[#E9C168] rounded text-white/80 hover:text-[#E9C168] transition"
+              >
+                Nuestros Pilares
+              </a>
+              <a
+                href="#reserva"
+                className="px-4 py-2 bg-[#800020] hover:bg-[#800020]/90 border border-transparent rounded text-white transition"
+              >
+                Inscribirse
+              </a>
+            </div>
+
+          </div>
+
+          {/* Bottom rights info */}
+          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
+            <p>
+              © {new Date().getFullYear()} Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
+            </p>
+            <div className="flex space-x-6">
+              <span className="hover:text-white transition cursor-pointer">Inscripción</span>
+              <span className="hover:text-white transition cursor-pointer">Privacidad y Cookies</span>
+              <span className="hover:text-white transition cursor-pointer">Términos Generales</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
