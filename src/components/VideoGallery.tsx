@@ -332,6 +332,8 @@ export default function VideoGallery({ videosExist }: VideoGalleryProps) {
                                                 src={videoSrc}
                                                 controls
                                                 autoPlay
+                                                playsInline
+                                                muted={false}
                                                 className="w-full h-full object-cover"
                                             />
                                         ) : (

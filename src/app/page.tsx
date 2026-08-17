@@ -160,7 +160,7 @@ export default async function Home() {
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
           <div className="inline-flex items-center space-x-2 text-[10px] sm:text-xs tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-2">
-            <span>Clases Regulares, Baños de Gong, Talleres y Retiros</span>
+            <span>Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-2.5 select-none">
@@ -329,7 +329,7 @@ export default async function Home() {
               Programa Oficial
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              Itinerario Detallado
+              Itinerarios Detallado
             </h2>
           </div>
 

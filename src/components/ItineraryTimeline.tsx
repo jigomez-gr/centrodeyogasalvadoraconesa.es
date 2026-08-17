@@ -21,7 +21,7 @@ interface TimelineDay {
 const ITIN_DATA: TimelineDay[] = [
     {
         id: 1,
-        date: "Pilar 1",
+        date: "Yoga",
         dayName: "Hatha Yoga & Yoga Nidra",
         title: "Prácticas de Alineación Física, Respiración y Relajación Mental Consciente",
         desc: "",
@@ -44,7 +44,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 2,
-        date: "Pilar 2",
+        date: "Meditación",
         dayName: "Kundalini Yoga & Meditación",
         title: "Tecnología de la Consciencia para la Energía Vital y el Silencio",
         desc: "",
@@ -67,7 +67,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 3,
-        date: "Pilar 3",
+        date: "Baños de Gong",
         dayName: "Baños de Gong",
         title: "Terapia Vibracional con Gong y Cuencos Celestiales",
         desc: "",
@@ -89,7 +89,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 4,
-        date: "Pilar 4",
+        date: "Puja de Gong",
         dayName: "La Puja de Gong",
         title: "Celebración Sagrada del Sonido Eterno y Transformación Espiritual",
         desc: "",
@@ -119,7 +119,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 5,
-        date: "Pilar 5",
+        date: "Retiro Ayuno Terapéutico",
         dayName: "Ayuno Terapéutico y Retiros",
         title: "Procesos de Depuración Orgánica, Desintoxicación y Meditación en la Naturaleza",
         desc: "",
@@ -141,7 +141,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 6,
-        date: "Pilar 6",
+        date: "Nuestros Colaboradores y Centro",
         dayName: "Colaboradores y Otras Disciplinas",
         title: "Formaciones Complementarias y Salud con Diversos Especialistas",
         desc: "",
@@ -499,6 +499,8 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                                 <video
                                                     src={getVideoPath(day.id)}
                                                     controls
+                                                    playsInline
+                                                    muted={false}
                                                     className="w-full h-full object-cover"
                                                     poster={thumb.src}
                                                 />
@@ -623,6 +625,8 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                                                 src={videoSrc}
                                                                 controls
                                                                 autoPlay
+                                                                playsInline
+                                                                muted={false}
                                                                 className="w-full h-full object-cover"
                                                             />
                                                         </div>
