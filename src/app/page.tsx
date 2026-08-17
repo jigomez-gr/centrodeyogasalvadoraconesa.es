@@ -153,7 +153,7 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-24 sm:pt-28 pb-8 sm:pb-10 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-14 sm:pt-16 pb-4 sm:pb-5 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -163,16 +163,16 @@ export default async function Home() {
             <span>Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-2.5 select-none">
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1.5 select-none">
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="font-serif text-sm sm:text-base text-stone-400 max-w-4xl mb-4 sm:mb-5 italic tracking-wide mt-1">
+          <p className="font-serif text-sm sm:text-base text-stone-400 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-0.5">
             Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur). Salvadora Conesa
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-6xl w-full bg-white p-2 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-4 hover:shadow-2xl transition duration-500">
+          <div className="max-w-6xl w-full bg-white p-2 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-3 hover:shadow-2xl transition duration-500">
             <HeroMedia />
             {/* Caption in the ccmfalla.com Painting Style */}
             <div className="mt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10 pt-4">
