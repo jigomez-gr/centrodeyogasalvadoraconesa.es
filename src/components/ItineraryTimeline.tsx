@@ -165,7 +165,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 7,
-        date: "Encuentros Mujeres",
+        date: "Encuentros",
         dayName: "Encuentros de Mujeres",
         title: "Espacios de Sororidad, Cuidado Compartido y Reconexión Femenina",
         desc: "",
@@ -188,7 +188,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 8,
-        date: "Retiro Ayuno Terapéutico",
+        date: "Ayuno",
         dayName: "Ayuno Terapéutico y Retiros",
         title: "Procesos de Depuración Orgánica, Desintoxicación y Meditación en la Naturaleza",
         desc: "",
@@ -210,7 +210,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 9,
-        date: "Nuestros Colaboradores y Centro",
+        date: "Centro",
         dayName: "Colaboradores y Otras Disciplinas",
         title: "Formaciones Complementarias y Salud con Diversos Especialistas",
         desc: "",
@@ -454,14 +454,14 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
             </div>
 
             {/* Desktop Day Selector (Tabs) */}
-            <div className="hidden sm:flex flex-wrap md:flex-nowrap justify-between border-b border-[#C5A059]/30 mb-8 px-4 sm:px-0 gap-y-3">
+            <div className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-9 border-b border-[#C5A059]/30 mb-8 px-4 sm:px-0 gap-2 text-center">
                 {ITIN_DATA.map((day) => (
                     <button
                         key={day.id}
                         onClick={() => {
                             setActiveDay(day.id);
                         }}
-                        className={`pb-3 px-1.5 md:px-2 text-center border-b-2 text-sm transition-all focus:outline-none shrink-0 ${activeDay === day.id
+                        className={`pb-3 text-center border-b-2 text-sm transition-all focus:outline-none w-full ${activeDay === day.id
                             ? "border-[#800020] text-[#800020] font-bold"
                             : "border-transparent text-[#1C1C1C]/60 hover:text-[#800020]"
                             }`}
