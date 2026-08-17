@@ -37,3 +37,11 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #800020;
 }
+
+/* Custom closed captions styling */
+video::cue {
+  background: transparent;
+  color: #FAF9F6; /* marfil/crema */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  font-family: Georgia, serif;
+}

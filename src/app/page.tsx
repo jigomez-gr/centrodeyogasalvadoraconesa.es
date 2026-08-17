@@ -159,7 +159,7 @@ export default async function Home() {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
-          <div className="inline-flex items-center space-x-2 text-[10px] sm:text-xs tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-2">
+          <div className="inline-flex items-center space-x-2 text-[10px] sm:text-xs tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-5">
             <span>Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
           </div>
 
@@ -167,7 +167,7 @@ export default async function Home() {
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-500 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
+          <p className="font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-600 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
             Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
 
