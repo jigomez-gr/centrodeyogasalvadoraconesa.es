@@ -40,7 +40,7 @@ export async function POST(request: Request) {
                 );
             }
 
-            const validAccommodations = ["mensual", "mensual_premium", "gong", "puja", "retiro_doble", "retiro_individual"];
+            const validAccommodations = ["clase_semanal", "dos_clases_semanal", "gong", "puja", "constelaciones", "retiro_encuentro"];
             if (!validAccommodations.includes(tipoHabitacion)) {
                 return NextResponse.json(
                     { error: "La modalidad de inscripción seleccionada no es válida." },
@@ -64,13 +64,13 @@ export async function POST(request: Request) {
             }
 
             // Price calculation
-            let unitPrice = 60;
-            if (tipoHabitacion === "mensual") unitPrice = 60;
-            else if (tipoHabitacion === "mensual_premium") unitPrice = 70;
-            else if (tipoHabitacion === "gong") unitPrice = 25;
-            else if (tipoHabitacion === "puja") unitPrice = 70;
-            else if (tipoHabitacion === "retiro_doble") unitPrice = 250;
-            else if (tipoHabitacion === "retiro_individual") unitPrice = 320;
+            let unitPrice = 25;
+            if (tipoHabitacion === "clase_semanal") unitPrice = 25;
+            else if (tipoHabitacion === "dos_clases_semanal") unitPrice = 42;
+            else if (tipoHabitacion === "gong") unitPrice = 16;
+            else if (tipoHabitacion === "puja") unitPrice = 90;
+            else if (tipoHabitacion === "constelaciones") unitPrice = 50;
+            else if (tipoHabitacion === "retiro_encuentro") unitPrice = 100;
             const totalAmount = plazasCount * unitPrice;
 
             // Verify or create User registration

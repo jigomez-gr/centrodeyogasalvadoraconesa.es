@@ -543,26 +543,36 @@ export default async function Home() {
             Tarifas y Aportaciones
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-stone-100 mb-8 font-sans">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8 border-y border-stone-100 mb-8 font-sans">
             <div>
-              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Clases Mensuales</span>
-              <span className="font-serif text-2xl font-black text-[#800020]">50 €</span>
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">1 Clase Semanal</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">25 €</span>
               <span className="block text-[10px] text-stone-400 mt-1">Al mes / Hatha o Kundalini</span>
             </div>
             <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">2 Clases Semanales</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">42 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Hatha o Kundalini</span>
+            </div>
+            <div className="border-t md:border-t-0 md:border-l border-stone-150 pt-4 md:pt-0">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Baño de Gong</span>
-              <span className="font-serif text-2xl font-black text-[#800020]">25 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Por sesión individual</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">16 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Un sábado al mes / Sesión</span>
             </div>
-            <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
+            <div className="border-t border-stone-150 pt-4">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Puja de Gong</span>
-              <span className="font-serif text-2xl font-black text-[#800020]">80 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Ceremonia nocturna 8h</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">90 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Sesión nocturna (toda la noche)</span>
             </div>
-            <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
-              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Retiro Completo</span>
-              <span className="font-serif text-2xl font-black text-[#2E5A44]">450 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Fin de semana con alojamiento</span>
+            <div className="border-t sm:border-l border-stone-150 pt-4">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Constelaciones</span>
+              <span className="font-serif text-2xl font-black text-[#800020]">50 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Sesión individual y consulta</span>
+            </div>
+            <div className="border-t md:border-l border-stone-150 pt-4">
+              <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Retiros y Encuentros</span>
+              <span className="font-serif text-2xl font-black text-[#2E5A44]">Variable</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Varía según alojamiento</span>
             </div>
           </div>
 

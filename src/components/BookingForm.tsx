@@ -67,7 +67,7 @@ export default function BookingForm() {
     const [nombre, setNombre] = useState("");
     const [telefono, setTelefono] = useState("");
     const [numeroPlazas, setNumeroPlazas] = useState(1);
-    const [tipoHabitacion, setTipoHabitacion] = useState<string>("mensual");
+    const [tipoHabitacion, setTipoHabitacion] = useState<string>("clase_semanal");
     const [comentarios, setComentarios] = useState("");
     const [condiciones, setCondiciones] = useState(false);
     const [privacidad, setPrivacidad] = useState(false);
@@ -121,13 +121,13 @@ export default function BookingForm() {
     }, []);
 
     // Price parameters
-    let unitPrice = 60;
-    if (tipoHabitacion === "mensual") unitPrice = 60;
-    else if (tipoHabitacion === "mensual_premium") unitPrice = 70;
-    else if (tipoHabitacion === "gong") unitPrice = 25;
-    else if (tipoHabitacion === "puja") unitPrice = 70;
-    else if (tipoHabitacion === "retiro_doble") unitPrice = 250;
-    else if (tipoHabitacion === "retiro_individual") unitPrice = 320;
+    let unitPrice = 25;
+    if (tipoHabitacion === "clase_semanal") unitPrice = 25;
+    else if (tipoHabitacion === "dos_clases_semanal") unitPrice = 42;
+    else if (tipoHabitacion === "gong") unitPrice = 16;
+    else if (tipoHabitacion === "puja") unitPrice = 90;
+    else if (tipoHabitacion === "constelaciones") unitPrice = 50;
+    else if (tipoHabitacion === "retiro_encuentro") unitPrice = 100;
 
     const totalPrice = numeroPlazas * unitPrice;
 
@@ -692,44 +692,44 @@ export default function BookingForm() {
                                     Servicio o Actividad a Reservar *
                                 </label>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "mensual" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "clase_semanal" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
                                         <div className="flex items-start">
                                             <input
                                                 type="radio"
                                                 name="tipoHabitacion"
-                                                value="mensual"
-                                                checked={tipoHabitacion === "mensual"}
-                                                onChange={() => setTipoHabitacion("mensual")}
+                                                value="clase_semanal"
+                                                checked={tipoHabitacion === "clase_semanal"}
+                                                onChange={() => setTipoHabitacion("clase_semanal")}
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Mensualidad Regular</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">1 Clase Semanal</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    2 clases semanales de Hatha/Kundalini/Meditación.
+                                                    Una sesión a la semana de Hatha o Kundalini Yoga al mes.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">60 € / mes</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">25 € / mes</span>
                                     </label>
 
-                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "mensual_premium" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "dos_clases_semanal" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
                                         <div className="flex items-start">
                                             <input
                                                 type="radio"
                                                 name="tipoHabitacion"
-                                                value="mensual_premium"
-                                                checked={tipoHabitacion === "mensual_premium"}
-                                                onChange={() => setTipoHabitacion("mensual_premium")}
+                                                value="dos_clases_semanal"
+                                                checked={tipoHabitacion === "dos_clases_semanal"}
+                                                onChange={() => setTipoHabitacion("dos_clases_semanal")}
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Mensualidad Premium</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">2 Clases Semanales</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Clases semanales con seguimiento y asesoramiento individual.
+                                                    Dos sesiones a la semana de Hatha o Kundalini Yoga al mes.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">70 € / mes</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">42 € / mes</span>
                                     </label>
 
                                     <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "gong" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
@@ -743,13 +743,13 @@ export default function BookingForm() {
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Baño de Gong (Sesión)</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Baño de Gong</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Una sesión mensual de sonoterapia de armonización.
+                                                    Sesión de sonoterapia y relajación vibracion sonora de sábado.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">25 € / sesión</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">16 € / sesión</span>
                                     </label>
 
                                     <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "puja" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
@@ -765,51 +765,51 @@ export default function BookingForm() {
                                             <span className="ml-3">
                                                 <span className="block text-sm font-semibold text-[#1C1C1C]">Puja de Gong</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Ceremonia de relajación sonora continua durante toda la noche (8h).
+                                                    Sesión nocturna de toda la noche (según participación).
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">70 € / puja</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">90 € / puja</span>
                                     </label>
 
-                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "retiro_doble" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "constelaciones" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
                                         <div className="flex items-start">
                                             <input
                                                 type="radio"
                                                 name="tipoHabitacion"
-                                                value="retiro_doble"
-                                                checked={tipoHabitacion === "retiro_doble"}
-                                                onChange={() => setTipoHabitacion("retiro_doble")}
+                                                value="constelaciones"
+                                                checked={tipoHabitacion === "constelaciones"}
+                                                onChange={() => setTipoHabitacion("constelaciones")}
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Retiro (Hab. Compartida)</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Constelaciones</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Depuración y ayuno terapéutico de fin de semana.
+                                                    Sesiones de Constelaciones Familiares y consulta.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">250 € / pers</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">50 € / sesión</span>
                                     </label>
 
-                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "retiro_individual" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "retiro_encuentro" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
                                         <div className="flex items-start">
                                             <input
                                                 type="radio"
                                                 name="tipoHabitacion"
-                                                value="retiro_individual"
-                                                checked={tipoHabitacion === "retiro_individual"}
-                                                onChange={() => setTipoHabitacion("retiro_individual")}
+                                                value="retiro_encuentro"
+                                                checked={tipoHabitacion === "retiro_encuentro"}
+                                                onChange={() => setTipoHabitacion("retiro_encuentro")}
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Retiro (Hab. Individual)</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Retiro / Encuentro</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Depuración y ayuno terapéutico en uso individual.
+                                                    Señal de reserva. El precio varía según alojamiento.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">320 € / pers</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">100 € (Señal)</span>
                                     </label>
                                 </div>
                             </div>
@@ -932,12 +932,12 @@ export default function BookingForm() {
                                 {session.reserva.numeroPlazas} plaza{session.reserva.numeroPlazas > 1 ? "s" : ""}
                             </span>
                             <span className="block text-[10px] text-[#1C1C1C]/50 mt-1 uppercase italic">
-                                {session.reserva.tipoHabitacion === "mensual" ? "Mensualidad Regular"
-                                    : session.reserva.tipoHabitacion === "mensual_premium" ? "Mensualidad Premium"
+                                {session.reserva.tipoHabitacion === "clase_semanal" ? "1 Clase Semanal (Mes)"
+                                    : session.reserva.tipoHabitacion === "dos_clases_semanal" ? "2 Clases Semanales (Mes)"
                                         : session.reserva.tipoHabitacion === "gong" ? "Baño de Gong"
                                             : session.reserva.tipoHabitacion === "puja" ? "Puja de Gong"
-                                                : session.reserva.tipoHabitacion === "retiro_doble" ? "Retiro (Doble)"
-                                                    : session.reserva.tipoHabitacion === "retiro_individual" ? "Retiro (Individual)"
+                                                : session.reserva.tipoHabitacion === "constelaciones" ? "Constelaciones Familiares"
+                                                    : session.reserva.tipoHabitacion === "retiro_encuentro" ? "Señal Retiro / Encuentro"
                                                         : session.reserva.tipoHabitacion}
                             </span>
                         </div>
