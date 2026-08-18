@@ -11,6 +11,9 @@ interface VideoGalleryProps {
         "itinerario-4": boolean;
         "itinerario-5": boolean;
         "itinerario-6": boolean;
+        "itinerario-7": boolean;
+        "itinerario-8": boolean;
+        "itinerario-9": boolean;
         resumen: boolean;
     };
 }
@@ -97,31 +100,76 @@ const DAYS_DATA: DayItem[] = [
     },
     {
         id: 5,
-        title: "Ayuno Terapéutico",
-        category: "RETIROS DE SANACIÓN",
-        description: "Procesos de depuración, desintoxicación celular y conexión profunda en la naturaleza.",
-        date: "Retiros Anuales",
-        image: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
+        title: "Terapia Gestalt",
+        category: "PRESENCIA Y ACOMPAÑAMIENTO",
+        description: "Espacio de presencia y autoconocimiento enfocado en el aquí y el ahora para el acompañamiento emocional.",
+        date: "Consulta Individual",
+        image: "/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg",
         videos: [
             {
-                title: "Experiencia de Ayuno Terapéutico",
-                description: "Testimonios y dinámicas de purificación en la naturaleza durante los retiros organizados.",
+                title: "Acompañamiento Gestáltico",
+                description: "Introducción a los talleres y terapia Gestalt enfocada en la integración personal.",
                 filePath: "/videos/itinerario-5.mp4"
             }
         ]
     },
     {
         id: 6,
+        title: "Constelaciones Familiares",
+        category: "SANACIÓN TRANSGENERACIONAL",
+        description: "Terapia sistémica grupal para traer orden y claridad a las implicaciones e historias familiares inconscientes.",
+        date: "Talleres Mensuales",
+        image: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
+        videos: [
+            {
+                title: "Talleres de Constelaciones",
+                description: "Dinámica y reconciliación sistémica grupal de los lazos familiares transgeneracionales.",
+                filePath: "/videos/itinerario-6.mp4"
+            }
+        ]
+    },
+    {
+        id: 7,
+        title: "Encuentros de Mujeres",
+        category: "SORORIDAD Y RECONEXIÓN",
+        description: "Espacios de cuidado mutuo, círculos de palabra y de escucha profunda en la naturaleza.",
+        date: "Retiros Anuales",
+        image: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
+        videos: [
+            {
+                title: "Círculo de Mujeres",
+                description: "Diálogos al fuego y senderismo consciente en la naturaleza profunda.",
+                filePath: "/videos/itinerario-7.mp4"
+            }
+        ]
+    },
+    {
+        id: 8,
+        title: "Ayuno Terapéutico y Retiros",
+        category: "DEPURACIÓN Y RETIROS",
+        description: "Desintoxicación y depuración celular con zumos y caldos depurativos en un entorno de paz profunda.",
+        date: "Retiros Anuales",
+        image: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
+        videos: [
+            {
+                title: "Experiencia de Ayuno Terapéutico",
+                description: "Testimonios y dinámicas de purificación en la naturaleza durante los retiros organizados.",
+                filePath: "/videos/itinerario-8.mp4"
+            }
+        ]
+    },
+    {
+        id: 9,
         title: "Otras Disciplinas y Más",
         category: "COLABORADORES Y SALUD",
-        description: "Sesiones de Taichí, Ninjutsú, Defensa personal y salud de la mano de profesionales.",
+        description: "Sesiones de Taichí, Ninjutsú, Defensa personal y salud de la mano de profesionales colaboradores.",
         date: "Programación Abierta",
-        image: "/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg",
+        image: "/imagenes/centro/401_interior_centro_yoga_1920x1085.jpg",
         videos: [
             {
                 title: "Otras Disciplinas de Defensa y Salud",
                 description: "Clases y demostraciones prácticas de Taichí y Ninjutsú para la defensa y fuerza.",
-                filePath: "/videos/itinerario-6.mp4"
+                filePath: "/videos/itinerario-9.mp4"
             }
         ]
     }
@@ -210,7 +258,7 @@ export default function VideoGallery({ videosExist }: VideoGalleryProps) {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-[#C5A059]/20 pb-4">
                         <div>
                             <span className="text-xs uppercase font-bold tracking-widest text-[#C5A059]">
-                                Auditorio Digital • Día {activeDay.id} ({activeDay.date})
+                                Auditorio Digital • Pilar {activeDay.id} ({activeDay.date})
                             </span>
                             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020] mt-1">
                                 {activeDay.title}

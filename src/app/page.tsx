@@ -566,8 +566,8 @@ export default async function Home() {
             </div>
             <div className="border-t sm:border-l border-stone-150 pt-4">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Constelaciones</span>
-              <span className="font-serif text-2xl font-black text-[#800020]">50 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Sesión individual y consulta</span>
+              <span className="font-serif text-xl sm:text-2xl font-black text-[#800020]">60 € / 20 €</span>
+              <span className="block text-[10px] text-stone-400 mt-1">60 € constelar / 20 € participar</span>
             </div>
             <div className="border-t md:border-l border-stone-150 pt-4">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Retiros y Encuentros</span>

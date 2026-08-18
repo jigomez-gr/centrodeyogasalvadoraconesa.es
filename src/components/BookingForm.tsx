@@ -126,7 +126,8 @@ export default function BookingForm() {
     else if (tipoHabitacion === "dos_clases_semanal") unitPrice = 42;
     else if (tipoHabitacion === "gong") unitPrice = 16;
     else if (tipoHabitacion === "puja") unitPrice = 90;
-    else if (tipoHabitacion === "constelaciones") unitPrice = 50;
+    else if (tipoHabitacion === "constelaciones_constelar") unitPrice = 60;
+    else if (tipoHabitacion === "constelaciones_participar") unitPrice = 20;
     else if (tipoHabitacion === "retiro_encuentro") unitPrice = 100;
 
     const totalPrice = numeroPlazas * unitPrice;
@@ -772,24 +773,44 @@ export default function BookingForm() {
                                         <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">90 € / puja</span>
                                     </label>
 
-                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "constelaciones" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "constelaciones_constelar" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
                                         <div className="flex items-start">
                                             <input
                                                 type="radio"
                                                 name="tipoHabitacion"
-                                                value="constelaciones"
-                                                checked={tipoHabitacion === "constelaciones"}
-                                                onChange={() => setTipoHabitacion("constelaciones")}
+                                                value="constelaciones_constelar"
+                                                checked={tipoHabitacion === "constelaciones_constelar"}
+                                                onChange={() => setTipoHabitacion("constelaciones_constelar")}
                                                 className="mt-1 text-[#800020] focus:ring-[#800020]"
                                             />
                                             <span className="ml-3">
-                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Constelaciones</span>
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Constelaciones (Constelar)</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Sesiones de Constelaciones Familiares y consulta.
+                                                    Colocar tu propio tema familiar en la dinámica grupal para constelar.
                                                 </span>
                                             </span>
                                         </div>
-                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">50 € / sesión</span>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">60 € / sesión</span>
+                                    </label>
+
+                                    <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "constelaciones_participar" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
+                                        <div className="flex items-start">
+                                            <input
+                                                type="radio"
+                                                name="tipoHabitacion"
+                                                value="constelaciones_participar"
+                                                checked={tipoHabitacion === "constelaciones_participar"}
+                                                onChange={() => setTipoHabitacion("constelaciones_participar")}
+                                                className="mt-1 text-[#800020] focus:ring-[#800020]"
+                                            />
+                                            <span className="ml-3">
+                                                <span className="block text-sm font-semibold text-[#1C1C1C]">Constelaciones (Participar)</span>
+                                                <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
+                                                    Asistir como representante o participante en el taller de constelaciones.
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <span className="block text-sm font-semibold text-[#800020] mt-3 ml-7">20 € / sesión</span>
                                     </label>
 
                                     <label className={`flex flex-col justify-between p-4 rounded-lg border cursor-pointer transition ${tipoHabitacion === "retiro_encuentro" ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]" : "bg-white border-stone-300 hover:border-[#800020]/40"}`}>
@@ -936,9 +957,10 @@ export default function BookingForm() {
                                     : session.reserva.tipoHabitacion === "dos_clases_semanal" ? "2 Clases Semanales (Mes)"
                                         : session.reserva.tipoHabitacion === "gong" ? "Baño de Gong"
                                             : session.reserva.tipoHabitacion === "puja" ? "Puja de Gong"
-                                                : session.reserva.tipoHabitacion === "constelaciones" ? "Constelaciones Familiares"
-                                                    : session.reserva.tipoHabitacion === "retiro_encuentro" ? "Señal Retiro / Encuentro"
-                                                        : session.reserva.tipoHabitacion}
+                                                : session.reserva.tipoHabitacion === "constelaciones_constelar" ? "Constelaciones (Constelar)"
+                                                    : session.reserva.tipoHabitacion === "constelaciones_participar" ? "Constelaciones (Participar)"
+                                                        : session.reserva.tipoHabitacion === "retiro_encuentro" ? "Señal Retiro / Encuentro"
+                                                            : session.reserva.tipoHabitacion}
                             </span>
                         </div>
 
