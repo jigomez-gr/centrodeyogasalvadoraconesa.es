@@ -15,13 +15,14 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Email sending simulation helper
 function simulateEmails(reserva: any) {
-    let serviceLabel = "Mensualidad Regular";
-    if (reserva.tipoHabitacion === "mensual") serviceLabel = "Mensualidad Regular (60 €/mes)";
-    else if (reserva.tipoHabitacion === "mensual_premium") serviceLabel = "Mensualidad Con Seguimiento (70 €/mes)";
-    else if (reserva.tipoHabitacion === "gong") serviceLabel = "Sesión Baño de Gong (25 €)";
-    else if (reserva.tipoHabitacion === "puja") serviceLabel = "Ceremonia Puja de Gong (70 €)";
-    else if (reserva.tipoHabitacion === "retiro_doble") serviceLabel = "Retiro de Ayuno (Hab. Compartida - 250 €)";
-    else if (reserva.tipoHabitacion === "retiro_individual") serviceLabel = "Retiro de Ayuno (Hab. Individual - 320 €)";
+    let serviceLabel = "Actividad Centro de Yoga";
+    if (reserva.tipoHabitacion === "clase_semanal") serviceLabel = "1 Clase Semanal (25 €/mes)";
+    else if (reserva.tipoHabitacion === "dos_clases_semanal") serviceLabel = "2 Clases Semanales (42 €/mes)";
+    else if (reserva.tipoHabitacion === "gong") serviceLabel = "Baño de Gong (16 €/sesión)";
+    else if (reserva.tipoHabitacion === "puja") serviceLabel = "Puja de Gong (90 €/puja)";
+    else if (reserva.tipoHabitacion === "constelaciones_constelar") serviceLabel = "Constelaciones - Constelar (60 €/sesión)";
+    else if (reserva.tipoHabitacion === "constelaciones_participar") serviceLabel = "Constelaciones - Participar (20 €/sesión)";
+    else if (reserva.tipoHabitacion === "retiro_encuentro") serviceLabel = "Señal Retiro / Encuentro (100 €)";
 
     console.log(`
 ============================================================
