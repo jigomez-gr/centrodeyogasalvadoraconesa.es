@@ -106,8 +106,8 @@ function ExitoContent() {
                             <a href="mailto:salvadoraconesa@gmail.com" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
                                 <Mail className="w-3.5 h-3.5 mr-1" /> salvadoraconesa@gmail.com
                             </a>
-                            <a href="tel:656261465" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
-                                <Phone className="w-3.5 h-3.5 mr-1" /> +34 656 261 465
+                            <a href="tel:695172625" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
+                                <Phone className="w-3.5 h-3.5 mr-1" /> +34 695 172 625
                             </a>
                         </div>
                     </div>

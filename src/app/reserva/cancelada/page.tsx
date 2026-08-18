@@ -48,11 +48,11 @@ function CancelContent() {
                     <div className="border-t border-stone-150 pt-5 text-[11px] text-[#1C1C1C]/70">
                         <p className="mb-2">¿Tienes algún problema con el pago? Contáctanos:</p>
                         <div className="flex flex-col items-center space-y-1">
-                            <a href="mailto:jose_manuel_hdezblanco@hotmail.com" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
-                                <Mail className="w-3 h-3 mr-1" /> jose_manuel_hdezblanco@hotmail.com
+                            <a href="mailto:salvadoraconesa@gmail.com" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
+                                <Mail className="w-3.5 h-3.5 mr-1" /> salvadoraconesa@gmail.com
                             </a>
-                            <a href="tel:660957863" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
-                                <Phone className="w-3 h-3 mr-1" /> +34 660 957 863
+                            <a href="tel:695172625" className="flex items-center text-[#800020] hover:text-[#C5A059]/80 transition">
+                                <Phone className="w-3 h-3 mr-1" /> +34 695 172 625
                             </a>
                         </div>
                     </div>

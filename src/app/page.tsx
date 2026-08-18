@@ -673,19 +673,19 @@ export default async function Home() {
           <div className="flex flex-wrap items-center justify-center gap-8 text-sm sm:text-base font-semibold">
 
             <a
-              href="mailto:salvadoraconesayoga@hotmail.com"
+              href="mailto:salvadoraconesa@gmail.com"
               className="inline-flex items-center justify-center px-6 py-3.5 border border-[#800020]/20 rounded-md text-[#800020] bg-[#800020]/5 hover:bg-[#800020]/10 transition shadow-sm"
             >
               <Mail className="w-5 h-5 mr-2 text-[#800020]" />
-              salvadoraconesayoga@hotmail.com
+              salvadoraconesa@gmail.com
             </a>
 
             <a
-              href="tel:660957863"
+              href="tel:695172625"
               className="inline-flex items-center justify-center px-6 py-3.5 border border-[#2E5A44]/20 rounded-md text-[#2E5A44] bg-[#2E5A44]/5 hover:bg-[#2E5A44]/10 transition shadow-sm"
             >
               <Phone className="w-5 h-5 mr-2 text-[#2E5A44]" />
-              +34 660 957 863
+              +34 695 172 625
             </a>
 
           </div>
