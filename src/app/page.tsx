@@ -357,7 +357,7 @@ export default async function Home() {
               Programa Oficial
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              Itinerario Detallados
+              Pilares de Nuestra Actividad Detallados
             </h2>
           </div>
 
