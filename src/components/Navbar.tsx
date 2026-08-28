@@ -8,7 +8,7 @@ export default function Navbar() {
 
     const menuItems = [
         { label: "Inicio", href: "#viaje" },
-        { label: "Itinerarios", href: "#itinerario" },
+        { label: "Actividades", href: "#itinerario" },
         { label: "Vídeos", href: "#videos" },
         { label: "Viajes Realizados", href: "#viajes-realizados" },
         { label: "Qué Incluye", href: "#incluye" },
@@ -18,7 +18,7 @@ export default function Navbar() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#C5A059]/15 shadow-sm font-sans">
             {/* Desktop Centered Header Layout */}
-            <div className="hidden md:flex flex-col items-center pt-3 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+            <div className="hidden xl:flex flex-col items-center pt-3 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
                 {/* Logo Image absolutely positioned on the left (spanning the height of the header) */}
                 <a href="#" className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none">
                     <img
@@ -62,7 +62,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Header Layout */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between md:hidden relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between xl:hidden relative">
                 {/* Left side: Hamburger toggle button */}
                 <div className="w-10 flex justify-start">
                     <button
@@ -97,8 +97,8 @@ export default function Navbar() {
 
             {/* Mobile Drawer Overlay */}
             {isOpen && (
-                <div className="md:hidden bg-white border-t border-[#C5A059]/15 py-4 px-6 absolute top-full left-0 right-0 shadow-lg animate-slideDown">
-                    <nav className="flex flex-col space-y-4 font-semibold text-xs uppercase tracking-widest text-stone-600">
+                <div className="xl:hidden bg-white border-t border-[#C5A059]/15 py-4 px-6 absolute top-full left-0 right-0 shadow-lg animate-slideDown">
+                    <nav className="flex flex-col space-y-4 font-semibold text-xs uppercase tracking-widest text-[#1C1C1C]/60">
                         {menuItems.map((item) => (
                             <a
                                 key={item.label}

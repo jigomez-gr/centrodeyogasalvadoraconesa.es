@@ -258,7 +258,7 @@ export default function VideoGallery({ videosExist }: VideoGalleryProps) {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-[#C5A059]/20 pb-4">
                         <div>
                             <span className="text-xs uppercase font-bold tracking-widest text-[#C5A059]">
-                                Auditorio Digital • Pilar {activeDay.id} ({activeDay.date})
+                                Auditorio Digital • {activeDay.id} ({activeDay.date})
                             </span>
                             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020] mt-1">
                                 {activeDay.title}

@@ -210,7 +210,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 9,
-        date: "Centro",
+        date: "Varios",
         dayName: "Colaboradores y Otras Disciplinas",
         title: "Formaciones Complementarias y Salud con Diversos Especialistas",
         desc: "",
@@ -448,7 +448,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                             : "bg-white text-[#1C1C1C]/75 border-stone-200"
                             }`}
                     >
-                        Pilar {day.id} ({day.date})
+                        {day.id} ({day.date})
                     </button>
                 ))}
             </div>
@@ -466,7 +466,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                             : "border-transparent text-[#1C1C1C]/60 hover:text-[#800020]"
                             }`}
                     >
-                        <span className="block font-serif text-base md:text-lg">Pilar {day.id}</span>
+                        <span className="block font-serif text-base md:text-lg">{day.id}</span>
                         <span className="block text-[10px] md:text-xs uppercase tracking-wider mt-0.5 font-semibold">{day.date}</span>
                     </button>
                 ))}

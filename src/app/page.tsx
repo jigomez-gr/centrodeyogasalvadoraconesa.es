@@ -176,7 +176,7 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-24 sm:pb-20 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-24 sm:pb-20 xl:pt-32 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -354,10 +354,10 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
-              Programa Oficial
+              Servicios
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              Pilares de Nuestra Actividad Detallados
+              Detalles de Nuestras Actividades
             </h2>
           </div>
 
