@@ -201,20 +201,8 @@ export default async function Home() {
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-[760px] sm:max-w-[950px] w-[min(90vw,calc((100vh-380px)*16/9))] sm:w-[min(90vw,calc((100vh-380px)*20/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
+          <div className="max-w-[800px] sm:max-w-[1080px] w-[min(90vw,calc((100vh-320px)*16/9))] sm:w-[min(90vw,calc((100vh-320px)*20/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
             <HeroMedia />
-            {/* Caption in the ccmfalla.com Painting Style */}
-            <div className="mt-2 pt-2 text-center space-y-0.5 select-none border-t border-[#C5A059]/10">
-              <p className="font-serif italic font-bold text-[#800020] text-[10px] sm:text-xs">
-                "Centro de Yoga Salvadora Conesa"
-              </p>
-              <p className="tracking-widest uppercase text-[7px] sm:text-[8px] text-stone-500 font-semibold">
-                Vídeo Promocional
-              </p>
-              <p className="text-[6px] sm:text-[7px] text-stone-400">
-                Copyright © Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
-              </p>
-            </div>
           </div>
 
           {/* Call to Actions in Editorial Style */}
