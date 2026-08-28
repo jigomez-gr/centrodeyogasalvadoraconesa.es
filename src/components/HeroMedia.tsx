@@ -47,7 +47,7 @@ export default function HeroMedia() {
     };
 
     return (
-        <div className="relative w-full aspect-video rounded-md overflow-hidden bg-black/5 border border-stone-200 group">
+        <div className="relative w-full aspect-video sm:aspect-[20/9] rounded-md overflow-hidden bg-black/5 border border-stone-200 group">
             {/* Video Element */}
             <video
                 ref={videoRef}

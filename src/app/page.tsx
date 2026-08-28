@@ -201,7 +201,7 @@ export default async function Home() {
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-[760px] w-[min(90vw,calc((100vh-380px)*16/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
+          <div className="max-w-[760px] sm:max-w-[950px] w-[min(90vw,calc((100vh-380px)*16/9))] sm:w-[min(90vw,calc((100vh-380px)*20/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
             <HeroMedia />
             {/* Caption in the ccmfalla.com Painting Style */}
             <div className="mt-2 pt-2 text-center space-y-0.5 select-none border-t border-[#C5A059]/10">
