@@ -40,14 +40,14 @@ interface DayItem {
 const DAYS_DATA: DayItem[] = [
     {
         id: 1,
-        title: "Hatha Yoga & Yoga Nidra",
+        title: "Nagna Yoga & Yoga Nidra",
         category: "ALINEACIÓN Y RELAJACIÓN",
         description: "Clases semanales centradas en el cuidado corporal mediante asanas y la relajación psíquica profunda.",
         date: "Clases Regulares",
         image: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
         videos: [
             {
-                title: "Hatha Yoga y Relajación",
+                title: "Nagna Yoga y Relajación",
                 description: "Introducción y demostración práctica de posturas y respiración consciente.",
                 filePath: "/videos/itinerario-1.mp4"
             }

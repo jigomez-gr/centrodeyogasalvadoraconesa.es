@@ -22,13 +22,13 @@ const ITIN_DATA: TimelineDay[] = [
     {
         id: 1,
         date: "Yoga",
-        dayName: "Hatha Yoga & Yoga Nidra",
+        dayName: "Nagna Yoga & Yoga Nidra",
         title: "Prácticas de Alineación Física, Respiración y Relajación Mental Consciente",
         desc: "",
         events: [
             {
                 time: "Semanal",
-                title: "Hatha Yoga Regular",
+                title: "Nagna Yoga Regular",
                 description: "Práctica física centrada en el asana, pranayama (control del aire) y alineación corporal, apta para todos los niveles y edades.",
                 type: "visit",
                 venue: "Sala Principal",
@@ -251,7 +251,7 @@ interface ItineraryTimelineProps {
 const DAY_THUMBNAILS: { [key: number]: { src: string; caption: string } } = {
     1: {
         src: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
-        caption: "Hatha Yoga & Yoga Nidra"
+        caption: "Nagna Yoga & Yoga Nidra"
     },
     2: {
         src: "/imagenes/meditacion/01_meditacion_silencio_ventana_1920x1080.jpg",
@@ -289,7 +289,7 @@ const DAY_THUMBNAILS: { [key: number]: { src: string; caption: string } } = {
 
 const DAY_OVERLAY_DETAILS: { [key: number]: { title: string; category: string; description: string; date: string } } = {
     1: {
-        title: "Hatha Yoga & Nidra",
+        title: "Nagna Yoga & Nidra",
         category: "ALINEACIÓN Y SUEÑO CONSCIENTE",
         description: "Clases semanales para calmar la mente y reequilibrar el sistema muscular",
         date: "Clases Semanales"
@@ -346,7 +346,7 @@ const DAY_OVERLAY_DETAILS: { [key: number]: { title: string; category: string; d
 
 const ITINERARY_VIDEOS: { [key: number]: { title: string; filePath: string; youtubeUrl?: string }[] } = {
     1: [
-        { title: "Vídeo Hatha Yoga", filePath: "/videos/itinerario-1.mp4" }
+        { title: "Vídeo Nagna Yoga", filePath: "/videos/itinerario-1.mp4" }
     ],
     2: [
         { title: "Vídeo Kundalini", filePath: "/videos/itinerario-2.mp4" }

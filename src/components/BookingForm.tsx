@@ -706,7 +706,7 @@ export default function BookingForm() {
                                             <span className="ml-3">
                                                 <span className="block text-sm font-semibold text-[#1C1C1C]">1 Clase Semanal</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Una sesión a la semana de Hatha o Kundalini Yoga al mes.
+                                                    Una sesión a la semana de Nagna o Kundalini Yoga al mes.
                                                 </span>
                                             </span>
                                         </div>
@@ -726,7 +726,7 @@ export default function BookingForm() {
                                             <span className="ml-3">
                                                 <span className="block text-sm font-semibold text-[#1C1C1C]">2 Clases Semanales</span>
                                                 <span className="block text-[11px] text-[#1C1C1C]/60 mt-1 leading-normal">
-                                                    Dos sesiones a la semana de Hatha o Kundalini Yoga al mes.
+                                                    Dos sesiones a la semana de Nagna o Kundalini Yoga al mes.
                                                 </span>
                                             </span>
                                         </div>

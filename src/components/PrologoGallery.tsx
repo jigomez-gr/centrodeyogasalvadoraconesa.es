@@ -19,7 +19,7 @@ const PROLOGUE_ITEMS: PrologueItem[] = [
     },
     {
         src: "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
-        title: "Hatha Yoga y Respiración",
+        title: "Nagna Yoga y Respiración",
         category: "EQUILIBRIO, FUERZA Y APERTURA"
     },
     {

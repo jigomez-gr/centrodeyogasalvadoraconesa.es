@@ -13,7 +13,8 @@ import AtmosphereGallery from "@/components/AtmosphereGallery";
 export const dynamic = "force-dynamic";
 import {
   Calendar, MapPin, Shield, Compass, FileText, CheckCircle2,
-  HelpCircle, Mail, Phone, Clock, Award, Users, Music
+  HelpCircle, Mail, Phone, Clock, Award, Users, Music,
+  Sparkles, Moon, Heart, Network, Activity
 } from "lucide-react";
 
 // Server-side helper to check if mp4 videos exist in /public/videos
@@ -52,7 +53,7 @@ export default async function Home() {
   const atmosphereDays = [
     {
       dayNum: 1,
-      title: "Hatha Yoga & Yoga Nidra",
+      title: "Nagna Yoga & Yoga Nidra",
       subtitle: "Clases regulares corporales",
       href: "#itinerario",
       mainImage: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
@@ -176,48 +177,48 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-24 sm:pb-20 xl:pt-32 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
-          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-2.5 sm:mb-5">
+          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-1.5 sm:mb-2">
             <span className="hidden sm:inline">Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
             <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
           </div>
 
-          <h1 className="font-serif text-xl sm:text-4xl md:text-[52px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
+          <h1 className="font-serif text-xl sm:text-3.5xl md:text-[44px] lg:text-[48px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="hidden sm:block font-serif text-[13px] sm:text-[15px] md:text-[17px] text-stone-600 max-w-4xl mb-3 sm:mb-4 italic tracking-wide mt-1.5 font-medium">
+          <p className="hidden sm:block font-serif text-[13px] sm:text-[14px] md:text-[15px] text-stone-600 max-w-2xl mb-2 sm:mb-3 italic tracking-wide mt-1 font-medium">
             Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
-          <p className="block sm:hidden font-serif text-[11.5px] leading-relaxed text-stone-600 max-w-sm mb-2.5 italic text-center font-medium px-4">
+          <p className="block sm:hidden font-serif text-[11.5px] leading-relaxed text-stone-600 max-w-sm mb-1.5 italic text-center font-medium px-4">
             Yoga y bienestar en Fuenlabrada desde 1986.<br />
             Calle Holanda, 1 · Metro Parque Europa (L12).
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-6xl w-full bg-white p-1.5 sm:p-3 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 sm:mb-3 hover:shadow-2xl transition duration-500">
+          <div className="max-w-[760px] w-[min(90vw,calc((100vh-380px)*16/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
             <HeroMedia />
             {/* Caption in the ccmfalla.com Painting Style */}
-            <div className="mt-2.5 pt-2.5 sm:mt-4 sm:pt-4 text-center space-y-1 select-none border-t border-[#C5A059]/10">
-              <p className="font-serif italic font-bold text-[#800020] text-xs sm:text-base">
+            <div className="mt-2 pt-2 text-center space-y-0.5 select-none border-t border-[#C5A059]/10">
+              <p className="font-serif italic font-bold text-[#800020] text-[10px] sm:text-xs">
                 "Centro de Yoga Salvadora Conesa"
               </p>
-              <p className="tracking-widest uppercase text-[8px] sm:text-[10px] text-stone-500 font-semibold">
+              <p className="tracking-widest uppercase text-[7px] sm:text-[8px] text-stone-500 font-semibold">
                 Vídeo Promocional
               </p>
-              <p className="text-[7px] sm:text-[9px] text-stone-400">
+              <p className="text-[6px] sm:text-[7px] text-stone-400">
                 Copyright © Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
               </p>
             </div>
           </div>
 
           {/* Call to Actions in Editorial Style */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-3 sm:mt-6 px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
             <a
               href="#reserva"
               className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200"
@@ -234,7 +235,7 @@ export default async function Home() {
         </div>
 
         {/* Scroll indicator - refined */}
-        <div className="hidden sm:flex absolute bottom-4 left-1/2 -translate-x-1/2 text-stone-400 text-[10px] tracking-widest uppercase flex-col items-center gap-1.5 animate-bounce select-none">
+        <div className="hidden sm:flex absolute bottom-2 left-1/2 -translate-x-1/2 text-stone-400 text-[10px] tracking-widest uppercase flex-col items-center gap-1.5 animate-bounce select-none">
           <svg className="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
@@ -249,7 +250,7 @@ export default async function Home() {
             {/* Card 1 */}
             <div className="bg-[#FAF9F6] p-5 rounded-lg border border-[#C5A059]/20 text-center hover:shadow-md transition">
               <span className="block text-lg font-serif font-bold text-[#800020] mb-1">Clases Diarias</span>
-              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Hatha y Kundalini</span>
+              <span className="block text-xs uppercase tracking-widest text-[#1C1C1C]/60 font-semibold">Nagna y Kundalini</span>
             </div>
 
             {/* Card 2 */}
@@ -303,7 +304,7 @@ export default async function Home() {
           <div className="max-w-4xl mx-auto text-center mb-12">
             <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/75 leading-relaxed text-justify sm:text-center">
               <p>
-                El Centro de Yoga Fuenlabrada de Salvadora Conesa es un espacio dedicado a la salud, el bienestar y el desarrollo integral de la persona en pleno corazón de Fuenlabrada. A través de la práctica regular de Hatha Yoga, Kundalini y meditación, ofrecemos herramientas reales para calmar la mente, fortalecer el cuerpo y reconectar con lo esencial.
+                El Centro de Yoga Fuenlabrada de Salvadora Conesa es un espacio dedicado a la salud, el bienestar y el desarrollo integral de la persona en pleno corazón de Fuenlabrada. A través de la práctica regular de Nagna Yoga, Kundalini y meditación, ofrecemos herramientas reales para calmar la mente, fortalecer el cuerpo y reconectar con lo esencial.
               </p>
               <p>
                 Además de nuestras sesiones semanales, contamos con renombradas experiencias de terapia de sonido como los Baños de Gong y la transformadora Puja de Gong nocturna, ambas guiadas por sonoterapeutas profesionales. Ofrecemos también una variada propuesta de retiros de Ayuno Terapéutico en plena naturaleza, diseñados para resetear el organismo y descansar profundamente.
@@ -370,55 +371,110 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
-              Pilares del Centro
+              Actividades del Centro
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
               Experiencias y Disciplinas
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Block 1 */}
             <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
               <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
                 <Compass className="w-6 h-6" />
               </div>
-              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Yoga y Meditación</h4>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Nagna Yoga & Yoga Nidra</h4>
               <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
-                Práctica diaria y consciente de Hatha Yoga, Kundalini y técnicas de meditación profunda para calmar la mente y fortalecer el cuerpo.
+                Práctica física centrada en el asana, pranayama (control del aire) y relajación profunda.
               </p>
             </div>
 
             {/* Block 2 */}
             <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
               <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
-                <Music className="w-6 h-6" />
+                <Sparkles className="w-6 h-6" />
               </div>
-              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Terapia de Sonido</h4>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Kundalini Yoga & Meditación</h4>
               <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
-                Sumérgete en la vibración armónica de los Baños de Gong y las ceremonias nocturnas de Puja para restaurar tu equilibrio energético.
+                Prácticas dinámicas de elevación de la energía vital combinando kriyas, pranayama y mantras.
               </p>
             </div>
 
             {/* Block 3 */}
             <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
               <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
-                <Award className="w-6 h-6" />
+                <Music className="w-6 h-6" />
               </div>
-              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Retiros de Ayuno</h4>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Baños de Gong</h4>
               <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
-                Programas intensivos de fin de semana combinando ayuno terapéutico, paseos junto al mar y dinámicas de grupo de reconexión.
+                Terapia vibracional de armonización celular y disolución de tensiones a través de gongs sinfónicos.
               </p>
             </div>
 
             {/* Block 4 */}
             <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
               <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Moon className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">La Puja de Gong</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Una sublime experiencia de 8 horas continuadas de gongs en relevos durante toda la noche.
+              </p>
+            </div>
+
+            {/* Block 5 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Heart className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Terapia Gestalt</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Espacio individual de presencia y autoconocimiento enfocado en el aquí y el ahora.
+              </p>
+            </div>
+
+            {/* Block 6 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Network className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Constelaciones Familiares</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Terapia grupal para ordenar y esclarecer dinámicas familiares inconscientes.
+              </p>
+            </div>
+
+            {/* Block 7 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
                 <Users className="w-6 h-6" />
               </div>
-              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Espacio Multidisciplinar</h4>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Encuentros de Mujeres</h4>
               <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
-                Colaboraciones especiales de Entrenamiento Funcional, Taichí, Defensa Personal, Ninjutsú y terapias de salud integral.
+                Círculos de palabra, cuidado mutuo y reconexión guiada en la naturaleza.
+              </p>
+            </div>
+
+            {/* Block 8 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Activity className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Ayuno Terapéutico y Retiros</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                Desintoxicación y depuración celular con zumos y caldos en un entorno pacífico.
+              </p>
+            </div>
+
+            {/* Block 9 */}
+            <div className="text-center p-6 border border-stone-100 rounded-lg hover:border-[#C5A059]/30 hover:shadow-md transition">
+              <div className="w-12 h-12 bg-[#800020]/10 flex items-center justify-center rounded-full text-[#800020] mx-auto mb-4">
+                <Award className="w-6 h-6" />
+              </div>
+              <h4 className="font-serif text-lg font-bold text-[#800020] mb-2">Colaboradores y Otras Disciplinas</h4>
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/70 leading-relaxed">
+                orientadas a la salud integral de la mano de expertos.
               </p>
             </div>
           </div>
@@ -547,12 +603,12 @@ export default async function Home() {
             <div>
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">1 Clase Semanal</span>
               <span className="font-serif text-2xl font-black text-[#800020]">25 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Hatha o Kundalini</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Nagna o Kundalini</span>
             </div>
             <div className="border-t sm:border-t-0 sm:border-l border-stone-150 pt-4 sm:pt-0">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">2 Clases Semanales</span>
               <span className="font-serif text-2xl font-black text-[#800020]">42 €</span>
-              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Hatha o Kundalini</span>
+              <span className="block text-[10px] text-stone-400 mt-1">Al mes / Nagna o Kundalini</span>
             </div>
             <div className="border-t md:border-t-0 md:border-l border-stone-150 pt-4 md:pt-0">
               <span className="block text-[10px] uppercase tracking-wider text-stone-500 mb-1">Baño de Gong</span>
