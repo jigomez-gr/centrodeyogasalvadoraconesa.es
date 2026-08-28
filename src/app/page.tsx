@@ -177,7 +177,7 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-start overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -192,12 +192,8 @@ export default async function Home() {
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="hidden sm:block font-serif text-[13px] sm:text-[14px] md:text-[15px] text-stone-600 max-w-2xl mb-2 sm:mb-3 italic tracking-wide mt-1 font-medium">
-            Desde 1986, guiando la práctica del yoga como camino hacia el equilibrio físico y emocional, en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
-          </p>
-          <p className="block sm:hidden font-serif text-[11.5px] leading-relaxed text-stone-600 max-w-sm mb-1.5 italic text-center font-medium px-4">
-            Yoga y bienestar en Fuenlabrada desde 1986.<br />
-            Calle Holanda, 1 · Metro Parque Europa (L12).
+          <p className="text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold text-center max-w-3xl mb-3 sm:mb-4.5 mt-1 px-4 sm:px-0">
+            Desde 1986, guiando la práctica del yoga en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
