@@ -7,7 +7,7 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
-        { label: "Inicio", href: "#viaje" },
+        { label: "Inicio", href: "#inicio" },
         { label: "Actividades", href: "#itinerario" },
         { label: "Vídeos", href: "#videos" },
         { label: "Viajes Realizados", href: "#viajes-realizados" },
