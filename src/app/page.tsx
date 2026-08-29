@@ -578,8 +578,9 @@ export default async function Home() {
                 <video
                   src="/videos/previoabarcelona.mp4"
                   controls
+                  playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
-                  poster="/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg"
                 />
               </div>
               <div className="p-5 flex-1 flex flex-col justify-between">
@@ -605,8 +606,9 @@ export default async function Home() {
                 <video
                   src="/videos/viajeprevioasevilla.mp4"
                   controls
+                  playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
-                  poster="/imagenes/gong/06_experiencia_de_relajacion_sonora_1920x1080.jpg"
                 />
               </div>
               <div className="p-5 flex-1 flex flex-col justify-between">

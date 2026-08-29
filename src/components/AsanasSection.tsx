@@ -9,7 +9,6 @@ export default function AsanasSection() {
       description:
         "Un ajuste sencillo que marca la diferencia en la base de la postura: cómo colocar bien los apoyos para sostener el resto del cuerpo con menos esfuerzo y más estabilidad.",
       src: "/videos/el_espacio_para_mejorar_las_asanas/correccion1.mp4",
-      poster: "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
     },
     {
       id: "2",
@@ -18,7 +17,6 @@ export default function AsanasSection() {
       description:
         "Seguimos afinando el detalle: una segunda corrección muy sencilla para ganar estabilidad y evitar compensaciones innecesarias en la postura.",
       src: "/videos/el_espacio_para_mejorar_las_asanas/correccion2.mp4",
-      poster: "/imagenes/yoga/04_03_yoga_postura_triangular_1920x1080.jpg",
     },
     {
       id: "3",
@@ -27,7 +25,6 @@ export default function AsanasSection() {
       description:
         "La secuencia completa del saludo al sol, paso a paso, para integrar estas correcciones en una práctica fluida, consciente y bien alineada de principio a fin.",
       src: "/videos/el_espacio_para_mejorar_las_asanas/saludo_al_sol.mp4",
-      poster: "/imagenes/yoga/06_07_yoga_apertura_1920x1080.jpg",
     },
   ];
 
@@ -69,7 +66,6 @@ export default function AsanasSection() {
                 <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                   <video
                     src={vid.src}
-                    poster={vid.poster}
                     controls
                     playsInline
                     preload="metadata"

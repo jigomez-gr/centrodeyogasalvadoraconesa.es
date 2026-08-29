@@ -11,7 +11,6 @@ export default function NagnaYogaSection() {
       description:
         "Una primera toma de contacto con el espíritu del Nagna Yoga: de dónde viene, y qué sentido tiene detenerse a comprender antes de practicar.",
       src: "/videos/nagna_yoga/nagnayoga1.mp4",
-      poster: "/imagenes/gong/01_presentacion_terapeutas_1920x1080.jpg",
     },
     {
       id: "2",
@@ -20,7 +19,6 @@ export default function NagnaYogaSection() {
       description:
         "Claves sencillas sobre el papel de la respiración en la práctica, y cómo convertirla en la guía silenciosa de cada movimiento.",
       src: "/videos/nagna_yoga/nagnayoga2.mp4",
-      poster: "/imagenes/yoga/07_04_yoga_respiracion_1920x1080.jpg",
     },
     {
       id: "3",
@@ -29,7 +27,6 @@ export default function NagnaYogaSection() {
       description:
         "Nociones de anatomía aplicadas a la práctica, para entender qué le estamos pidiendo al cuerpo en cada postura.",
       src: "/videos/nagna_yoga/nagnayoga3.mp4",
-      poster: "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
     },
     {
       id: "4",
@@ -38,7 +35,6 @@ export default function NagnaYogaSection() {
       description:
         "Un acercamiento a la quietud y a la escucha interior como parte esencial del aprendizaje del yoga.",
       src: "/videos/nagna_yoga/nagnayoga4.mp4",
-      poster: "/imagenes/meditacion/01_meditacion_silencio_ventana_1920x1080.jpg",
     },
   ];
 
@@ -131,7 +127,6 @@ export default function NagnaYogaSection() {
                   <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                     <video
                       src={vid.src}
-                      poster={vid.poster}
                       controls
                       playsInline
                       preload="metadata"

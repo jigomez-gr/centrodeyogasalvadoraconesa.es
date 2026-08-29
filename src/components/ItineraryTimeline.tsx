@@ -740,6 +740,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                                                 controls
                                                                 autoPlay
                                                                 playsInline
+                                                                preload="metadata"
                                                                 muted={false}
                                                                 className="w-full h-full object-cover"
                                                             />
