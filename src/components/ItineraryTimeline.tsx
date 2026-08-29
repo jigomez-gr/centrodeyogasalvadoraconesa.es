@@ -576,11 +576,8 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                 {/* Title of the Multimedia Block */}
                                 <div className="text-center pb-3 border-b border-[#C5A059]/10 mb-4 select-none">
                                     <h4 className="font-serif text-[#800020] uppercase font-bold text-sm tracking-widest">
-                                        Diario Visual del Día
-                                    </h4>
-                                    <span className="text-[9px] uppercase tracking-wider text-[#C5A059] font-bold">
                                         VIDEOS RESUMEN DE LA ACTIVIDAD
-                                    </span>
+                                    </h4>
                                 </div>
 
                                 {/* Mode Selector Toggle Tabs */}
