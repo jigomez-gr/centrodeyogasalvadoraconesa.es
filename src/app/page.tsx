@@ -332,9 +332,6 @@ export default async function Home() {
             </div>
 
           </div>
-
-          {/* Nagna Yoga Banner and Video Collection */}
-          <NagnaYogaSection />
         </div>
       </section>
 
@@ -386,6 +383,9 @@ export default async function Home() {
                 Con el paso de los años observo con agrado, que algunas personas vienen a yoga porque se lo recomienda su médico bien porque previamente lo ha experimentado o porque ha visto resultados muy favorables en otros pacientes. También realizo la formación en <strong className="text-[#800020] font-semibold">MOVIMIENTO EXPRESIVO</strong> que me habilita para dar masaje circulatorio y sensitivo, además puedo ofrecer algo más dinámico y divertido que se hace con una base musical. Siento que estoy colaborando a difundir y realizar un trabajo precioso y sanador. Mi principal propósito es que me gustaría difundirlo para que pudiese llegar a la mayor cantidad posible de personas y que estas pudieran comprobar los beneficios. Además, el que uno de los lugares donde ahora mismo estoy impartiendo yoga sea en las instalaciones de un club social situado en Fuenlabrada llamado Parque Granada me permite que los precios sean accesibles a todas las personas, incluso con bajo presupuesto y esto me llena de satisfacción.
               </p>
             </div>
+
+            {/* Nagna Yoga Banner and Video Collection */}
+            <NagnaYogaSection />
           </div>
         </div>
       </section>
