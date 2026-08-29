@@ -130,7 +130,7 @@ export default function NagnaYogaSection() {
                       controls
                       playsInline
                       preload="metadata"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain bg-black"
                     />
                   </div>
                   <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
