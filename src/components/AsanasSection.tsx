@@ -1,45 +1,33 @@
 "use client";
 
-import { Video } from "lucide-react";
-import AsanasSection from "@/components/AsanasSection";
-
-export default function NagnaYogaSection() {
+export default function AsanasSection() {
   const videos = [
     {
       id: "1",
       num: "I.",
-      title: "El origen del conocimiento",
+      title: "Corrección básica",
       description:
-        "Una primera toma de contacto con el espíritu del Nagna Yoga: de dónde viene, y qué sentido tiene detenerse a comprender antes de practicar.",
-      src: "/videos/nagna_yoga/nagnayoga1.mp4",
-      poster: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
+        "Un ajuste sencillo que marca la diferencia en la base de la postura: cómo colocar bien los apoyos para sostener el resto del cuerpo con menos esfuerzo y más estabilidad.",
+      src: "/videos/el_espacio_para_mejorar_las_asanas/correccion1.mp4",
+      poster: "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
     },
     {
       id: "2",
       num: "II.",
-      title: "La respiración consciente",
+      title: "Corrección básica",
       description:
-        "Claves sencillas sobre el papel de la respiración en la práctica, y cómo convertirla en la guía silenciosa de cada movimiento.",
-      src: "/videos/nagna_yoga/nagnayoga2.mp4",
-      poster: "/imagenes/yoga/07_04_yoga_respiracion_1920x1080.jpg",
+        "Seguimos afinando el detalle: una segunda corrección muy sencilla para ganar estabilidad y evitar compensaciones innecesarias en la postura.",
+      src: "/videos/el_espacio_para_mejorar_las_asanas/correccion2.mp4",
+      poster: "/imagenes/yoga/04_03_yoga_postura_triangular_1920x1080.jpg",
     },
     {
       id: "3",
       num: "III.",
-      title: "Anatomía del cuerpo en movimiento",
+      title: "Saludo al sol",
       description:
-        "Nociones de anatomía aplicadas a la práctica, para entender qué le estamos pidiendo al cuerpo en cada postura.",
-      src: "/videos/nagna_yoga/nagnayoga3.mp4",
-      poster: "/imagenes/yoga/03_02_yoga_postura_brazos_arriba_1920x1080.jpg",
-    },
-    {
-      id: "4",
-      num: "IV.",
-      title: "El silencio como maestro",
-      description:
-        "Un acercamiento a la quietud y a la escucha interior como parte esencial del aprendizaje del yoga.",
-      src: "/videos/nagna_yoga/nagnayoga4.mp4",
-      poster: "/imagenes/meditacion/01_meditacion_silencio_ventana_1920x1080.jpg",
+        "La secuencia completa del saludo al sol, paso a paso, para integrar estas correcciones en una práctica fluida, consciente y bien alineada de principio a fin.",
+      src: "/videos/el_espacio_para_mejorar_las_asanas/saludo_al_sol.mp4",
+      poster: "/imagenes/yoga/06_07_yoga_apertura_1920x1080.jpg",
     },
   ];
 
@@ -47,43 +35,43 @@ export default function NagnaYogaSection() {
     <div className="space-y-16 my-12">
       {/* 1. Green Banner Card (matching Image 2) */}
       <a
-        href="#nagna-yoga"
+        href="#mejorar-asanas"
         className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-8 sm:p-12 md:p-16 rounded-2xl border border-[#C5A059]/30 shadow-2xl hover:shadow-[#2E5A44]/30 hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer"
       >
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
         <span className="text-xs sm:text-sm tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-3">
-          GNANI YOGA
+          CORRECCIONES Y AJUSTES
         </span>
         <h3 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-          Nagna Yoga, <span className="italic text-[#E9C168]">el yoga del conocimiento</span>
+          El espacio para <span className="italic text-[#E9C168]">mejorar las asanas</span>
         </h3>
         <p className="text-sm sm:text-lg text-white/90 max-w-3xl mx-auto leading-relaxed font-sans font-light">
-          Un espacio vivo donde sigo compartiendo, en pequeñas píldoras de apenas cinco minutos, todo lo que el yoga me ha ido enseñando a lo largo del camino.
+          Pequeñas correcciones, grandes cambios: un rincón para afinar el detalle técnico que transforma cada postura.
         </p>
         <div className="mt-6 inline-flex items-center space-x-2 text-xs uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline">
-          <span>Ver colección de vídeos de Nagna Yoga</span>
+          <span>Ver colección de vídeos de Correcciones</span>
           <span>↓</span>
         </div>
       </a>
 
-      {/* 2. Nagna Yoga Content & Video Gallery (matching Image 3) */}
-      <section id="nagna-yoga" className="scroll-mt-24 pt-8 border-t border-[#C5A059]/20">
+      {/* 2. Asanas Content & Video Gallery (matching Image 3) */}
+      <section id="mejorar-asanas" className="scroll-mt-24 pt-8 border-t border-[#C5A059]/20">
         <div className="max-w-5xl mx-auto space-y-10">
 
           {/* Section Header */}
           <div className="space-y-4">
             <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block">
-              Yoga del Conocimiento
+              Correcciones y Ajustes Técnicos
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              NAGNA YOGA
+              EL ESPACIO PARA MEJORAR LAS ASANAS
             </h2>
             <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans bg-white p-6 sm:p-8 rounded-xl border border-[#C5A059]/20 shadow-sm">
               <p>
-                Nagna Yoga es el yoga del conocimiento. Es un espacio que he creado con mucho cariño para seguir haciendo, poco a poco, pequeños vídeos de unos cinco minutos con los que enseñar y compartir conocimientos de yoga: anatomía aplicada a la práctica, claves de la respiración, fundamentos de la filosofía yóguica y esos pequeños matices que marcan la diferencia entre hacer una postura y habitarla de verdad.
+                El espacio para mejorar las asanas es justamente eso: un lugar donde detenernos en el detalle. A veces, la diferencia entre una postura que nos sostiene y otra que nos genera tensión no está en hacer "más", sino en ajustar "mejor". Aquí iré compartiendo correcciones breves y muy prácticas — pequeños gestos técnicos que, aplicados con constancia, cambian por completo cómo sentimos cada asana en el cuerpo.
               </p>
               <p>
-                Cada vídeo es una semilla de conocimiento pensada para acompañarte más allá de la esterilla: puedes volver a verla las veces que necesites, a tu ritmo, y dejar que poco a poco vaya calando en tu propia práctica. Iré ampliando esta colección con nuevas entregas, así que este es un espacio que crecerá contigo.
+                Son vídeos cortos, pensados para revisar antes o después de tu práctica, o para volver a ellos cada vez que notes que "algo no termina de encajar" en una postura. No sustituyen la atención de una clase en directo, pero sí te dan una herramienta sencilla para observarte con más precisión y seguir avanzando entre sesión y sesión.
               </p>
             </div>
           </div>
@@ -91,11 +79,11 @@ export default function NagnaYogaSection() {
           {/* Videos Subsection */}
           <div className="space-y-8 pt-4">
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020]">
-              Vídeos de NAGNA YOGA
+              Vídeos
             </h3>
 
-            {/* 2x2 Video Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Video Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {videos.map((vid) => (
                 <div
                   key={vid.id}
@@ -128,16 +116,13 @@ export default function NagnaYogaSection() {
             {/* Concluding Note */}
             <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#C5A059]/30 text-center space-y-2 mt-8">
               <p className="text-xs sm:text-sm text-[#1C1C1C]/85 font-medium leading-relaxed max-w-3xl mx-auto">
-                Muy pronto iré añadiendo más vídeos y contenidos a esta colección. Si alguno de ellos despierta en ti una pregunta, tráela a clase: el Nagna Yoga también se sigue construyendo entre tod@s.
+                Iré ampliando poco a poco esta colección con nuevas correcciones. Si hay alguna postura concreta que te cuesta encajar, dímelo en clase: seguro que merece su propio vídeo.
               </p>
             </div>
           </div>
 
         </div>
       </section>
-
-      {/* 3. El Espacio para Mejorar las Asanas */}
-      <AsanasSection />
     </div>
   );
 }
