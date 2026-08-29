@@ -62,9 +62,30 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Header Layout */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between xl:hidden relative">
-                {/* Left side: Hamburger toggle button */}
-                <div className="w-10 flex justify-start">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between xl:hidden relative h-[64px]">
+                {/* Left side: Logo aligned to the left */}
+                <div className="w-14 flex justify-start select-none">
+                    <a href="#inicio">
+                        <img
+                            src="/imagenes/logo/logo.png"
+                            alt="Logo Centro de Yoga Salvadora Conesa"
+                            className="h-12 w-auto object-contain transition duration-200"
+                        />
+                    </a>
+                </div>
+
+                {/* Center: Brand TEXT (centered and scaled up) */}
+                <div className="flex-1 flex flex-col items-center justify-center select-none text-center px-4 leading-tight">
+                    <span className="text-[8.5px] xs:text-[9.5px] tracking-wider text-[#C5A059] uppercase font-bold">
+                        CENTRO DE YOGA FUENLABRADA
+                    </span>
+                    <span className="font-serif text-[16px] xs:text-[18px] font-black text-[#800020] uppercase tracking-wide leading-none mt-1 font-editorial">
+                        Salvadora Conesa
+                    </span>
+                </div>
+
+                {/* Right side: Hamburger toggle button */}
+                <div className="w-14 flex justify-end">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="text-[#1C1C1C] hover:text-[#800020] focus:outline-none"
@@ -72,26 +93,6 @@ export default function Navbar() {
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-stone-700" />}
                     </button>
-                </div>
-
-                {/* Center: Logo (Centered) */}
-                <div className="flex-1 flex justify-center">
-                    <a href="#" className="flex items-center space-x-2">
-                        <img
-                            src="/imagenes/logo/logo.png"
-                            alt="Logo Centro de Yoga Salvadora Conesa"
-                            className="h-8 w-auto object-contain"
-                        />
-                        <div className="flex flex-col items-center leading-tight">
-                            <span className="text-[5.5px] tracking-wider text-[#C5A059] uppercase font-bold">CENTRO DE YOGA FUENLABRADA</span>
-                            <span className="font-serif text-[9.5px] font-black text-[#800020] uppercase tracking-wide leading-none">Salvadora Conesa</span>
-                        </div>
-                    </a>
-                </div>
-
-                {/* Right side: spacer to keep center logo visually aligned */}
-                <div className="w-10 flex justify-end">
-                    {/* Empty placeholder */}
                 </div>
             </div>
 
