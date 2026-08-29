@@ -250,7 +250,7 @@ interface ItineraryTimelineProps {
 
 const DAY_THUMBNAILS: { [key: number]: { src: string; caption: string } } = {
     1: {
-        src: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
+        src: "/imagenes/gong/01_presentacion_terapeutas_1920x1080.jpg",
         caption: "Nagna Yoga & Yoga Nidra"
     },
     2: {
@@ -614,9 +614,9 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                                     src={getVideoPath(day.id)}
                                                     controls
                                                     playsInline
+                                                    preload="metadata"
                                                     muted={false}
                                                     className="w-full h-full object-cover"
-                                                    poster={thumb.src}
                                                 />
                                             </div>
                                         ) : (
