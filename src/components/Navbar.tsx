@@ -8,6 +8,7 @@ export default function Navbar() {
 
     const menuItems = [
         { label: "Inicio", href: "#inicio" },
+        { label: "Sobre Mí", href: "#sobre-mi" },
         { label: "Actividades", href: "#itinerario" },
         { label: "Vídeos", href: "#videos" },
         { label: "Viajes Realizados", href: "#viajes-realizados" },

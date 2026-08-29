@@ -171,6 +171,7 @@ echo Subiendo a GitHub...
 echo.
 
 git push origin main
+git push https://github.com/jigomez-gr/centrodeyogasalvadoraconesa.es.git main
 
 if errorlevel 1 (
     echo.

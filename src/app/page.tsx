@@ -334,6 +334,58 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* 5.5 Sección Sobre Mí */}
+      <section id="sobre-mi" className="py-20 bg-[#FAF9F6] border-b border-[#C5A059]/20 scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+              Trayectoria y Filosofía
+            </span>
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+              Sobre Mí
+            </h2>
+          </div>
+
+          <div className="space-y-8 text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans">
+            {/* Bloque 1 de texto */}
+            <div className="space-y-4 text-justify sm:text-left bg-white p-6 sm:p-8 rounded-xl border border-[#C5A059]/20 shadow-sm">
+              <p>
+                En el año 1.985, después de padecer grandes problemas en mi espalda debido a una escoliosis muy severa, conozco el grupo de yoga que pertenece a la G.F.U. Al comenzar a hacer yoga tres veces en semana, en un par de meses puedo dejar la rehabilitación a la que me sometía hacía más de 7 años. Esta experiencia, me hizo adentrarme en la práctica y conocimientos del yoga, hice la formación como instructora y desde 1.986 he continuado, impartiendo clases o seminarios y profundizando e investigando en sus distintas escuelas y vertientes, desarrollándome especialmente desde lo vivencial. Es cierto que el yoga tiene una gran carga filosófica y espiritual a la que no renuncio, aunque observo que la necesidad principal de las personas que se acercan a las clases es básicamente de origen emocional y físico.
+              </p>
+              <p>
+                A lo largo del desarrollo de esta técnica, observé una gran mejoría en personas que empiezan con problemas en la espalda, básicamente contracturas, lumbalgias, ciáticas e incluso hernias discales. Esto me llevó a querer profundizar en el yoga terapéutico. Para ello, recibo formación en <strong className="text-[#800020] font-semibold">ESTIRAMIENTOS DE CADENAS MUSCULARES, ANTIGIMNASIA, CORRECCIÓN POSTURAL, DIAFROTERAPIA Y MICROGIMNASIA</strong>. Adapto todas estas técnicas a la clase de yoga, mezclando estiramientos con asanas (posturas concretas de yoga) y elaboro un método de posturas beneficiosas con ciertos retoques que incorporan estas técnicas, no dejo atrás el yoga porque siento que la estática y la concentración en cada postura aumenta el beneficio.
+              </p>
+            </div>
+
+            {/* Foto anexa */}
+            <div className="my-10 max-w-2xl mx-auto">
+              <div className="bg-white p-3 rounded-2xl border border-[#C5A059]/30 shadow-xl overflow-hidden hover:shadow-2xl transition duration-500">
+                <div className="relative aspect-[4/3] sm:aspect-[16/10] rounded-xl overflow-hidden">
+                  <img
+                    src="/imagenes/salvadora/sobre_mi.jpg"
+                    alt="Salvadora Conesa - Práctica de Yoga"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+                <p className="text-center font-serif italic text-xs sm:text-sm text-[#800020] mt-3 font-semibold">
+                  Salvadora Conesa — Fundadora del Centro de Yoga Fuenlabrada desde 1986
+                </p>
+              </div>
+            </div>
+
+            {/* Bloque 2 de texto */}
+            <div className="space-y-4 text-justify sm:text-left bg-white p-6 sm:p-8 rounded-xl border border-[#C5A059]/20 shadow-sm">
+              <p>
+                Con el tiempo constato como el aprender a estar parado y respirar simplemente aporta grandes beneficios a los practicantes y es más, a nivel emocional están sucediendo cosas que me llaman la atención. Paralelamente se me facilita la posibilidad de hacer una formación a nivel psicológico, me formo en <strong className="text-[#800020] font-semibold">TERAPIA GESTALT</strong>, como profesión de ayuda. Y desde ahí comienzo a utilizar un lenguaje que junto al pensamiento positivo, que ya estaba utilizando desde los primeros tiempos de yoga, y a la <strong className="text-[#800020] font-semibold">PNL (programación neurolingüística)</strong> me permite constatar como personas que vienen con estados de depresión, ansiedad y emocionalmente muy dañadas empiezan a mejorar y comienzan un auto cuidado que les beneficia, necesitando cada vez menos fármacos o incluso mejorando hasta prescindir (según prescripción de su médico) de ellos.
+              </p>
+              <p>
+                Con el paso de los años observo con agrado, que algunas personas vienen a yoga porque se lo recomienda su médico bien porque previamente lo ha experimentado o porque ha visto resultados muy favorables en otros pacientes. También realizo la formación en <strong className="text-[#800020] font-semibold">MOVIMIENTO EXPRESIVO</strong> que me habilita para dar masaje circulatorio y sensitivo, además puedo ofrecer algo más dinámico y divertido que se hace con una base musical. Siento que estoy colaborando a difundir y realizar un trabajo precioso y sanador. Mi principal propósito es que me gustaría difundirlo para que pudiese llegar a la mayor cantidad posible de personas y que estas pudieran comprobar los beneficios. Además, el que uno de los lugares donde ahora mismo estoy impartiendo yoga sea en las instalaciones de un club social situado en Fuenlabrada llamado Parque Granada me permite que los precios sean accesibles a todas las personas, incluso con bajo presupuesto y esto me llena de satisfacción.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 6. Itinerario Día por Día */}
       <section id="itinerario" className="py-24 bg-[#FAF9F6] scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
