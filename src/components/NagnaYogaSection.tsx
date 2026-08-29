@@ -1,6 +1,5 @@
 "use client";
 
-import { Video } from "lucide-react";
 import AsanasSection from "@/components/AsanasSection";
 
 export default function NagnaYogaSection() {
@@ -45,28 +44,56 @@ export default function NagnaYogaSection() {
 
   return (
     <div className="space-y-16 my-12">
-      {/* 1. Green Banner Card (matching Image 2) */}
-      <a
-        href="#nagna-yoga"
-        className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-8 sm:p-12 md:p-16 rounded-2xl border border-[#C5A059]/30 shadow-2xl hover:shadow-[#2E5A44]/30 hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer"
-      >
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
-        <span className="text-xs sm:text-sm tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-3">
-          GNANI YOGA
-        </span>
-        <h3 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-          Nagna Yoga, <span className="italic text-[#E9C168]">el yoga del conocimiento</span>
-        </h3>
-        <p className="text-sm sm:text-lg text-white/90 max-w-3xl mx-auto leading-relaxed font-sans font-light">
-          Un espacio vivo donde sigo compartiendo, en pequeñas píldoras de apenas cinco minutos, todo lo que el yoga me ha ido enseñando a lo largo del camino.
-        </p>
-        <div className="mt-6 inline-flex items-center space-x-2 text-xs uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline">
-          <span>Ver colección de vídeos de Nagna Yoga</span>
-          <span>↓</span>
-        </div>
-      </a>
+      {/* 1. Bloque de 2 Tarjetas Verdes consecutivas (una a continuación de la otra) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+        {/* Tarjeta 1: Nagna Yoga */}
+        <a
+          href="#nagna-yoga"
+          className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-6 sm:p-8 rounded-2xl border border-[#C5A059]/30 shadow-xl hover:shadow-[#2E5A44]/40 hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer flex flex-col justify-between"
+        >
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
+          <div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-2">
+              GNANI YOGA
+            </span>
+            <h3 className="font-serif text-xl sm:text-3xl font-bold text-white mb-3 leading-tight">
+              Nagna Yoga, <span className="italic text-[#E9C168]">el yoga del conocimiento</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-white/90 leading-relaxed font-sans font-light mb-6">
+              Un espacio vivo donde sigo compartiendo, en pequeñas píldoras de apenas cinco minutos, todo lo que el yoga me ha ido enseñando a lo largo del camino.
+            </p>
+          </div>
+          <div className="inline-flex items-center justify-center space-x-2 text-[11px] uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline pt-4 border-t border-white/10">
+            <span>ver colección de vídeos de nagna yoga</span>
+            <span>↓</span>
+          </div>
+        </a>
 
-      {/* 2. Nagna Yoga Content & Video Gallery (matching Image 3) */}
+        {/* Tarjeta 2: Espacio para mejorar las Asanas */}
+        <a
+          href="#mejorar-asanas"
+          className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-6 sm:p-8 rounded-2xl border border-[#C5A059]/30 shadow-xl hover:shadow-[#2E5A44]/40 hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer flex flex-col justify-between"
+        >
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
+          <div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-2">
+              Espacio para mejorar las Asanas
+            </span>
+            <h3 className="font-serif text-xl sm:text-3xl font-bold text-white mb-3 leading-tight">
+              El espacio para <span className="italic text-[#E9C168]">mejorar las asanas</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-white/90 leading-relaxed font-sans font-light mb-6">
+              Pequeñas correcciones, grandes cambios: un rincón para afinar el detalle técnico que transforma cada postura.
+            </p>
+          </div>
+          <div className="inline-flex items-center justify-center space-x-2 text-[11px] uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline pt-4 border-t border-white/10">
+            <span>ver colección de vídeos para mejorar las asanas</span>
+            <span>↓</span>
+          </div>
+        </a>
+      </div>
+
+      {/* 2. Sección Detallada 1: NAGNA YOGA */}
       <section id="nagna-yoga" className="scroll-mt-24 pt-8 border-t border-[#C5A059]/20">
         <div className="max-w-5xl mx-auto space-y-10">
 
@@ -136,7 +163,7 @@ export default function NagnaYogaSection() {
         </div>
       </section>
 
-      {/* 3. El Espacio para Mejorar las Asanas */}
+      {/* 3. Sección Detallada 2: EL ESPACIO PARA MEJORAR LAS ASANAS */}
       <AsanasSection />
     </div>
   );

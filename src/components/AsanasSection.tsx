@@ -32,97 +32,73 @@ export default function AsanasSection() {
   ];
 
   return (
-    <div className="space-y-16 my-12">
-      {/* 1. Green Banner Card (matching Image 2) */}
-      <a
-        href="#mejorar-asanas"
-        className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-8 sm:p-12 md:p-16 rounded-2xl border border-[#C5A059]/30 shadow-2xl hover:shadow-[#2E5A44]/30 hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer"
-      >
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
-        <span className="text-xs sm:text-sm tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-3">
-          CORRECCIONES Y AJUSTES
-        </span>
-        <h3 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-          El espacio para <span className="italic text-[#E9C168]">mejorar las asanas</span>
-        </h3>
-        <p className="text-sm sm:text-lg text-white/90 max-w-3xl mx-auto leading-relaxed font-sans font-light">
-          Pequeñas correcciones, grandes cambios: un rincón para afinar el detalle técnico que transforma cada postura.
-        </p>
-        <div className="mt-6 inline-flex items-center space-x-2 text-xs uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline">
-          <span>Ver colección de vídeos de Correcciones</span>
-          <span>↓</span>
-        </div>
-      </a>
+    <section id="mejorar-asanas" className="scroll-mt-24 pt-8 border-t border-[#C5A059]/20">
+      <div className="max-w-5xl mx-auto space-y-10">
 
-      {/* 2. Asanas Content & Video Gallery (matching Image 3) */}
-      <section id="mejorar-asanas" className="scroll-mt-24 pt-8 border-t border-[#C5A059]/20">
-        <div className="max-w-5xl mx-auto space-y-10">
-
-          {/* Section Header */}
-          <div className="space-y-4">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block">
-              Correcciones y Ajustes Técnicos
-            </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              EL ESPACIO PARA MEJORAR LAS ASANAS
-            </h2>
-            <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans bg-white p-6 sm:p-8 rounded-xl border border-[#C5A059]/20 shadow-sm">
-              <p>
-                El espacio para mejorar las asanas es justamente eso: un lugar donde detenernos en el detalle. A veces, la diferencia entre una postura que nos sostiene y otra que nos genera tensión no está en hacer "más", sino en ajustar "mejor". Aquí iré compartiendo correcciones breves y muy prácticas — pequeños gestos técnicos que, aplicados con constancia, cambian por completo cómo sentimos cada asana en el cuerpo.
-              </p>
-              <p>
-                Son vídeos cortos, pensados para revisar antes o después de tu práctica, o para volver a ellos cada vez que notes que "algo no termina de encajar" en una postura. No sustituyen la atención de una clase en directo, pero sí te dan una herramienta sencilla para observarte con más precisión y seguir avanzando entre sesión y sesión.
-              </p>
-            </div>
+        {/* Section Header */}
+        <div className="space-y-4">
+          <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block">
+            Correcciones y Ajustes Técnicos
+          </span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
+            EL ESPACIO PARA MEJORAR LAS ASANAS
+          </h2>
+          <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans bg-white p-6 sm:p-8 rounded-xl border border-[#C5A059]/20 shadow-sm">
+            <p>
+              El espacio para mejorar las asanas es justamente eso: un lugar donde detenernos en el detalle. A veces, la diferencia entre una postura que nos sostiene y otra que nos genera tensión no está en hacer "más", sino en ajustar "mejor". Aquí iré compartiendo correcciones breves y muy prácticas — pequeños gestos técnicos que, aplicados con constancia, cambian por completo cómo sentimos cada asana en el cuerpo.
+            </p>
+            <p>
+              Son vídeos cortos, pensados para revisar antes o después de tu práctica, o para volver a ellos cada vez que notes que "algo no termina de encajar" en una postura. No sustituyen la atención de una clase en directo, pero sí te dan una herramienta sencilla para observarte con más precisión y seguir avanzando entre sesión y sesión.
+            </p>
           </div>
+        </div>
 
-          {/* Videos Subsection */}
-          <div className="space-y-8 pt-4">
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020]">
-              Vídeos
-            </h3>
+        {/* Videos Subsection */}
+        <div className="space-y-8 pt-4">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020]">
+            Vídeos
+          </h3>
 
-            {/* Video Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videos.map((vid) => (
-                <div
-                  key={vid.id}
-                  className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
-                >
-                  <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
-                    <video
-                      src={vid.src}
-                      poster={vid.poster}
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
-                    <div>
-                      <h4 className="font-serif text-base sm:text-lg font-bold text-[#800020] mb-2">
-                        {vid.num} {vid.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
-                        {vid.description}
-                      </p>
-                    </div>
+          {/* Video Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {videos.map((vid) => (
+              <div
+                key={vid.id}
+                className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
+              >
+                <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
+                  <video
+                    src={vid.src}
+                    poster={vid.poster}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
+                  <div>
+                    <h4 className="font-serif text-base sm:text-lg font-bold text-[#800020] mb-2">
+                      {vid.num} {vid.title}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
+                      {vid.description}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Concluding Note */}
-            <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#C5A059]/30 text-center space-y-2 mt-8">
-              <p className="text-xs sm:text-sm text-[#1C1C1C]/85 font-medium leading-relaxed max-w-3xl mx-auto">
-                Iré ampliando poco a poco esta colección con nuevas correcciones. Si hay alguna postura concreta que te cuesta encajar, dímelo en clase: seguro que merece su propio vídeo.
-              </p>
-            </div>
+              </div>
+            ))}
           </div>
 
+          {/* Concluding Note */}
+          <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#C5A059]/30 text-center space-y-2 mt-8">
+            <p className="text-xs sm:text-sm text-[#1C1C1C]/85 font-medium leading-relaxed max-w-3xl mx-auto">
+              Iré ampliando poco a poco esta colección con nuevas correcciones. Si hay alguna postura concreta que te cuesta encajar, dímelo en clase: seguro que merece su propio vídeo.
+            </p>
+          </div>
         </div>
-      </section>
-    </div>
+
+      </div>
+    </section>
   );
 }
