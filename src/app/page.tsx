@@ -187,7 +187,7 @@ export default async function Home() {
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
           <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-1.5 sm:mb-2">
-            <span className="hidden sm:inline">Clases Regulares, Baños de Gong, Gestalt, Constelaciones Familiares, Talleres y Retiros</span>
+            <span className="hidden sm:inline">Clases Regulares, Yoga, Baños de Gong, Gestalt, Constelaciones Familiares, Pujas Gong, Talleres y Retiros y Actividades Varias</span>
             <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
           </div>
 
