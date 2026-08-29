@@ -11,7 +11,7 @@ export default function NagnaYogaSection() {
       description:
         "Una primera toma de contacto con el espíritu del Nagna Yoga: de dónde viene, y qué sentido tiene detenerse a comprender antes de practicar.",
       src: "/videos/nagna_yoga/nagnayoga1.mp4",
-      poster: "/imagenes/yoga/01_05_yoga_sala_centro_1920x1080.jpg",
+      poster: "/imagenes/gong/01_presentacion_terapeutas_1920x1080.jpg",
     },
     {
       id: "2",
