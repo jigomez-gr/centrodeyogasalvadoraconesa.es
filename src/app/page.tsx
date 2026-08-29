@@ -9,6 +9,7 @@ import BookingForm from "@/components/BookingForm";
 import HeroMedia from "@/components/HeroMedia";
 import PrologoGallery from "@/components/PrologoGallery";
 import AtmosphereGallery from "@/components/AtmosphereGallery";
+import NagnaYogaSection from "@/components/NagnaYogaSection";
 
 export const dynamic = "force-dynamic";
 import {
@@ -331,6 +332,9 @@ export default async function Home() {
             </div>
 
           </div>
+
+          {/* Nagna Yoga Banner and Video Collection */}
+          <NagnaYogaSection />
         </div>
       </section>
 
