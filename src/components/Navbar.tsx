@@ -7,14 +7,14 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     const menuItems = [
-        { label: "Inicio", href: "#inicio" },
-        { label: "Sobre Mí", href: "#sobre-mi" },
-        { label: "Actividades", href: "#itinerario" },
-        { label: "Vídeos", href: "#videos" },
-        { label: "Viajes Realizados", href: "#viajes-realizados" },
-        { label: "Testimonios", href: "#testimonios" },
-        { label: "Qué Incluye", href: "#incluye" },
-        { label: "Plazas y Precios", href: "#precios" },
+        { label: "Inicio", href: "/#inicio" },
+        { label: "Sobre Mí", href: "/#sobre-mi" },
+        { label: "Actividades", href: "/#itinerario" },
+        { label: "Vídeos", href: "/#videos" },
+        { label: "Viajes Realizados", href: "/#viajes-realizados" },
+        { label: "Testimonios", href: "/#testimonios" },
+        { label: "Qué Incluye", href: "/#incluye" },
+        { label: "Plazas y Precios", href: "/#precios" },
     ];
 
     return (
@@ -22,7 +22,7 @@ export default function Navbar() {
             {/* Desktop Centered Header Layout */}
             <div className="hidden xl:flex flex-col items-center pt-3 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
                 {/* Logo Image absolutely positioned on the left (spanning the height of the header) */}
-                <a href="#" className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none">
+                <a href="/" className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none">
                     <img
                         src="/imagenes/logo/logo.png"
                         alt="Logo Centro de Yoga Salvadora Conesa"
@@ -31,7 +31,7 @@ export default function Navbar() {
                 </a>
 
                 {/* Centered Brand Text Block */}
-                <a href="#" className="flex flex-col items-center leading-tight mb-2 select-none">
+                <a href="/" className="flex flex-col items-center leading-tight mb-2 select-none">
                     <div className="flex items-center space-x-1.5 text-[10px] tracking-widest text-[#C5A059] uppercase font-semibold">
                         <span>CENTRO DE YOGA FUENLABRADA</span>
                     </div>
@@ -55,7 +55,7 @@ export default function Navbar() {
                     ))}
                     <span className="text-[#C5A059]/40 select-none font-light">|</span>
                     <a
-                        href="#reserva"
+                        href="/#reserva"
                         className="text-[#800020] font-extrabold hover:underline transition duration-200"
                     >
                         Reservar Plaza
@@ -74,7 +74,7 @@ export default function Navbar() {
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-stone-700" />}
                     </button>
-                    <a href="#inicio">
+                    <a href="/">
                         <img
                             src="/imagenes/logo/logo.png"
                             alt="Logo Centro de Yoga Salvadora Conesa"
@@ -112,7 +112,7 @@ export default function Navbar() {
                             </a>
                         ))}
                         <a
-                            href="#reserva"
+                            href="/#reserva"
                             onClick={() => setIsOpen(false)}
                             className="block w-full text-center py-2.5 border border-transparent rounded text-xs font-bold uppercase tracking-widest text-white bg-[#800020] hover:bg-[#800020]/90 transition"
                         >
