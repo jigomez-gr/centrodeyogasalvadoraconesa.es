@@ -10,6 +10,8 @@ import HeroMedia from "@/components/HeroMedia";
 import PrologoGallery from "@/components/PrologoGallery";
 import AtmosphereGallery from "@/components/AtmosphereGallery";
 import NagnaYogaSection from "@/components/NagnaYogaSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
 import {
@@ -800,52 +802,11 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 14. Footer Elegante */}
-      <footer className="bg-[#1C1C1C] text-white py-12 font-sans border-t-2 border-[#C5A059]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 pb-10 border-b border-white/10">
+      {/* 14. Sección de Testimonios de los Alumnos/as */}
+      <TestimonialsSection />
 
-            {/* Left brand column */}
-            <div className="text-center md:text-left">
-              <h3 className="font-serif text-lg font-bold text-[#E9C168]">
-                Centro de Yoga Fuenlabrada
-              </h3>
-              <p className="text-xs text-white/50 mt-1 max-w-sm">
-                Dirigido por Salvadora Conesa. Espacio de crecimiento y bienestar dedicado a la práctica regular del yoga, la meditación y la sonoterapia.
-              </p>
-            </div>
-
-            {/* Right actions links */}
-            <div className="flex flex-wrap justify-center gap-4 text-xs font-semibold uppercase tracking-wider">
-              <a
-                href="#itinerario"
-                className="px-4 py-2 border border-white/20 hover:border-[#E9C168] rounded text-white/80 hover:text-[#E9C168] transition"
-              >
-                Nuestros Pilares
-              </a>
-              <a
-                href="#reserva"
-                className="px-4 py-2 bg-[#800020] hover:bg-[#800020]/90 border border-transparent rounded text-white transition"
-              >
-                Inscribirse
-              </a>
-            </div>
-
-          </div>
-
-          {/* Bottom rights info */}
-          <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
-            <p>
-              © {new Date().getFullYear()} Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
-            </p>
-            <div className="flex space-x-6">
-              <span className="hover:text-white transition cursor-pointer">Inscripción</span>
-              <span className="hover:text-white transition cursor-pointer">Privacidad y Cookies</span>
-              <span className="hover:text-white transition cursor-pointer">Términos Generales</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* 15. Footer Elegante Unificado */}
+      <Footer />
     </div>
   );
 }

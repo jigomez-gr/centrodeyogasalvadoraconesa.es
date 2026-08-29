@@ -592,7 +592,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                             : "bg-[#FAF9F6] text-stone-600 hover:text-[#800020]"
                                             }`}
                                     >
-                                        Resumen Visual
+                                        VIDEO RESUMEN DE LA ACTIVIDAD
                                     </button>
                                     <button
                                         onClick={() => setMode(day.id, "video")}
@@ -801,6 +801,51 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                         Copyright © Centro de Yoga Fuenlabrada Salvadora Conesa. Todos los derechos reservados.
                                     </p>
                                 </div>
+                            </div>
+
+                            {/* Green Banners Block inside DIARIO VISUAL column */}
+                            <div className="space-y-4">
+                                {/* Card 1: Nagna Yoga */}
+                                <a
+                                    href="#nagna-yoga"
+                                    className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-5 sm:p-6 rounded-xl border border-[#C5A059]/30 shadow-md hover:shadow-lg hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer"
+                                >
+                                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
+                                    <span className="text-[9px] tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-1.5">
+                                        GNANI YOGA
+                                    </span>
+                                    <h4 className="font-serif text-lg sm:text-xl font-bold text-white mb-2 leading-tight">
+                                        Nagna Yoga, <span className="italic text-[#E9C168]">el yoga del conocimiento</span>
+                                    </h4>
+                                    <p className="text-xs text-white/90 font-sans font-light mb-4 leading-relaxed">
+                                        Un espacio vivo donde sigo compartiendo en pequeñas píldoras todo lo que el yoga me ha enseñando.
+                                    </p>
+                                    <div className="inline-flex items-center space-x-1 text-[10px] uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline pt-2 border-t border-white/10 w-full justify-center">
+                                        <span>ver colección de vídeos de nagna yoga</span>
+                                        <span>↓</span>
+                                    </div>
+                                </a>
+
+                                {/* Card 2: Espacio para mejorar las Asanas */}
+                                <a
+                                    href="#mejorar-asanas"
+                                    className="block bg-gradient-to-br from-[#1E3E2B] via-[#2E5A44] to-[#1D3D2C] p-5 sm:p-6 rounded-xl border border-[#C5A059]/30 shadow-md hover:shadow-lg hover:scale-[1.01] transition duration-300 text-center text-white relative overflow-hidden group cursor-pointer"
+                                >
+                                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#C5A059_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
+                                    <span className="text-[9px] tracking-[0.25em] text-[#C5A059] uppercase font-bold block mb-1.5">
+                                        Espacio para mejorar las Asanas
+                                    </span>
+                                    <h4 className="font-serif text-lg sm:text-xl font-bold text-white mb-2 leading-tight">
+                                        El espacio para <span className="italic text-[#E9C168]">mejorar las asanas</span>
+                                    </h4>
+                                    <p className="text-xs text-white/90 font-sans font-light mb-4 leading-relaxed">
+                                        Pequeñas correcciones y gestos técnicos para afinar y transformar cada postura.
+                                    </p>
+                                    <div className="inline-flex items-center space-x-1 text-[10px] uppercase font-bold tracking-widest text-[#E9C168] group-hover:underline pt-2 border-t border-white/10 w-full justify-center">
+                                        <span>ver colección de vídeos para mejorar las asanas</span>
+                                        <span>↓</span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
 

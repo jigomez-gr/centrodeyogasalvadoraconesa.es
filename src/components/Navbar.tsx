@@ -12,6 +12,7 @@ export default function Navbar() {
         { label: "Actividades", href: "#itinerario" },
         { label: "Vídeos", href: "#videos" },
         { label: "Viajes Realizados", href: "#viajes-realizados" },
+        { label: "Testimonios", href: "#testimonios" },
         { label: "Qué Incluye", href: "#incluye" },
         { label: "Plazas y Precios", href: "#precios" },
     ];
