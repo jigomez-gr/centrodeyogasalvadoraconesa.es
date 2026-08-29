@@ -579,7 +579,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                         Diario Visual del Día
                                     </h4>
                                     <span className="text-[9px] uppercase tracking-wider text-[#C5A059] font-bold">
-                                        VIDEOS RESUMEN DE LA ACTIVIDAD - DÍA {day.id}
+                                        VIDEOS RESUMEN DE LA ACTIVIDAD
                                     </span>
                                 </div>
 
