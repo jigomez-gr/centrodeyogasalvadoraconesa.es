@@ -302,7 +302,9 @@ export default function DemoLandingPage() {
     }
     setSessionId(currentSess);
 
-    fetch("/api/widget/config/booking")
+    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
+
+    fetch(`${CRM_API_URL}/api/widget/config/booking`)
       .then((r) => r.json())
       .then((data) => {
         if (data.businessName) setBusinessName(data.businessName);
@@ -348,8 +350,10 @@ export default function DemoLandingPage() {
     setInputValue("");
     setIsTyping(true);
 
+    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
+
     try {
-      const res = await fetch("/api/widget/chat/booking", {
+      const res = await fetch(`${CRM_API_URL}/api/widget/chat/booking`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -397,8 +401,9 @@ export default function DemoLandingPage() {
     if (!waPhone.trim()) return;
 
     setWaLoading(true);
+    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
     try {
-      const res = await fetch("/api/widget/handoff-whatsapp/booking", {
+      const res = await fetch(`${CRM_API_URL}/api/widget/handoff-whatsapp/booking`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
