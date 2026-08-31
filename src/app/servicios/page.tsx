@@ -463,14 +463,14 @@ export default function DemoLandingPage() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span className="flex h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-medium">
-              <strong>Portal de Reservas & Traspaso a WhatsApp:</strong> Prueba el registro de alumnos y citas en tiempo real.
+              <strong>Portal de Reservas & Traspaso a WhatsApp</strong>
             </span>
           </div>
           <Link
-            href="/conversations"
+            href="/"
             className="inline-flex items-center gap-1 bg-white/15 hover:bg-white/25 px-3 py-1 rounded text-xs font-bold transition whitespace-nowrap"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Volver al CRM Inbox
+            <ArrowLeft className="w-3.5 h-3.5" /> Volver a Inicio
           </Link>
         </div>
       </div>
