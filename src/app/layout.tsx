@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Clases de Nagna y Kundalini yoga, baños y puja de gong, meditación guiada y retiros de ayuno terapéutico en Fuenlabrada, dirigido por Salvadora Conesa.",
 };
 
+import { ChatBubbleWidget } from "@/components/ChatBubbleWidget";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1C1C1C]">
         {children}
+        <ChatBubbleWidget agentKey="booking" brandColor="#800020" />
       </body>
     </html>
   );

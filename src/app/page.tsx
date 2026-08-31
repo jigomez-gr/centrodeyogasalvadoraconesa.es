@@ -11,6 +11,7 @@ import PrologoGallery from "@/components/PrologoGallery";
 import AtmosphereGallery from "@/components/AtmosphereGallery";
 import NagnaYogaSection from "@/components/NagnaYogaSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import CrmBookingButton from "@/components/CrmBookingButton";
 import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
@@ -99,55 +100,55 @@ export default async function Home() {
     {
       dayNum: 4,
       title: "La Puja de Gong",
-      subtitle: "Ceremonia nocturna especial",
+      subtitle: "Noche sagrada de sonido",
       href: "#itinerario",
       mainImage: "/imagenes/gong/06_experiencia_de_relajacion_sonora_1920x1080.jpg",
       subImages: [
-        "/imagenes/gong/07_sesion_en_grupo_en_sala_1920x1080.jpg",
-        "/imagenes/gong/02_terapeutas_con_instrumentos_1920x1080.jpg",
-        "/imagenes/gong/05_preparacion_del_espacio_1920x1080.jpg"
+        "/imagenes/gong/07_puja_de_gong_noche_1920x1080.jpg",
+        "/imagenes/gong/08_altar_y_velas_puja_1920x1080.jpg",
+        "/imagenes/gong/09_despertar_y_desayuno_1920x1080.jpg"
       ]
     },
     {
       dayNum: 5,
       title: "Terapia Gestalt",
-      subtitle: "Acompañamiento y terapia individual",
+      subtitle: "Acompañamiento humanista",
       href: "#itinerario",
       mainImage: "/imagenes/gestalt/01_gestalt_consulta_intima_1920x1080.jpg",
       subImages: [
-        "/imagenes/gestalt/02_gestalt_espacio_consulta_1920x1080.jpg",
-        "/imagenes/gestalt/03_gestalt_escucha_y_acompanamiento_1920x1080.jpg"
+        "/imagenes/gestalt/02_gestalt_escucha_empatica_1920x1080.jpg",
+        "/imagenes/gestalt/03_gestalt_dialogo_presencia_1920x1080.jpg",
+        "/imagenes/gestalt/04_gestalt_espacio_terapeutico_1920x1080.jpg"
       ]
     },
     {
       dayNum: 6,
       title: "Constelaciones Familiares",
-      subtitle: "Sanación sistémica y vínculos de amor",
+      subtitle: "Ordenación de vínculos",
       href: "#itinerario",
       mainImage: "/imagenes/constelaciones/101_constelaciones_circulo_sereno_1920x1080.jpg",
       subImages: [
-        "/imagenes/constelaciones/102_constelaciones_vinculos_grupo_1920x1080.jpg",
-        "/imagenes/constelaciones/103_constelaciones_trabajo_relacional_1920x1080.jpg"
+        "/imagenes/constelaciones/102_constelaciones_dinamica_grupo_1920x1080.jpg",
+        "/imagenes/constelaciones/103_constelaciones_mirada_sistemica_1920x1080.jpg",
+        "/imagenes/constelaciones/104_constelaciones_integracion_1920x1080.jpg"
       ]
     },
     {
       dayNum: 7,
-      title: "Encuentro de Mujeres",
-      subtitle: "Sororidad, naturaleza y círculos",
+      title: "Encuentros de Mujeres",
+      subtitle: "Sororidad y naturaleza",
       href: "#itinerario",
       mainImage: "/imagenes/encuentro_mujeres/01_encuentro_mujeres_movimiento_naturaleza.jpeg",
       subImages: [
-        "/imagenes/encuentro_mujeres/02_encuentro_mujeres_grupo.jpeg",
-        "/imagenes/encuentro_mujeres/03_encuentro_mujeres_senderismo.jpeg",
-        "/imagenes/encuentro_mujeres/04_encuentro_mujeres_hoguera.jpeg",
-        "/imagenes/encuentro_mujeres/05_encuentro_mujeres_paisaje.jpeg",
-        "/imagenes/encuentro_mujeres/06_encuentro_mujeres_circulo_bosque.jpeg"
+        "/imagenes/encuentro_mujeres/02_encuentro_mujeres_circulo_fuego_1920x1080.jpg",
+        "/imagenes/encuentro_mujeres/03_encuentro_mujeres_senderismo_1920x1080.jpg",
+        "/imagenes/encuentro_mujeres/04_encuentro_mujeres_abrazo_1920x1080.jpg"
       ]
     },
     {
       dayNum: 8,
       title: "Ayuno Terapéutico",
-      subtitle: "Naturaleza, silencio y descanso",
+      subtitle: "Depuración y ligereza",
       href: "#itinerario",
       mainImage: "/imagenes/ayuno_terapeutico/ayunos_arreglados/201_ayuno_bienvenida_y_colores_1920x1080.jpg",
       subImages: [
@@ -155,16 +156,13 @@ export default async function Home() {
         "/imagenes/ayuno_terapeutico/ayunos_arreglados/203_ayuno_bano_de_mar_y_alegria_1920x1080.jpg",
         "/imagenes/ayuno_terapeutico/ayunos_arreglados/204_ayuno_masaje_y_cuidado_mutuo_1920x1080.jpg",
         "/imagenes/ayuno_terapeutico/ayunos_arreglados/205_ayuno_juego_y_complicidad_1920x1080.jpg",
-        "/imagenes/ayuno_terapeutico/ayunos_arreglados/206_ayuno_paseo_junto_al_mar_1920x1080.jpg",
-        "/imagenes/ayuno_terapeutico/ayunos_arreglados/207_ayuno_cocina_y_comunidad_1920x1080.jpg",
-        "/imagenes/ayuno_terapeutico/ayunos_arreglados/208_ayuno_fiesta_y_desinhibicion_1920x1080.jpg",
-        "/imagenes/ayuno_terapeutico/ayunos_arreglados/209_ayuno_playa_descanso_y_paisaje_1920x1080.jpg"
+        "/imagenes/ayuno_terapeutico/ayunos_arreglados/206_ayuno_paseo_junto_al_mar_1920x1080.jpg"
       ]
     },
     {
       dayNum: 9,
-      title: "Colaboradores y Otras Disciplinas",
-      subtitle: "Ninjutsú, Defensa personal y Taichí",
+      title: "Otras Disciplinas",
+      subtitle: "Salud y colaboradores",
       href: "#itinerario",
       mainImage: "/imagenes/centro/401_interior_centro_yoga_1920x1080.jpg",
       subImages: [
@@ -206,12 +204,9 @@ export default async function Home() {
 
           {/* Call to Actions in Editorial Style */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
-            <a
-              href="#reserva"
-              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200"
-            >
+            <CrmBookingButton message="Hola, me gustaría inscribirme en las actividades del Centro de Yoga Salvadora Conesa.">
               Inscribirse
-            </a>
+            </CrmBookingButton>
             <a
               href="#itinerario"
               className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"

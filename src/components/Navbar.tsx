@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X, Music } from "lucide-react";
+import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -54,12 +55,12 @@ export default function Navbar() {
                         </span>
                     ))}
                     <span className="text-[#C5A059]/40 select-none font-light">|</span>
-                    <a
-                        href="/#reserva"
-                        className="text-[#800020] font-extrabold hover:underline transition duration-200"
+                    <button
+                        onClick={() => triggerCrmChat("Hola, me gustaría información o reservar mi plaza.")}
+                        className="text-[#800020] font-extrabold hover:underline transition duration-200 cursor-pointer"
                     >
                         Reservar Plaza
-                    </a>
+                    </button>
                 </nav>
             </div>
 
@@ -111,13 +112,15 @@ export default function Navbar() {
                                 {item.label}
                             </a>
                         ))}
-                        <a
-                            href="/#reserva"
-                            onClick={() => setIsOpen(false)}
-                            className="block w-full text-center py-2.5 border border-transparent rounded text-xs font-bold uppercase tracking-widest text-white bg-[#800020] hover:bg-[#800020]/90 transition"
+                        <button
+                            onClick={() => {
+                                setIsOpen(false);
+                                triggerCrmChat("Hola, me gustaría información o reservar mi plaza.");
+                            }}
+                            className="block w-full text-center py-2.5 border border-transparent rounded text-xs font-bold uppercase tracking-widest text-white bg-[#800020] hover:bg-[#800020]/90 transition cursor-pointer"
                         >
                             Reservar Plaza
-                        </a>
+                        </button>
                     </nav>
                 </div>
             )}
