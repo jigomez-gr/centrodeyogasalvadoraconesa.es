@@ -30,6 +30,19 @@ export function ChatBubbleWidget({
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Check for duplicate chat bubbles in the DOM before mounting this instance
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const existingBubbles = document.querySelectorAll("[data-crm-chat-bubble='true']");
+      existingBubbles.forEach((el) => {
+        if (containerRef.current && el !== containerRef.current) {
+          el.remove();
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
     let sid = "";
@@ -63,7 +76,7 @@ export function ChatBubbleWidget({
     }
   }, [messages, isTyping, isOpen]);
 
-  // Event listener for opening the chat from any "Reservar Plaza" / "Inscribirse" button on the site
+  // Event listener for opening the chat from any button
   useEffect(() => {
     const handleOpenChat = (e: CustomEvent<{ message?: string }>) => {
       setIsOpen(true);
@@ -137,23 +150,27 @@ export function ChatBubbleWidget({
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <div
+      ref={containerRef}
+      data-crm-chat-bubble="true"
+      className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end"
+    >
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-3 flex h-[520px] w-[360px] max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl transition-all animate-in fade-in slide-in-from-bottom-5">
+        <div className="mb-3 flex h-[560px] max-h-[85vh] w-[380px] max-w-[calc(100vw-24px)] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl transition-all animate-in fade-in slide-in-from-bottom-5">
           {/* Header */}
           <div
-            className="flex items-center justify-between px-4 py-3 text-white shadow-sm"
+            className="flex items-center justify-between px-4 py-3.5 text-white shadow-sm"
             style={{ backgroundColor: brandColor }}
           >
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
-                <Bot className="h-5 w-5 text-white" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/20">
+                <Bot className="h-5.5 w-5.5 text-white" />
               </div>
               <div className="min-w-0">
-                <h3 className="truncate text-sm font-semibold leading-tight">{businessName}</h3>
-                <p className="flex items-center gap-1 text-[11px] text-white/80">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> En línea (Asistente IA)
+                <h3 className="truncate text-base font-semibold leading-tight">{businessName}</h3>
+                <p className="flex items-center gap-1 text-xs text-white/90 font-medium">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400"></span> En línea (Asistente IA)
                 </p>
               </div>
             </div>
@@ -164,7 +181,7 @@ export function ChatBubbleWidget({
                 title="Reiniciar conversación"
                 className="rounded-lg p-1.5 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-4.5 w-4.5" />
               </button>
               <button
                 type="button"
@@ -172,13 +189,13 @@ export function ChatBubbleWidget({
                 title="Cerrar"
                 className="rounded-lg p-1.5 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          {/* Messages List */}
-          <div className="flex-1 space-y-3 overflow-y-auto bg-stone-50 p-4">
+          {/* Messages List - Enhanced mobile font size (text-base sm:text-sm) */}
+          <div className="flex-1 space-y-3.5 overflow-y-auto bg-stone-50 p-4">
             {messages.map((m) => {
               const isUser = m.direction === "outbound";
               return (
@@ -187,10 +204,10 @@ export function ChatBubbleWidget({
                   className={`flex ${isUser ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm ${
+                    className={`max-w-[88%] rounded-2xl px-4 py-3 text-base sm:text-sm leading-relaxed shadow-sm font-sans ${
                       isUser
-                        ? "rounded-br-none text-white"
-                        : "rounded-bl-none border border-stone-200/80 bg-white text-stone-800"
+                        ? "rounded-br-none text-white font-medium"
+                        : "rounded-bl-none border border-stone-200/90 bg-white text-stone-900"
                     }`}
                     style={isUser ? { backgroundColor: brandColor } : {}}
                   >
@@ -202,7 +219,7 @@ export function ChatBubbleWidget({
 
             {isTyping && (
               <div className="flex justify-start">
-                <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-none border border-stone-200/80 bg-white px-4 py-3 shadow-sm">
+                <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-none border border-stone-200/90 bg-white px-4 py-3 shadow-sm">
                   <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400" style={{ animationDelay: "0ms" }} />
                   <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400" style={{ animationDelay: "150ms" }} />
                   <span className="h-2 w-2 animate-bounce rounded-full bg-stone-400" style={{ animationDelay: "300ms" }} />
@@ -212,25 +229,25 @@ export function ChatBubbleWidget({
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Form */}
+          {/* Input Form - Enhanced mobile font size (text-base sm:text-sm) */}
           <form
             onSubmit={(e) => handleSendMessage(e)}
-            className="flex items-center gap-2 border-t border-stone-200 bg-white p-3"
+            className="flex items-center gap-2 border-t border-stone-200 bg-white p-3 sm:p-3.5"
           >
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Escribe tu consulta o reserva..."
-              className="flex-1 rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2 text-sm text-stone-900 outline-none transition-all placeholder:text-stone-400 focus:border-[#800020] focus:bg-white"
+              className="flex-1 rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-base sm:text-sm text-stone-900 outline-none transition-all placeholder:text-stone-400 focus:border-[#800020] focus:bg-white"
             />
             <button
               type="submit"
               disabled={!inputValue.trim() || isTyping}
-              className="flex h-9 w-9 items-center justify-center rounded-xl text-white transition-opacity disabled:opacity-40"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white transition-opacity disabled:opacity-40"
               style={{ backgroundColor: brandColor }}
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-4.5 w-4.5" />
             </button>
           </form>
         </div>
@@ -241,10 +258,10 @@ export function ChatBubbleWidget({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Abrir chat de asistencia de reservas"
-        className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-xl transition-transform hover:scale-105 active:scale-95 border border-white/20"
+        className="flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-full text-white shadow-2xl transition-transform hover:scale-105 active:scale-95 border-2 border-white/30"
         style={{ backgroundColor: brandColor }}
       >
-        {isOpen ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
+        {isOpen ? <X className="h-7 w-7" /> : <MessageSquare className="h-7 w-7" />}
       </button>
     </div>
   );

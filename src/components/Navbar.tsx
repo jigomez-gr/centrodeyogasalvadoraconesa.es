@@ -16,6 +16,7 @@ export default function Navbar() {
         { label: "Testimonios", href: "/#testimonios" },
         { label: "Qué Incluye", href: "/#incluye" },
         { label: "Plazas y Precios", href: "/#precios" },
+        { label: "Contacto", href: "/#contacto" },
     ];
 
     return (
@@ -55,12 +56,12 @@ export default function Navbar() {
                         </span>
                     ))}
                     <span className="text-[#C5A059]/40 select-none font-light">|</span>
-                    <button
-                        onClick={() => triggerCrmChat("Hola, me gustaría información o reservar mi plaza.")}
-                        className="text-[#800020] font-extrabold hover:underline transition duration-200 cursor-pointer"
+                    <a
+                        href="/servicios"
+                        className="text-[#800020] font-extrabold hover:underline transition duration-200"
                     >
                         Reservar Plaza
-                    </button>
+                    </a>
                 </nav>
             </div>
 
@@ -112,15 +113,13 @@ export default function Navbar() {
                                 {item.label}
                             </a>
                         ))}
-                        <button
-                            onClick={() => {
-                                setIsOpen(false);
-                                triggerCrmChat("Hola, me gustaría información o reservar mi plaza.");
-                            }}
-                            className="block w-full text-center py-2.5 border border-transparent rounded text-xs font-bold uppercase tracking-widest text-white bg-[#800020] hover:bg-[#800020]/90 transition cursor-pointer"
+                        <a
+                            href="/servicios"
+                            onClick={() => setIsOpen(false)}
+                            className="block w-full text-center py-2.5 border border-transparent rounded text-xs font-bold uppercase tracking-widest text-white bg-[#800020] hover:bg-[#800020]/90 transition"
                         >
                             Reservar Plaza
-                        </button>
+                        </a>
                     </nav>
                 </div>
             )}
