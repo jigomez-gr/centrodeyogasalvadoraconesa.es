@@ -203,7 +203,7 @@ export default async function Home() {
           </div>
 
           {/* Call to Actions in Editorial Style */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
             <CrmBookingButton message="Hola, me gustaría inscribirme en las actividades del Centro de Yoga Salvadora Conesa.">
               Inscribirse
             </CrmBookingButton>
@@ -213,6 +213,12 @@ export default async function Home() {
             >
               Ver Actividades
             </a>
+            <Link
+              href="/servicios"
+              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#800020] text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/90 shadow-md hover:scale-102 transition duration-250"
+            >
+              Reservar por Actividad
+            </Link>
           </div>
         </div>
 
