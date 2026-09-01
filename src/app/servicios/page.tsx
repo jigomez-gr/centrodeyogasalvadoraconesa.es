@@ -26,6 +26,7 @@ import {
   Users,
 } from "lucide-react";
 import { SimuladorDiagnosticoModal } from "@/components/SimuladorDiagnosticoModal";
+import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 
 interface ChatMessage {
   id: string;
@@ -55,6 +56,12 @@ interface ServiceItem {
 }
 
 export default function DemoLandingPage() {
+  const showAnalizaIA =
+    process.env.NEXT_PUBLIC_ENABLE_ANALIZAIA !== "N" &&
+    process.env.NEXT_PUBLIC_ENABLE_ANALIZAIA !== "n" &&
+    process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "N" &&
+    process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "n";
+
   const [isOpen, setIsOpen] = useState(false);
   const [simuladorOpen, setSimuladorOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -388,12 +395,11 @@ export default function DemoLandingPage() {
   };
 
   const handleServiceSelect = (svc: ServiceItem, preferredShift?: string) => {
-    setIsOpen(true);
     setSelectedService(svc.serviceName);
     const msg = preferredShift
       ? `Hola, me gustaría reservar para ${svc.title} en turno de ${preferredShift}. ¿Qué disponibilidad tenéis?`
       : `Hola, me gustaría información y disponibilidad para ${svc.title}.`;
-    handleSend(msg, svc.serviceName);
+    triggerCrmChat(msg);
   };
 
   const handleWhatsAppHandoff = async (e: React.FormEvent) => {
@@ -533,21 +539,23 @@ export default function DemoLandingPage() {
               <span className="hidden md:inline">Facebook</span>
             </a>
 
-            <button
-              onClick={() => setSimuladorOpen(true)}
-              className="bg-amber-400 hover:bg-amber-500 text-stone-950 px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5"
-            >
-              <Sparkles className="w-3.5 h-3.5" /> Simulador IA
-            </button>
+            {showAnalizaIA && (
+              <button
+                onClick={() => setSimuladorOpen(true)}
+                className="bg-amber-400 hover:bg-amber-500 text-stone-950 px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5" /> Simulador IA
+              </button>
+            )}
             <button
               onClick={() => setWaModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
               <Phone className="w-3.5 h-3.5" /> WhatsApp Alta Rápida
             </button>
             <button
-              onClick={() => setIsOpen(true)}
-              className="bg-[#800020] text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-[#800020]/90 transition shadow-xs flex items-center gap-1.5"
+              onClick={() => triggerCrmChat("Hola, me gustaría consultar la información de las actividades y servicios.")}
+              className="bg-[#800020] text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-[#800020]/90 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
               <MessageSquare className="w-3.5 h-3.5" /> Abrir Asistente
             </button>
@@ -569,8 +577,8 @@ export default function DemoLandingPage() {
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
             <button
-              onClick={() => setIsOpen(true)}
-              className="bg-[#800020] hover:bg-[#800020]/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
+              onClick={() => triggerCrmChat("Hola, me gustaría consultar la disponibilidad en vivo de las actividades del centro.")}
+              className="bg-[#800020] hover:bg-[#800020]/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
             >
               <Calendar className="w-4 h-4" /> Consultar Disponibilidad en Vivo
             </button>
@@ -1082,168 +1090,26 @@ export default function DemoLandingPage() {
       )}
 
       {/* ─── FLOATING ANALIZAIA SIMULATOR BUBBLE ─── */}
-      <button
-        onClick={() => setSimuladorOpen(true)}
-        aria-label="Abrir Simulador de Diagnóstico IA"
-        title="Diagnóstico Visual con IA"
-        className="fixed bottom-24 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-linear-to-tr from-sky-600 to-indigo-600 text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 z-40 flex items-center justify-center border-2 border-white/60 group"
-      >
-        <div className="relative flex items-center justify-center">
-          <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 animate-pulse" />
-        </div>
-      </button>
-
-      {/* ─── FLOATING CHAT BUBBLE BUTTON ─── */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Abrir Asistente de Citas"
-        className="fixed bottom-6 right-4 sm:right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#800020] text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 z-40 flex items-center justify-center border-2 border-white/40 group"
-      >
-        {isOpen ? (
-          <X className="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:rotate-90" />
-        ) : (
-          <div className="relative">
-            <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#800020] animate-ping" />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#800020]" />
+      {showAnalizaIA && (
+        <button
+          onClick={() => setSimuladorOpen(true)}
+          aria-label="Abrir Simulador de Diagnóstico IA"
+          title="Diagnóstico Visual con IA"
+          className="fixed bottom-24 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-linear-to-tr from-sky-600 to-indigo-600 text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 z-40 flex items-center justify-center border-2 border-white/60 group cursor-pointer"
+        >
+          <div className="relative flex items-center justify-center">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 animate-pulse" />
           </div>
-        )}
-      </button>
-
-      {/* ─── FLOATING CHAT MODAL WINDOW (FULLY RESPONSIVE) ─── */}
-      {isOpen && (
-        <div className="fixed bottom-22 sm:bottom-24 right-2 sm:right-6 w-[calc(100vw-16px)] sm:w-[410px] h-[550px] sm:h-[600px] max-h-[calc(100vh-100px)] bg-white rounded-2xl shadow-2xl border border-stone-200 z-40 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
-          {/* Header */}
-          <div className="bg-[#800020] text-white p-3.5 flex items-center justify-between shadow-xs">
-            <div>
-              <div className="font-bold text-sm leading-tight flex items-center gap-1.5">
-                <span>{businessName}</span>
-              </div>
-              <div className="text-[11px] text-white/80 flex items-center gap-1.5 mt-0.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
-                <span>Asistente de Reservas • En línea</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setWaModalOpen(true)}
-                title="Pasar a WhatsApp"
-                className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 transition mr-1"
-              >
-                <Phone className="w-3 h-3" /> WhatsApp
-              </button>
-              <button
-                onClick={resetChat}
-                title="Reiniciar conversación"
-                className="p-1.5 hover:bg-white/15 rounded-lg text-white/80 hover:text-white transition"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                title="Cerrar"
-                className="p-1.5 hover:bg-white/15 rounded-lg text-white/80 hover:text-white transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Quick Selection Chips Carousel */}
-          <div className="bg-[#FAF9F6] border-b border-stone-200 px-3 py-2 flex gap-1.5 overflow-x-auto scrollbar-none">
-            {allServices.slice(0, 6).map((svc) => (
-              <button
-                key={svc.id}
-                onClick={() => handleServiceSelect(svc)}
-                className="bg-white border border-stone-300 hover:bg-[#800020] hover:text-white hover:border-[#800020] rounded-full px-2.5 py-1 text-[10px] font-semibold text-stone-700 whitespace-nowrap transition shadow-2xs flex items-center gap-1"
-              >
-                <span>{svc.categoryIcon}</span>
-                <span>{svc.title.split("(")[0]}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* WhatsApp Handoff Bar */}
-          <div className="bg-emerald-50 border-b border-emerald-200 px-3 py-1.5 flex items-center justify-between text-xs text-emerald-900">
-            <span className="text-[11px] font-medium flex items-center gap-1">
-              <Phone className="w-3 h-3 text-emerald-600" /> ¿Prefieres continuar en tu móvil?
-            </span>
-            <button
-              onClick={() => setWaModalOpen(true)}
-              className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline"
-            >
-              Pasar a WhatsApp
-            </button>
-          </div>
-
-          {/* Message Feed */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 bg-stone-50">
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex ${m.direction === "inbound" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed ${
-                    m.direction === "inbound"
-                      ? "bg-[#800020] text-white rounded-br-xs"
-                      : "bg-white text-stone-800 border border-stone-200 shadow-2xs rounded-bl-xs"
-                  }`}
-                  dangerouslySetInnerHTML={{
-                    __html: m.body
-                      .replace(
-                        /(https?:\/\/[^\s]+)/g,
-                        '<a href="$1" target="_blank" rel="noopener" class="underline font-bold text-amber-600 hover:text-amber-700">$1</a>'
-                      )
-                      .replace(/\n/g, "<br/>"),
-                  }}
-                />
-              </div>
-            ))}
-
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-stone-200 rounded-2xl rounded-bl-xs px-4 py-2.5 shadow-2xs flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0.2s]" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-stone-400 animate-bounce [animation-delay:0.4s]" />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Footer */}
-          <div className="p-2.5 sm:p-3 bg-white border-t border-stone-200 flex items-center gap-2">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSend();
-                }
-              }}
-              placeholder="Ej: ¿Qué turnos hay de Yoga o Iaidō?..."
-              className="flex-1 bg-stone-100 border border-stone-300 focus:border-[#800020] focus:bg-white rounded-full px-3.5 py-2 text-xs text-stone-800 outline-none transition"
-            />
-            <button
-              onClick={() => handleSend()}
-              disabled={isTyping || !inputValue.trim()}
-              className="w-8 h-8 rounded-full bg-[#800020] text-white flex items-center justify-center hover:bg-[#800020]/90 disabled:opacity-40 disabled:cursor-not-allowed transition shrink-0"
-            >
-              <Send className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
+        </button>
       )}
 
       {/* ─── SIMULADOR DE DIAGNÓSTICO POR IA (MODAL) ─── */}
-      <SimuladorDiagnosticoModal
-        open={simuladorOpen}
-        onClose={() => setSimuladorOpen(false)}
-      />
+      {showAnalizaIA && (
+        <SimuladorDiagnosticoModal
+          open={simuladorOpen}
+          onClose={() => setSimuladorOpen(false)}
+        />
+      )}
     </div>
   );
 }

@@ -204,8 +204,8 @@ export default async function Home() {
 
           {/* Call to Actions in Editorial Style */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
-            <CrmBookingButton message="Hola, me gustaría inscribirme en las actividades del Centro de Yoga Salvadora Conesa.">
-              Inscribirse
+            <CrmBookingButton message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.">
+              CONSULTA SERVICIOS
             </CrmBookingButton>
             <a
               href="#itinerario"

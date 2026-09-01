@@ -149,6 +149,8 @@ export function ChatBubbleWidget({
     ]);
   };
 
+  const tooltipText = "Asistente reservas citas, reprogramaciones y cancelaciones";
+
   return (
     <div
       ref={containerRef}
@@ -157,7 +159,7 @@ export function ChatBubbleWidget({
     >
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-3 flex h-[560px] max-h-[85vh] w-[380px] max-w-[calc(100vw-24px)] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl transition-all animate-in fade-in slide-in-from-bottom-5">
+        <div className="mb-3 flex h-[580px] max-h-[85vh] w-[390px] max-w-[calc(100vw-24px)] flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl transition-all animate-in fade-in slide-in-from-bottom-5">
           {/* Header */}
           <div
             className="flex items-center justify-between px-4 py-3.5 text-white shadow-sm"
@@ -168,7 +170,7 @@ export function ChatBubbleWidget({
                 <Bot className="h-5.5 w-5.5 text-white" />
               </div>
               <div className="min-w-0">
-                <h3 className="truncate text-base font-semibold leading-tight">{businessName}</h3>
+                <h3 className="truncate text-base font-bold leading-tight">{businessName}</h3>
                 <p className="flex items-center gap-1 text-xs text-white/90 font-medium">
                   <span className="h-2 w-2 rounded-full bg-emerald-400"></span> En línea (Asistente IA)
                 </p>
@@ -179,7 +181,7 @@ export function ChatBubbleWidget({
                 type="button"
                 onClick={handleResetChat}
                 title="Reiniciar conversación"
-                className="rounded-lg p-1.5 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                className="rounded-lg p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <RotateCcw className="h-4.5 w-4.5" />
               </button>
@@ -187,14 +189,14 @@ export function ChatBubbleWidget({
                 type="button"
                 onClick={() => setIsOpen(false)}
                 title="Cerrar"
-                className="rounded-lg p-1.5 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                className="rounded-lg p-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          {/* Messages List - Enhanced mobile font size (text-base sm:text-sm) */}
+          {/* Messages List - Enhanced mobile font size (text-base on mobile, text-sm on desktop) */}
           <div className="flex-1 space-y-3.5 overflow-y-auto bg-stone-50 p-4">
             {messages.map((m) => {
               const isUser = m.direction === "outbound";
@@ -229,7 +231,7 @@ export function ChatBubbleWidget({
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Form - Enhanced mobile font size (text-base sm:text-sm) */}
+          {/* Input Form - Enhanced mobile font size (text-base on mobile to avoid zoom & enhance legibility) */}
           <form
             onSubmit={(e) => handleSendMessage(e)}
             className="flex items-center gap-2 border-t border-stone-200 bg-white p-3 sm:p-3.5"
@@ -239,30 +241,43 @@ export function ChatBubbleWidget({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Escribe tu consulta o reserva..."
-              className="flex-1 rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-base sm:text-sm text-stone-900 outline-none transition-all placeholder:text-stone-400 focus:border-[#800020] focus:bg-white"
+              className="flex-1 rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 sm:py-2.5 text-base sm:text-sm text-stone-900 outline-none transition-all placeholder:text-stone-400 focus:border-[#800020] focus:bg-white"
             />
             <button
               type="submit"
               disabled={!inputValue.trim() || isTyping}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white transition-opacity disabled:opacity-40"
+              className="flex h-11 w-11 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl text-white transition-opacity disabled:opacity-40"
               style={{ backgroundColor: brandColor }}
             >
-              <Send className="h-4.5 w-4.5" />
+              <Send className="h-5 w-5 sm:h-4.5 sm:w-4.5" />
             </button>
           </form>
         </div>
       )}
 
-      {/* Floating Toggle Button */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Abrir chat de asistencia de reservas"
-        className="flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-full text-white shadow-2xl transition-transform hover:scale-105 active:scale-95 border-2 border-white/30"
-        style={{ backgroundColor: brandColor }}
-      >
-        {isOpen ? <X className="h-7 w-7" /> : <MessageSquare className="h-7 w-7" />}
-      </button>
+      {/* Floating Toggle Button with Tooltip */}
+      <div className="relative group flex items-center">
+        {/* Tooltip visible on hover/focus */}
+        {!isOpen && (
+          <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 transform group-hover:translate-x-0 translate-x-2 z-50">
+            <div className="bg-stone-900/95 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap backdrop-blur-xs border border-white/15 tracking-wide">
+              {tooltipText}
+            </div>
+            <div className="w-2 h-2 bg-stone-900/95 rotate-45 -ml-1 border-r border-t border-white/15" />
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={tooltipText}
+          title={tooltipText}
+          className="flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-full text-white shadow-2xl transition-transform hover:scale-105 active:scale-95 border-2 border-white/30 cursor-pointer"
+          style={{ backgroundColor: brandColor }}
+        >
+          {isOpen ? <X className="h-7 w-7" /> : <MessageSquare className="h-7 w-7" />}
+        </button>
+      </div>
     </div>
   );
 }

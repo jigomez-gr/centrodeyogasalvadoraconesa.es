@@ -689,11 +689,11 @@ export function SimuladorDiagnosticoModal({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="simulador_correo" className="block text-xs font-semibold text-neutral-700 mb-1">
+                    <label htmlFor="simulador_correo" className="block text-sm sm:text-xs font-semibold text-neutral-700 mb-1">
                       Correo *
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                      <Mail className="absolute left-3 top-3 sm:top-2.5 h-4 w-4 text-neutral-400" />
                       <input
                         id="simulador_correo"
                         name="email"
@@ -703,17 +703,17 @@ export function SimuladorDiagnosticoModal({
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                         placeholder="tu-correo@ejemplo.com"
-                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2 text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
+                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="simulador_movil" className="block text-xs font-semibold text-neutral-700 mb-1">
+                    <label htmlFor="simulador_movil" className="block text-sm sm:text-xs font-semibold text-neutral-700 mb-1">
                       Móvil (WhatsApp) *
                     </label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                      <Phone className="absolute left-3 top-3 sm:top-2.5 h-4 w-4 text-neutral-400" />
                       <input
                         id="simulador_movil"
                         name="tel"
@@ -723,17 +723,17 @@ export function SimuladorDiagnosticoModal({
                         value={movil}
                         onChange={(e) => setMovil(e.target.value)}
                         placeholder="+34 600 000 000"
-                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2 text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
+                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="simulador_nombre" className="block text-xs font-semibold text-neutral-700 mb-1">
+                    <label htmlFor="simulador_nombre" className="block text-sm sm:text-xs font-semibold text-neutral-700 mb-1">
                       Nombre
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                      <User className="absolute left-3 top-3 sm:top-2.5 h-4 w-4 text-neutral-400" />
                       <input
                         id="simulador_nombre"
                         name="given-name"
@@ -742,13 +742,13 @@ export function SimuladorDiagnosticoModal({
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
                         placeholder="Tu nombre"
-                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2 text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
+                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 pl-9 pr-3 py-2.5 sm:py-2 text-base sm:text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="simulador_apellido" className="block text-xs font-semibold text-neutral-700 mb-1">
+                    <label htmlFor="simulador_apellido" className="block text-sm sm:text-xs font-semibold text-neutral-700 mb-1">
                       Apellido
                     </label>
                     <input
@@ -759,12 +759,12 @@ export function SimuladorDiagnosticoModal({
                       value={apellido}
                       onChange={(e) => setApellido(e.target.value)}
                       placeholder="Tus apellidos"
-                      className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 px-3 py-2 text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
+                      className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 px-3 py-2.5 sm:py-2 text-base sm:text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
                     />
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label htmlFor="simulador_telegram" className="block text-xs font-semibold text-neutral-700 mb-1">
+                    <label htmlFor="simulador_telegram" className="block text-sm sm:text-xs font-semibold text-neutral-700 mb-1">
                       Telegram ID <span className="text-neutral-400 font-normal">(opcional, solo si ya usas nuestro bot)</span>
                     </label>
                     <input
@@ -775,7 +775,7 @@ export function SimuladorDiagnosticoModal({
                       value={telegramId}
                       onChange={(e) => setTelegramId(e.target.value)}
                       placeholder="@usuario o ID de Telegram"
-                      className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 px-3 py-2 text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
+                      className="w-full rounded-xl border border-neutral-300 bg-neutral-50/50 px-3 py-2.5 sm:py-2 text-base sm:text-xs text-neutral-800 focus:bg-white focus:border-[#800020] focus:ring-1 focus:ring-[#800020] outline-none transition"
                     />
                   </div>
                 </div>
