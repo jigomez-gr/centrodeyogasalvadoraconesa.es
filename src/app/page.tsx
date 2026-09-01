@@ -140,9 +140,9 @@ export default async function Home() {
       href: "#itinerario",
       mainImage: "/imagenes/encuentro_mujeres/01_encuentro_mujeres_movimiento_naturaleza.jpeg",
       subImages: [
-        "/imagenes/encuentro_mujeres/02_encuentro_mujeres_circulo_fuego_1920x1080.jpg",
-        "/imagenes/encuentro_mujeres/03_encuentro_mujeres_senderismo_1920x1080.jpg",
-        "/imagenes/encuentro_mujeres/04_encuentro_mujeres_abrazo_1920x1080.jpg"
+        "/imagenes/encuentro_mujeres/02_encuentro_mujeres_grupo.jpeg",
+        "/imagenes/encuentro_mujeres/04_encuentro_mujeres_hoguera.jpeg",
+        "/imagenes/encuentro_mujeres/06_encuentro_mujeres_circulo_bosque.jpeg"
       ]
     },
     {
