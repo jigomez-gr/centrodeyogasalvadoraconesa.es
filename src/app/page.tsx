@@ -184,7 +184,7 @@ export default async function Home() {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
-          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold mb-1.5 sm:mb-2">
+          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold mb-1.5 sm:mb-2">
             <span className="hidden sm:inline">Clases Regulares, Yoga, Baños de Gong, Gestalt, Constelaciones Familiares, Pujas Gong, Talleres y Retiros y Actividades Varias</span>
             <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
           </div>
@@ -193,7 +193,7 @@ export default async function Home() {
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#C5A059] uppercase font-bold text-center max-w-3xl mb-3 sm:mb-4.5 mt-1 px-4 sm:px-0">
+          <p className="text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold text-center max-w-3xl mb-3 sm:mb-4.5 mt-1 px-4 sm:px-0">
             Desde 1986, guiando la práctica del yoga en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
 
@@ -277,7 +277,7 @@ export default async function Home() {
 
       {/* 4. Introducción Emocional */}
       <section className="pt-16 pb-4 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-mt-24">
-        <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-3">
+        <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-3">
           Centro de Yoga Fuenlabrada
         </span>
         <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
@@ -342,7 +342,7 @@ export default async function Home() {
       <section id="sobre-mi" className="py-20 bg-[#FAF9F6] border-b border-[#C5A059]/20 scroll-mt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Trayectoria y Filosofía
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
@@ -397,7 +397,7 @@ export default async function Home() {
       <section id="itinerario" className="py-24 bg-[#FAF9F6] scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Servicios
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
@@ -413,7 +413,7 @@ export default async function Home() {
       <section className="py-24 bg-white border-y border-[#C5A059]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Actividades del Centro
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
@@ -528,7 +528,7 @@ export default async function Home() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Atmósfera del Centro
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
@@ -544,7 +544,7 @@ export default async function Home() {
       <section id="videos" className="py-24 bg-white border-y border-[#C5A059]/20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Auditorio Virtual
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
@@ -563,7 +563,7 @@ export default async function Home() {
       <section id="viajes-realizados" className="py-24 bg-[#FAF9F6] border-b border-[#C5A059]/20 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Recuerdos de Retiros
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
@@ -637,7 +637,7 @@ export default async function Home() {
       {/* 10. Precio y Plazas */}
       <section id="precios" className="py-24 scroll-mt-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-white border border-[#C5A059]/30 rounded-xl p-8 sm:p-12 shadow-xl">
-          <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+          <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
             Matrícula y Aportación
           </span>
           <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#800020] mb-6">
@@ -690,7 +690,7 @@ export default async function Home() {
       <section id="incluye" className="py-24 bg-white border-y border-[#C5A059]/20 scroll-mt-24 font-sans">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Transparencia y Condiciones
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#800020]">
@@ -756,7 +756,7 @@ export default async function Home() {
       <section id="reserva" className="py-24 bg-[#FAF9F6] scroll-mt-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block mb-2">
+            <span className="text-xs uppercase tracking-widest text-[#96680E] font-extrabold block mb-2">
               Solicitud de Inscripción
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
