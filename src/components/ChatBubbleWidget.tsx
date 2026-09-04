@@ -35,6 +35,7 @@ export function ChatBubbleWidget({
   // VAPI Outbound Call Modal State
   const [showVapiModal, setShowVapiModal] = useState(false);
   const [vapiPhone, setVapiPhone] = useState("");
+  const [vapiName, setVapiName] = useState("");
   const [vapiStatus, setVapiStatus] = useState<"idle" | "calling" | "success" | "error">("idle");
   const [vapiError, setVapiError] = useState("");
 
@@ -263,6 +264,7 @@ export function ChatBubbleWidget({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           phoneNumber: phone,
+          name: vapiName.trim() || undefined,
           agentKey,
           sessionId: sessionId || "web_guest",
           inquiry: inputValue.trim() || undefined,
@@ -444,6 +446,7 @@ export function ChatBubbleWidget({
               type="button"
               onClick={() => {
                 setVapiPhone("");
+                setVapiName("");
                 setVapiStatus("idle");
                 setVapiError("");
                 setShowVapiModal(true);
@@ -557,6 +560,19 @@ export function ChatBubbleWidget({
               </div>
             ) : (
               <form onSubmit={handleVapiCall} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-stone-700 mb-1">
+                    Tu Nombre (opcional)
+                  </label>
+                  <input
+                    type="text"
+                    value={vapiName}
+                    onChange={(e) => setVapiName(e.target.value)}
+                    placeholder="ej. María García"
+                    className="w-full bg-stone-50 border border-stone-300 focus:border-[#4F46E5] focus:bg-white rounded-xl px-4 py-2 text-sm text-stone-900 outline-none transition"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-stone-700 mb-1">
                     Número de Teléfono Destino (con prefijo internacional) <span className="text-red-500">*</span>

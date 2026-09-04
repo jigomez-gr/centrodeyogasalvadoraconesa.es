@@ -33,17 +33,30 @@ export async function POST(req: Request) {
         return NextResponse.json({
           success: true,
           message: crmData.message || "Llamada lanzada con éxito mediante VAPI.",
+          callId: crmData.callId,
+          phoneNumber: crmData.phoneNumber,
           data: crmData,
         });
+      } else {
+        const crmData = await crmRes.json().catch(() => ({}));
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              crmData.error ||
+              `Error en el servidor CRM (${crmRes.status}).`,
+          },
+          { status: crmRes.status }
+        );
       }
-    } catch (crmErr) {
-      console.warn("CRM VAPI endpoint call failed or not yet deployed:", crmErr);
+    } catch (crmErr: any) {
+      console.warn("CRM VAPI endpoint call network failure:", crmErr);
     }
 
-    // Fallback while CRM finishes VAPI endpoint deployment
+    // Fallback if CRM network connection is unreachable
     return NextResponse.json({
       success: true,
-      message: `Petición registrada correctamente para ${phoneNumber}. El asistente de VAPI contactará contigo en breve.`,
+      message: `Petición registrada para ${phoneNumber}. El asistente de VAPI contactará contigo en breve.`,
       phoneNumber,
     });
   } catch (error: any) {
