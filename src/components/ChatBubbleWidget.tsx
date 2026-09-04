@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { MessageSquare, X, Send, Bot, Trash2, ShieldCheck, Check, PhoneCall, MessageCircle, Loader2 } from "lucide-react";
+import { triggerVapiCall } from "@/components/VapiCallModal";
 
 interface ChatMessage {
   id: string;
@@ -31,13 +32,6 @@ export function ChatBubbleWidget({
   const [sessionId, setSessionId] = useState("");
   const [rgpdAccepted, setRgpdAccepted] = useState(true);
   const [clearToast, setClearToast] = useState(false);
-
-  // VAPI Outbound Call Modal State
-  const [showVapiModal, setShowVapiModal] = useState(false);
-  const [vapiPhone, setVapiPhone] = useState("");
-  const [vapiName, setVapiName] = useState("");
-  const [vapiStatus, setVapiStatus] = useState<"idle" | "calling" | "success" | "error">("idle");
-  const [vapiError, setVapiError] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -243,49 +237,7 @@ export function ChatBubbleWidget({
     }
   };
 
-  const handleVapiCall = async (e: React.FormEvent) => {
-    e.preventDefault();
-    let phone = vapiPhone.trim();
-    if (!phone) return;
 
-    // Auto-format Spanish prefix if omitted
-    if (/^[6789]\d{8}$/.test(phone)) {
-      phone = `+34${phone}`;
-    } else if (!phone.startsWith("+")) {
-      phone = `+${phone}`;
-    }
-
-    setVapiStatus("calling");
-    setVapiError("");
-
-    try {
-      const res = await fetch("/api/vapi/call", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phoneNumber: phone,
-          name: vapiName.trim() || undefined,
-          agentKey,
-          sessionId: sessionId || "web_guest",
-          inquiry: inputValue.trim() || undefined,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok && !data.success) {
-        throw new Error(data.error || "No se pudo iniciar la llamada.");
-      }
-
-      setVapiStatus("success");
-      setTimeout(() => {
-        setShowVapiModal(false);
-        setVapiStatus("idle");
-      }, 4000);
-    } catch (err: any) {
-      setVapiStatus("error");
-      setVapiError(err.message || "Error al conectar con VAPI. Puedes llamar directamente al 695 172 625.");
-    }
-  };
 
   const tooltipText = "Asistente reservas citas, reprogramaciones y cancelaciones";
 
@@ -445,17 +397,15 @@ export function ChatBubbleWidget({
             <button
               type="button"
               onClick={() => {
-                setVapiPhone("");
-                setVapiName("");
-                setVapiStatus("idle");
-                setVapiError("");
-                setShowVapiModal(true);
+                triggerVapiCall({
+                  inquiry: inputValue.trim() || (messages.length > 1 ? messages[messages.length - 1].body : "Consulta sobre clases y servicios"),
+                });
               }}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#4F46E5] hover:bg-[#4338CA] py-2 px-2 text-xs font-bold text-white shadow-xs transition active:scale-98 cursor-pointer"
-              title="Pedir por Teléfono con Asistente IA (VAPI)"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#800020] hover:bg-[#800020]/90 py-2 px-2 text-xs font-bold text-white shadow-xs transition active:scale-98 cursor-pointer border border-[#C5A059]/30"
+              title="Pedir por Teléfono con Asistente de Voz IA"
             >
-              <PhoneCall className="h-4 w-4 shrink-0" />
-              <span className="truncate">Pedir por Teléfono (VAPI)</span>
+              <PhoneCall className="h-4 w-4 shrink-0 text-[#C5A059]" />
+              <span className="truncate">Te Llamamos (IA)</span>
             </button>
           </div>
 
@@ -521,116 +471,6 @@ export function ChatBubbleWidget({
           >
             <MessageSquare className="h-7 w-7" />
           </button>
-        </div>
-      )}
-
-      {/* VAPI Phone Call Modal (matching CRM modal in media_1788495453479.png) */}
-      {showVapiModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-70 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-stone-200 space-y-4 animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
-            <div className="flex items-start justify-between gap-3">
-              <div className="space-y-1">
-                <h3 className="text-base sm:text-lg font-bold text-stone-900 leading-tight">
-                  Lanzar Llamada Saliente con Asistente IA (VAPI)
-                </h3>
-                <p className="text-xs text-stone-500 leading-relaxed">
-                  El asistente inteligente de VAPI marcará inmediatamente al número que indiques. Al descolgar, comenzará la conversación simulando un asesor del centro para informarte o tramitar tu reserva.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowVapiModal(false)}
-                className="text-stone-400 hover:text-stone-700 p-1 rounded-lg transition cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Form */}
-            {vapiStatus === "success" ? (
-              <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-center space-y-2 text-emerald-900 animate-in fade-in">
-                <div className="w-10 h-10 mx-auto rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
-                  <Check className="w-6 h-6" />
-                </div>
-                <p className="font-bold text-sm">¡Llamada lanzada con éxito!</p>
-                <p className="text-xs text-emerald-700">
-                  El asistente de VAPI está llamando a <strong>{vapiPhone}</strong>. En breves segundos sonará tu teléfono.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleVapiCall} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-stone-700 mb-1">
-                    Tu Nombre (opcional)
-                  </label>
-                  <input
-                    type="text"
-                    value={vapiName}
-                    onChange={(e) => setVapiName(e.target.value)}
-                    placeholder="ej. María García"
-                    className="w-full bg-stone-50 border border-stone-300 focus:border-[#4F46E5] focus:bg-white rounded-xl px-4 py-2 text-sm text-stone-900 outline-none transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-stone-700 mb-1">
-                    Número de Teléfono Destino (con prefijo internacional) <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={vapiPhone}
-                    onChange={(e) => setVapiPhone(e.target.value)}
-                    placeholder="ej. +34600112233"
-                    className="w-full bg-stone-50 border border-stone-300 focus:border-[#4F46E5] focus:bg-white rounded-xl px-4 py-2.5 text-sm text-stone-900 outline-none transition"
-                  />
-                  <p className="text-[11px] text-stone-400 mt-1">
-                    Si no incluyes prefijo, se aplicará automáticamente el prefijo de España (+34).
-                  </p>
-                </div>
-
-                {vapiError && (
-                  <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 space-y-1">
-                    <p className="font-semibold">{vapiError}</p>
-                    <p className="text-[11px]">
-                      También puedes llamar directamente al{" "}
-                      <a href="tel:+34695172625" className="font-bold underline text-[#800020]">
-                        695 172 625
-                      </a>
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-end gap-2.5 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setShowVapiModal(false)}
-                    className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 rounded-xl transition cursor-pointer"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={!vapiPhone.trim() || vapiStatus === "calling"}
-                    className="flex items-center gap-2 px-4.5 py-2 bg-[#4F46E5] hover:bg-[#4338CA] disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow-md transition cursor-pointer active:scale-98"
-                  >
-                    {vapiStatus === "calling" ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Conectando...</span>
-                      </>
-                    ) : (
-                      <>
-                        <PhoneCall className="w-4 h-4" />
-                        <span>Llamar Ahora</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
         </div>
       )}
     </div>

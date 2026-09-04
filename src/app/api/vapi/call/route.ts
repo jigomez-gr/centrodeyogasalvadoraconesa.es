@@ -7,14 +7,17 @@ export async function POST(req: Request) {
 
     if (!phoneNumber) {
       return NextResponse.json(
-        { success: false, error: "El número de teléfono es obligatorio." },
+        { success: false, error: "El número de teléfono es obligatorio y debe tener formato E.164 (+34...)" },
         { status: 400 }
       );
     }
 
     const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
 
-    // Forward the outbound call request to CRM Salvadora
+    // Set a timeout for the CRM VAPI request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+
     try {
       const crmRes = await fetch(`${CRM_API_URL}/api/widget/vapi/call`, {
         method: "POST",
@@ -24,46 +27,43 @@ export async function POST(req: Request) {
           name: name || "Visitante Web",
           agentKey,
           sessionId: sessionId || "web_guest",
-          inquiry,
+          inquiry: inquiry || "Consulta general desde la web",
         }),
+        signal: controller.signal,
       });
 
-      if (crmRes.ok) {
-        const crmData = await crmRes.json();
-        return NextResponse.json({
-          success: true,
-          message: crmData.message || "Llamada lanzada con éxito mediante VAPI.",
-          callId: crmData.callId,
-          phoneNumber: crmData.phoneNumber,
-          data: crmData,
-        });
-      } else {
-        const crmData = await crmRes.json().catch(() => ({}));
+      clearTimeout(timeoutId);
+
+      const crmData = await crmRes.json().catch(() => ({}));
+
+      if (!crmRes.ok) {
         return NextResponse.json(
           {
             success: false,
-            error:
-              crmData.error ||
-              `Error en el servidor CRM (${crmRes.status}).`,
+            error: crmData.error || `Error del servidor CRM (${crmRes.status}).`,
           },
           { status: crmRes.status }
         );
       }
-    } catch (crmErr: any) {
-      console.warn("CRM VAPI endpoint call network failure:", crmErr);
-    }
 
-    // Fallback if CRM network connection is unreachable
-    return NextResponse.json({
-      success: true,
-      message: `Petición registrada para ${phoneNumber}. El asistente de VAPI contactará contigo en breve.`,
-      phoneNumber,
-    });
+      return NextResponse.json(crmData, { status: 200 });
+    } catch (crmFetchErr: any) {
+      clearTimeout(timeoutId);
+      console.error("Error al contactar con el CRM de Salvadora:", crmFetchErr);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Error al contactar con VAPI o el CRM. Puedes llamarnos directamente al 695 172 625.",
+        },
+        { status: 502 }
+      );
+    }
   } catch (error: any) {
-    console.error("Error in /api/vapi/call:", error);
+    console.error("Error general en /api/vapi/call:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Error interno al procesar la llamada." },
+      { success: false, error: error.message || "Error interno al procesar llamada." },
       { status: 500 }
     );
   }
 }
+

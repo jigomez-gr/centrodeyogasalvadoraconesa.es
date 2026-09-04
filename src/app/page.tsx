@@ -12,6 +12,7 @@ import AtmosphereGallery from "@/components/AtmosphereGallery";
 import NagnaYogaSection from "@/components/NagnaYogaSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import CrmBookingButton from "@/components/CrmBookingButton";
+import VapiCallButton from "@/components/VapiCallButton";
 import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
@@ -207,6 +208,9 @@ export default async function Home() {
             <CrmBookingButton message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.">
               CONSULTA SERVICIOS
             </CrmBookingButton>
+            <VapiCallButton inquiry="Consulta general sobre clases de yoga y terapias">
+              TE LLAMAMOS GRATIS (IA)
+            </VapiCallButton>
             <a
               href="#itinerario"
               className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
@@ -780,6 +784,39 @@ export default async function Home() {
           <p className="text-xs sm:text-sm text-[#1C1C1C]/70 max-w-xl mx-auto mb-8">
             Póngase en contacto directamente con Salvadora Conesa. Estaremos encantados de resolver sus preguntas sobre nuestras clases, baños de gong, retiros y talleres.
           </p>
+
+          {/* Card Destacada: Llamada Inmediata con Asistente de Voz IA */}
+          <div className="mb-10 max-w-2xl mx-auto bg-gradient-to-br from-[#FAF9F6] via-white to-[#FAF9F6] border border-[#C5A059]/35 rounded-2xl p-6 sm:p-7 shadow-lg shadow-[#800020]/5 relative overflow-hidden text-left">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 rounded-bl-full pointer-events-none" />
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-[#800020] text-white flex items-center justify-center shrink-0 shadow-md shadow-[#800020]/25">
+                <Phone className="w-7 h-7 text-[#C5A059]" />
+              </div>
+              <div className="flex-1 space-y-1.5 text-center sm:text-left">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#800020]/10 text-[#800020] text-[10.5px] font-bold uppercase tracking-wider">
+                  <Sparkles className="w-3 h-3 text-[#C5A059]" />
+                  <span>Asistente de Voz Inteligente 24/7</span>
+                </div>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#800020]">
+                  ¿Prefieres que te llamemos ahora mismo?
+                </h3>
+                <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
+                  Indica tu número de teléfono y nuestro asistente inteligente te llamará de inmediato y de forma gratuita para informarte sobre horarios, aportaciones o formalizar tu reserva.
+                </p>
+              </div>
+            </div>
+            <div className="mt-5 pt-4 border-t border-[#C5A059]/20 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span className="text-[11px] text-stone-500 font-medium text-center sm:text-left">
+                Llamada saliente sin coste · Cumple RGPD
+              </span>
+              <VapiCallButton
+                inquiry="Consulta directa desde la sección de contacto"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#800020] hover:bg-[#800020]/95 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md shadow-[#800020]/20 hover:scale-101 active:scale-98 transition duration-200 cursor-pointer"
+              >
+                Solicitar llamada inmediata
+              </VapiCallButton>
+            </div>
+          </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm sm:text-base font-semibold">
 

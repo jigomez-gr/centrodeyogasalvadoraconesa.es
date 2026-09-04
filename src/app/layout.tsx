@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import { ChatBubbleWidget } from "@/components/ChatBubbleWidget";
+import VapiCallModal from "@/components/VapiCallModal";
 
 export default function RootLayout({
   children,
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1C1C1C]">
         {children}
         <ChatBubbleWidget agentKey="booking" brandColor="#800020" />
+        <VapiCallModal />
       </body>
     </html>
   );
