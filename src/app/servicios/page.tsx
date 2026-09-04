@@ -62,14 +62,17 @@ export default function DemoLandingPage() {
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "N" &&
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "n";
 
-  const [isOpen, setIsOpen] = useState(false);
   const [simuladorOpen, setSimuladorOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [sessionId, setSessionId] = useState("");
-  const [businessName, setBusinessName] = useState("Centro de Yoga y Bienestar Salvadora");
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [isCrmChatOpen, setIsCrmChatOpen] = useState(false);
+
+  useEffect(() => {
+    const handleCrmVisibility = (e: CustomEvent<{ isOpen: boolean }>) => {
+      setIsCrmChatOpen(!!e?.detail?.isOpen);
+    };
+    window.addEventListener("crm-chat-visibility-change" as any, handleCrmVisibility as EventListener);
+    return () => window.removeEventListener("crm-chat-visibility-change" as any, handleCrmVisibility as EventListener);
+  }, []);
 
   // WhatsApp Handoff Form State
   const [waModalOpen, setWaModalOpen] = useState(false);
@@ -78,8 +81,6 @@ export default function DemoLandingPage() {
   const [waEmail, setWaEmail] = useState("");
   const [waLoading, setWaLoading] = useState(false);
   const [waSuccess, setWaSuccess] = useState(false);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // ─── 1. SERVICIOS DEL CENTRO / CLUB SOCIAL PARQUE GRANADA (EXCLUSIVAMENTE 2) ───
   const centroActivities: ServiceItem[] = [
@@ -301,105 +302,12 @@ export default function DemoLandingPage() {
 
   const allServices = [...centroActivities, ...regularYogaServices, ...eventServices];
 
-  useEffect(() => {
-    let currentSess = localStorage.getItem("crm_widget_demo_session");
-    if (!currentSess) {
-      currentSess = "sess_" + Math.random().toString(36).substring(2, 9);
-      localStorage.setItem("crm_widget_demo_session", currentSess);
-    }
-    setSessionId(currentSess);
-
-    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
-
-    fetch(`${CRM_API_URL}/api/widget/config/booking`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.businessName) setBusinessName(data.businessName);
-        setMessages([
-          {
-            id: "greeting",
-            direction: "outbound",
-            body:
-              data.greeting ||
-              "¡Hola! Te damos la bienvenida al Centro de Yoga y Bienestar Salvadora Conesa y Club Social Parque Granada. ¿En qué actividad, clase o retiro te gustaría información o reservar tu plaza?",
-          },
-        ]);
-      })
-      .catch(() => {
-        setMessages([
-          {
-            id: "greeting-fallback",
-            direction: "outbound",
-            body:
-              "¡Hola! 👋 Te damos la bienvenida al Centro de Yoga y Bienestar Salvadora Conesa & Parque Granada. ¿Qué actividad o clase te gustaría consultar o reservar?",
-          },
-        ]);
-      });
-  }, []);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
-
-  const handleSend = async (textToSend?: string, serviceName?: string) => {
-    const text = (textToSend || inputValue).trim();
-    if (!text && !serviceName) return;
-
-    if (serviceName) setSelectedService(serviceName);
-
-    const userMsg: ChatMessage = {
-      id: "user_" + Date.now(),
-      direction: "inbound",
-      body: text || `Información y reserva para ${serviceName}`,
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
-    setIsTyping(true);
-
-    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
-
-    try {
-      const res = await fetch(`${CRM_API_URL}/api/widget/chat/booking`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: sessionId || "sess_demo",
-          message: text || `Información y reserva para ${serviceName}`,
-          serviceName: serviceName,
-        }),
-      });
-      const data = await res.json();
-      setIsTyping(false);
-      if (data.reply) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: "bot_" + Date.now(),
-            direction: "outbound",
-            body: data.reply,
-          },
-        ]);
-      }
-    } catch {
-      setIsTyping(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: "err_" + Date.now(),
-          direction: "outbound",
-          body: "Disculpa, ha ocurrido un error al conectar con el asistente. Inténtalo de nuevo.",
-        },
-      ]);
-    }
-  };
-
   const handleServiceSelect = (svc: ServiceItem, preferredShift?: string) => {
     setSelectedService(svc.serviceName);
     const msg = preferredShift
       ? `Hola, me gustaría reservar para ${svc.title} en turno de ${preferredShift}. ¿Qué disponibilidad tenéis?`
       : `Hola, me gustaría información y disponibilidad para ${svc.title}.`;
-    triggerCrmChat(msg);
+    triggerCrmChat(msg, true);
   };
 
   const handleWhatsAppHandoff = async (e: React.FormEvent) => {
@@ -408,12 +316,13 @@ export default function DemoLandingPage() {
 
     setWaLoading(true);
     const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
+    const currentSession = (typeof window !== "undefined" && localStorage.getItem("crm_widget_session_id")) || "web_guest";
     try {
       const res = await fetch(`${CRM_API_URL}/api/widget/handoff-whatsapp/booking`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sessionId: sessionId || "sess_demo",
+          sessionId: currentSession,
           name: waName.trim() || "Visitante Web",
           phone: waPhone.trim(),
           email: waEmail.trim() || undefined,
@@ -424,15 +333,6 @@ export default function DemoLandingPage() {
       const data = await res.json();
       setWaLoading(false);
       setWaSuccess(true);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: "handoff_" + Date.now(),
-          direction: "outbound",
-          body: `📲 ¡Perfecto, ${waName || "amig@"}! Te hemos dado de alta en nuestro sistema con el teléfono **${waPhone}**. Ya puedes continuar la conversación directamente en WhatsApp.`,
-        },
-      ]);
 
       setTimeout(() => {
         if (data.whatsappUrl) {
@@ -445,20 +345,6 @@ export default function DemoLandingPage() {
       setWaLoading(false);
       alert("No se pudo conectar con el servidor. Inténtalo de nuevo.");
     }
-  };
-
-  const resetChat = () => {
-    const newSess = "sess_" + Math.random().toString(36).substring(2, 9);
-    localStorage.setItem("crm_widget_demo_session", newSess);
-    setSessionId(newSess);
-    setSelectedService(null);
-    setMessages([
-      {
-        id: "greeting-reset",
-        direction: "outbound",
-        body: "¡Hola de nuevo! He reiniciado la conversación. ¿Qué actividad o servicio te gustaría consultar?",
-      },
-    ]);
   };
 
   return (
@@ -554,7 +440,7 @@ export default function DemoLandingPage() {
               <Phone className="w-3.5 h-3.5" /> WhatsApp Alta Rápida
             </button>
             <button
-              onClick={() => triggerCrmChat("Hola, me gustaría consultar la información de las actividades y servicios.")}
+              onClick={() => triggerCrmChat("Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.", false)}
               className="bg-[#800020] text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-[#800020]/90 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
               <MessageSquare className="w-3.5 h-3.5" /> Abrir Asistente
@@ -577,7 +463,7 @@ export default function DemoLandingPage() {
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
             <button
-              onClick={() => triggerCrmChat("Hola, me gustaría consultar la disponibilidad en vivo de las actividades del centro.")}
+              onClick={() => triggerCrmChat("Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.", false)}
               className="bg-[#800020] hover:bg-[#800020]/90 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
             >
               <Calendar className="w-4 h-4" /> Consultar Disponibilidad en Vivo
@@ -1087,8 +973,8 @@ export default function DemoLandingPage() {
         </div>
       )}
 
-      {/* ─── FLOATING ANALIZAIA SIMULATOR BUBBLE ─── */}
-      {showAnalizaIA && (
+      {/* ─── FLOATING ANALIZAIA SIMULATOR BUBBLE (hidden when CRM chat is open to prevent stacking) ─── */}
+      {showAnalizaIA && !isCrmChatOpen && (
         <button
           onClick={() => setSimuladorOpen(true)}
           aria-label="Abrir Simulador de Diagnóstico IA"

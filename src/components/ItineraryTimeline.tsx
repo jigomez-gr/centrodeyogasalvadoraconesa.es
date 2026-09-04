@@ -521,7 +521,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
         setMode(dayId, "booking");
         const bookingInfo = ACTIVITY_BOOKING_MESSAGES[dayId];
         if (bookingInfo) {
-            triggerCrmChat(bookingInfo.queryMessage);
+            triggerCrmChat(bookingInfo.queryMessage, true);
         }
     };
 
@@ -800,7 +800,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                                     <div className="space-y-2 pt-2">
                                                         <button
                                                             type="button"
-                                                            onClick={() => triggerCrmChat(bookingInfo.queryMessage)}
+                                                            onClick={() => triggerCrmChat(bookingInfo.queryMessage, true)}
                                                             className="w-full py-2.5 px-3 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                                                         >
                                                             <MessageSquare className="w-4 h-4" />

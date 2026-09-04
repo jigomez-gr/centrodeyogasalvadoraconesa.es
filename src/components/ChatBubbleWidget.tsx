@@ -34,16 +34,20 @@ export function ChatBubbleWidget({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Check for duplicate chat bubbles in the DOM before mounting this instance
+  // Check for duplicate chat bubbles in the DOM before mounting and periodically
   useEffect(() => {
-    if (typeof document !== "undefined") {
+    const cleanupDuplicateBubbles = () => {
+      if (typeof document === "undefined") return;
       const existingBubbles = document.querySelectorAll("[data-crm-chat-bubble='true']");
       existingBubbles.forEach((el) => {
         if (containerRef.current && el !== containerRef.current) {
           el.remove();
         }
       });
-    }
+    };
+    cleanupDuplicateBubbles();
+    const interval = setInterval(cleanupDuplicateBubbles, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -101,17 +105,14 @@ export function ChatBubbleWidget({
     }
   }, [messages, isTyping, isOpen]);
 
-  // Event listener for opening the chat from any button
+  // Broadcast chat visibility changes to prevent other floating UI elements from colliding
   useEffect(() => {
-    const handleOpenChat = (e: CustomEvent<{ message?: string }>) => {
-      setIsOpen(true);
-      if (e?.detail?.message) {
-        setInputValue(e.detail.message);
-      }
-    };
-    window.addEventListener("open-crm-chat" as any, handleOpenChat as EventListener);
-    return () => window.removeEventListener("open-crm-chat" as any, handleOpenChat as EventListener);
-  }, []);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("crm-chat-visibility-change", { detail: { isOpen } })
+      );
+    }
+  }, [isOpen]);
 
   const handleAcceptRgpd = () => {
     try {
@@ -169,6 +170,40 @@ export function ChatBubbleWidget({
       setIsTyping(false);
     }
   };
+
+  const handleSendMessageRef = useRef(handleSendMessage);
+  handleSendMessageRef.current = handleSendMessage;
+
+  // Event listener for opening the chat from any button
+  useEffect(() => {
+    const handleOpenChat = (e: CustomEvent<{ message?: string; autoSend?: boolean }>) => {
+      // 1. Clean up any duplicate chat bubbles or launcher traces in DOM
+      if (typeof document !== "undefined") {
+        document.querySelectorAll("[data-crm-chat-bubble='true']").forEach((el) => {
+          if (containerRef.current && el !== containerRef.current) {
+            el.remove();
+          }
+        });
+      }
+
+      setIsOpen(true);
+      const text = e?.detail?.message;
+      const shouldAutoSend = !!e?.detail?.autoSend;
+
+      if (text) {
+        if (shouldAutoSend) {
+          // Specific activity: auto-send immediately
+          handleSendMessageRef.current(undefined, text);
+        } else {
+          // General consultation: leave message prepared in input box
+          setInputValue(text);
+        }
+      }
+    };
+
+    window.addEventListener("open-crm-chat" as any, handleOpenChat as EventListener);
+    return () => window.removeEventListener("open-crm-chat" as any, handleOpenChat as EventListener);
+  }, []);
 
   const handleClearHistory = () => {
     const sid = "web_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now();
@@ -386,36 +421,44 @@ export function ChatBubbleWidget({
         </div>
       )}
 
-      {/* Floating Toggle Button with Tooltip */}
-      <div className="relative group flex items-center">
-        {/* Tooltip visible on hover/focus */}
-        {!isOpen && (
+      {/* Floating Toggle Button with Tooltip (ONLY visible when chat is closed to avoid stacking) */}
+      {!isOpen && (
+        <div className="relative group flex items-center">
+          {/* Tooltip visible on hover/focus */}
           <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-200 transform group-hover:translate-x-0 translate-x-2 z-50">
             <div className="bg-stone-900/95 text-white text-xs font-medium px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap backdrop-blur-xs border border-white/15 tracking-wide">
               {tooltipText}
             </div>
             <div className="w-2 h-2 bg-stone-900/95 rotate-45 -ml-1 border-r border-t border-white/15" />
           </div>
-        )}
 
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={tooltipText}
-          title={tooltipText}
-          className="flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-full text-white shadow-2xl transition-transform hover:scale-105 active:scale-95 border-2 border-white/30 cursor-pointer"
-          style={{ backgroundColor: brandColor }}
-        >
-          {isOpen ? <X className="h-7 w-7" /> : <MessageSquare className="h-7 w-7" />}
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-label={tooltipText}
+            title={tooltipText}
+            className="flex h-14 w-14 sm:h-15 sm:w-15 items-center justify-center rounded-full text-white shadow-2xl transition-transform hover:scale-105 active:scale-95 border-2 border-white/30 cursor-pointer"
+            style={{ backgroundColor: brandColor }}
+          >
+            <MessageSquare className="h-7 w-7" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 // Global helper function to trigger the CRM widget from any button or component
-export function triggerCrmChat(message?: string) {
+export function triggerCrmChat(message?: string, autoSend: boolean = false) {
   if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("open-crm-chat", { detail: { message } }));
+    window.dispatchEvent(
+      new CustomEvent("open-crm-chat", {
+        detail: {
+          message: message || "Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.",
+          autoSend,
+        },
+      })
+    );
   }
 }
+

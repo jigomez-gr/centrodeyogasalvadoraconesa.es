@@ -36,37 +36,42 @@ export default function Navbar() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#C5A059]/15 shadow-sm font-sans">
             {/* Desktop Centered Header Layout */}
-            <div className="hidden xl:flex flex-col items-center pt-3 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
-                {/* Logo Image absolutely positioned on the left (spanning the height of the header) */}
-                <a href="/" onClick={handleInicioClick} className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none cursor-pointer">
+            <div className="hidden xl:flex flex-col items-center pt-2.5 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+                {/* Logo Image absolutely positioned on the top left (aligned with Brand text, NEVER overlapping the nav below) */}
+                <a
+                    href="/"
+                    onClick={handleInicioClick}
+                    className="absolute left-6 lg:left-8 top-2.5 group select-none cursor-pointer z-10"
+                    title="Centro de Yoga Salvadora Conesa - Inicio"
+                >
                     <img
                         src="/imagenes/logo/logo.png"
                         alt="Logo Centro de Yoga Salvadora Conesa"
-                        className="h-[74px] w-auto object-contain transition duration-300 group-hover:scale-105"
+                        className="h-[52px] w-auto object-contain transition duration-300 group-hover:scale-105"
                     />
                 </a>
 
                 {/* Centered Brand Text Block */}
-                <a href="/" onClick={handleInicioClick} className="flex flex-col items-center leading-tight mb-2 select-none cursor-pointer">
+                <a href="/" onClick={handleInicioClick} className="flex flex-col items-center leading-tight mb-2.5 select-none cursor-pointer">
                     <div className="flex items-center space-x-1.5 text-[10px] tracking-widest text-[#C5A059] uppercase font-semibold">
                         <span>CENTRO DE YOGA FUENLABRADA</span>
                     </div>
-                    <h2 className="font-serif text-lg sm:text-2xl font-bold text-[#800020] tracking-wide uppercase font-editorial">
+                    <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#800020] tracking-wide uppercase font-editorial">
                         Salvadora Conesa
                     </h2>
                 </a>
 
                 {/* Submenu links with vertical pipes */}
-                <nav className="flex items-center justify-center space-x-5 text-[10px] font-bold uppercase tracking-widest text-stone-600">
+                <nav className="flex items-center justify-center space-x-3.5 lg:space-x-5 text-[10.5px] font-bold uppercase tracking-widest text-stone-600">
                     {menuItems.map((item, idx) => {
                         const isInicio = item.label.toLowerCase() === "inicio";
                         return (
-                            <span key={item.label} className="flex items-center space-x-5">
+                            <span key={item.label} className="flex items-center space-x-3.5 lg:space-x-5">
                                 {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
                                 <a
                                     href={item.href}
                                     onClick={isInicio ? handleInicioClick : undefined}
-                                    className={`hover:text-[#800020] transition duration-200 ${isInicio ? "cursor-pointer font-extrabold text-stone-800" : ""}`}
+                                    className={`hover:text-[#800020] transition duration-200 ${isInicio ? "cursor-pointer font-extrabold text-[#800020]" : ""}`}
                                 >
                                     {item.label}
                                 </a>
