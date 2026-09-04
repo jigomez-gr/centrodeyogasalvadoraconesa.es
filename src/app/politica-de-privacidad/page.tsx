@@ -45,6 +45,11 @@ export default function PoliticaPrivacidadPage() {
           <p>
             Usted tiene derecho a acceder, rectificar, suprimir, limitar u oponerse al tratamiento de sus datos personales enviando una solicitud a nuestro correo de contacto de Salvadora Conesa.
           </p>
+
+          <h2 className="font-serif text-xl font-bold text-[#800020] pt-4">4. Asistente Virtual con Inteligencia Artificial</h2>
+          <p>
+            En nuestra plataforma ponemos a su disposición un asistente virtual interactivo dotado de Inteligencia Artificial para facilitar la resolución de dudas frecuentes sobre horarios, servicios y gestión de reservas. El usuario consiente de forma informada y previa la interacción con dicho sistema automatizado. Las conversaciones pueden ser tratadas con la exclusiva finalidad de prestar el servicio solicitado y gestionar su cita, pudiendo el usuario en cualquier momento borrar su historial de conversación directamente desde la propia interfaz del chat o ejercitar sus derechos reconocidos por el RGPD.
+          </p>
         </article>
       </main>
 

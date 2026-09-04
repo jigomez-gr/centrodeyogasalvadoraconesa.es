@@ -917,34 +917,32 @@ export default function DemoLandingPage() {
         </div>
 
         {/* Legal Links, Copyright and Webmaster */}
-        <div className="max-w-6xl mx-auto px-4 pt-4 border-t border-stone-800 text-center space-y-2">
+        <div className="max-w-6xl mx-auto px-4 pt-4 border-t border-stone-800 text-center space-y-3">
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-stone-400">
             <a
-              href="https://salvadora.jigretera.com/politica-de-privacidad"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/politica-de-privacidad"
               className="hover:underline hover:text-amber-400 transition"
             >
               Política de Privacidad
             </a>
             <span className="text-stone-600 select-none">•</span>
             <a
-              href="https://salvadora.jigretera.com/politica-de-cookies"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/politica-de-cookies"
               className="hover:underline hover:text-amber-400 transition"
             >
               Política de Cookies
             </a>
             <span className="text-stone-600 select-none">•</span>
             <a
-              href="https://salvadora.jigretera.com/ley-de-proteccion-de-datos"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/ley-de-proteccion-de-datos"
               className="hover:underline hover:text-amber-400 transition"
             >
-              Ley de Protección de Datos
+              Ley de Protección de Datos (RGPD)
             </a>
+          </div>
+
+          <div className="max-w-2xl mx-auto px-3 py-2 rounded-lg bg-stone-800/60 border border-stone-700/60 text-[11px] text-stone-400 leading-relaxed">
+            🛡️ <strong>Cumplimiento RGPD (UE 2016/679) y LOPDGDD 3/2018</strong>: Tratamiento seguro y confidencial de datos personales y uso responsable de Asistente Virtual con Inteligencia Artificial.
           </div>
 
           <p className="text-[11px] text-stone-500">

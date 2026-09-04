@@ -19,12 +19,26 @@ export default function Navbar() {
         { label: "Contacto", href: "/#contacto" },
     ];
 
+    const handleInicioClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (typeof window !== "undefined") {
+            if (window.location.pathname === "/") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                if (window.location.hash) {
+                    history.replaceState(null, "", "/");
+                }
+            } else {
+                window.location.href = "/";
+            }
+        }
+    };
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#C5A059]/15 shadow-sm font-sans">
             {/* Desktop Centered Header Layout */}
             <div className="hidden xl:flex flex-col items-center pt-3 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
                 {/* Logo Image absolutely positioned on the left (spanning the height of the header) */}
-                <a href="/" className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none">
+                <a href="/" onClick={handleInicioClick} className="absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 group select-none cursor-pointer">
                     <img
                         src="/imagenes/logo/logo.png"
                         alt="Logo Centro de Yoga Salvadora Conesa"
@@ -33,7 +47,7 @@ export default function Navbar() {
                 </a>
 
                 {/* Centered Brand Text Block */}
-                <a href="/" className="flex flex-col items-center leading-tight mb-2 select-none">
+                <a href="/" onClick={handleInicioClick} className="flex flex-col items-center leading-tight mb-2 select-none cursor-pointer">
                     <div className="flex items-center space-x-1.5 text-[10px] tracking-widest text-[#C5A059] uppercase font-semibold">
                         <span>CENTRO DE YOGA FUENLABRADA</span>
                     </div>
@@ -44,17 +58,21 @@ export default function Navbar() {
 
                 {/* Submenu links with vertical pipes */}
                 <nav className="flex items-center justify-center space-x-5 text-[10px] font-bold uppercase tracking-widest text-stone-600">
-                    {menuItems.map((item, idx) => (
-                        <span key={item.label} className="flex items-center space-x-5">
-                            {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
-                            <a
-                                href={item.href}
-                                className="hover:text-[#800020] transition duration-200"
-                            >
-                                {item.label}
-                            </a>
-                        </span>
-                    ))}
+                    {menuItems.map((item, idx) => {
+                        const isInicio = item.label.toLowerCase() === "inicio";
+                        return (
+                            <span key={item.label} className="flex items-center space-x-5">
+                                {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
+                                <a
+                                    href={item.href}
+                                    onClick={isInicio ? handleInicioClick : undefined}
+                                    className={`hover:text-[#800020] transition duration-200 ${isInicio ? "cursor-pointer font-extrabold text-stone-800" : ""}`}
+                                >
+                                    {item.label}
+                                </a>
+                            </span>
+                        );
+                    })}
                     <span className="text-[#C5A059]/40 select-none font-light">|</span>
                     <a
                         href="/servicios"
@@ -76,7 +94,7 @@ export default function Navbar() {
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-stone-700" />}
                     </button>
-                    <a href="/">
+                    <a href="/" onClick={handleInicioClick} className="cursor-pointer">
                         <img
                             src="/imagenes/logo/logo.png"
                             alt="Logo Centro de Yoga Salvadora Conesa"
@@ -103,16 +121,24 @@ export default function Navbar() {
             {isOpen && (
                 <div className="xl:hidden bg-white border-t border-[#C5A059]/15 py-4 px-6 absolute top-full left-0 right-0 shadow-lg animate-slideDown">
                     <nav className="flex flex-col space-y-4 font-semibold text-xs uppercase tracking-widest text-[#1C1C1C]/60">
-                        {menuItems.map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                onClick={() => setIsOpen(false)}
-                                className="hover:text-[#800020] py-1 transition"
-                            >
-                                {item.label}
-                            </a>
-                        ))}
+                        {menuItems.map((item) => {
+                            const isInicio = item.label.toLowerCase() === "inicio";
+                            return (
+                                <a
+                                    key={item.label}
+                                    href={item.href}
+                                    onClick={(e) => {
+                                        setIsOpen(false);
+                                        if (isInicio) {
+                                            handleInicioClick(e);
+                                        }
+                                    }}
+                                    className={`hover:text-[#800020] py-1 transition ${isInicio ? "font-extrabold text-[#800020]" : ""}`}
+                                >
+                                    {item.label}
+                                </a>
+                            );
+                        })}
                         <a
                             href="/servicios"
                             onClick={() => setIsOpen(false)}

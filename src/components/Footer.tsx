@@ -27,8 +27,19 @@ export default function Footer() {
             href="/ley-de-proteccion-de-datos"
             className="hover:text-[#E9C168] transition duration-200 underline-offset-4 hover:underline"
           >
-            Ley de Protección de Datos
+            Ley de Protección de Datos (RGPD)
           </Link>
+        </div>
+
+        {/* RGPD & AI Compliance Note */}
+        <div className="max-w-3xl mx-auto px-4 py-2.5 rounded-xl bg-white/5 border border-[#C5A059]/20 text-xs text-white/75 leading-relaxed">
+          <p className="flex items-center justify-center gap-1.5 font-medium text-[#E9C168] mb-1">
+            <span>🛡️</span>
+            <span>Cumplimiento Normativo RGPD (Reglamento UE 2016/679) y LOPDGDD 3/2018</span>
+          </p>
+          <p className="text-[11px] text-white/60">
+            Garantizamos la máxima confidencialidad, seguridad y transparencia en el tratamiento de sus datos personales, así como en el uso responsable de nuestros canales de asistencia interactiva y Asistente Virtual con Inteligencia Artificial.
+          </p>
         </div>
 
         {/* Social Media Icons */}

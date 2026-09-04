@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Music, MapPin, Calendar, Clock, Utensils, CheckCircle } from "lucide-react";
+import { Music, MapPin, Calendar, Clock, Utensils, CheckCircle, MessageSquare, Maximize2, X, Sparkles } from "lucide-react";
+import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 
 interface TimelineDay {
     id: number;
@@ -374,6 +375,90 @@ const ITINERARY_VIDEOS: { [key: number]: { title: string; filePath: string; yout
     ]
 };
 
+interface ActivityFlyer {
+    title: string;
+    imagePath: string;
+}
+
+const ACTIVITY_FLYERS: { [key: number]: ActivityFlyer[] } = {
+    1: [
+        { title: "Flyer Yoga", imagePath: "/flyers/yoga.jpeg" }
+    ],
+    2: [
+        { title: "Flyer Meditación", imagePath: "/flyers/meditacion.jpeg" }
+    ],
+    3: [
+        { title: "Flyer Baños de Gong", imagePath: "/flyers/banogong.jpeg" }
+    ],
+    4: [
+        { title: "Flyer Puja de Gong", imagePath: "/flyers/banogong.jpeg" }
+    ],
+    5: [
+        { title: "Flyer Gestalt", imagePath: "/flyers/gestalt.jpeg" }
+    ],
+    6: [
+        { title: "Flyer Constelaciones", imagePath: "/flyers/constalaciones.jpeg" }
+    ],
+    7: [
+        { title: "Flyer Encuentros", imagePath: "/flyers/encuentros_mujeres.jpeg" }
+    ],
+    8: [
+        { title: "Flyer Ayuno Terapéutico", imagePath: "/flyers/ayuno.jpeg" }
+    ],
+    9: [
+        { title: "Iaidō (Katana)", imagePath: "/flyers/iaido.jpg" },
+        { title: "Intenta (Salud)", imagePath: "/flyers/intenta.jpeg" },
+        { title: "Bienestar", imagePath: "/flyers/bienestar.png" }
+    ]
+};
+
+const ACTIVITY_BOOKING_MESSAGES: { [key: number]: { title: string; subtitle: string; queryMessage: string } } = {
+    1: {
+        title: "Nagna Yoga & Yoga Nidra",
+        subtitle: "Prácticas de alineación corporal, respiración terapéutica y sueño psíquico reparador.",
+        queryMessage: "Hola, me gustaría consultar horarios y reservar plaza para Nagna Yoga / Yoga Nidra."
+    },
+    2: {
+        title: "Kundalini Yoga & Meditación Guiada",
+        subtitle: "Tecnología de la consciencia, kriyas de vitalidad y meditación en el silencio.",
+        queryMessage: "Hola, me gustaría consultar y reservar plaza para Kundalini Yoga y Meditaciones Guiadas."
+    },
+    3: {
+        title: "Baños de Gong y Armonización Sonora",
+        subtitle: "Taller mensual de inmersión en frecuencias regenerativas de gongs sinfónicos.",
+        queryMessage: "Hola, me gustaría consultar disponibilidad y reservar plaza para los Baños de Gong."
+    },
+    4: {
+        title: "La Ceremonia Puja de Gong (11h)",
+        subtitle: "Noche sagrada de sonido ininterrumpido con relevo de maestros de gong.",
+        queryMessage: "Hola, me gustaría consultar fechas y reservar plaza para la Ceremonia Puja de Gongs."
+    },
+    5: {
+        title: "Terapia Gestalt Individual",
+        subtitle: "Espacio terapéutico personalizado de presencia, integración y autoconocimiento.",
+        queryMessage: "Hola, me gustaría solicitar cita o información para sesiones de Terapia Gestalt."
+    },
+    6: {
+        title: "Talleres de Constelaciones Familiares",
+        subtitle: "Representación sistémica y sanación profunda de los vínculos familiares.",
+        queryMessage: "Hola, me gustaría consultar y reservar plaza para el Taller de Constelaciones Familiares."
+    },
+    7: {
+        title: "Encuentros de Mujeres",
+        subtitle: "Círculos de palabra, sororidad, cuidado mutuo y reconexión en la naturaleza.",
+        queryMessage: "Hola, me gustaría consultar fechas y reservar para los Encuentros de Mujeres."
+    },
+    8: {
+        title: "Retiros de Ayuno Terapéutico",
+        subtitle: "Encuentros de desintoxicación, nutrición celular consciente y senderismo pacífico.",
+        queryMessage: "Hola, me gustaría consultar disponibilidad y reservar plaza para el Retiro de Ayuno Terapéutico."
+    },
+    9: {
+        title: "Bienestar Experience (Longevidad & Salud Integral)",
+        subtitle: "Programa integral de hábitos saludables, longevidad, biohacking y vitalidad.",
+        queryMessage: "Hola, me gustaría consultar y reservar para Bienestar Experience (Longevidad & Salud Integral)."
+    }
+};
 
 export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProps) {
     const [activeVideoIndexes, setActiveVideoIndexes] = useState<{ [key: number]: number }>({
@@ -407,7 +492,8 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
         window.addEventListener("hashchange", handleHashChange);
         return () => window.removeEventListener("hashchange", handleHashChange);
     }, []);
-    const [selectedModes, setSelectedModes] = useState<{ [key: number]: "summary" | "video" }>({
+
+    const [selectedModes, setSelectedModes] = useState<{ [key: number]: "summary" | "flyer" | "booking" }>({
         1: "summary",
         2: "summary",
         3: "summary",
@@ -419,10 +505,24 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
         9: "summary"
     });
 
+    const [activeFlyerIndexes, setActiveFlyerIndexes] = useState<{ [key: number]: number }>({
+        1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
+    });
+
+    const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
+
     const currentMode = selectedModes[activeDay] || "summary";
 
-    const setMode = (dayId: number, mode: "summary" | "video") => {
+    const setMode = (dayId: number, mode: "summary" | "flyer" | "booking") => {
         setSelectedModes(prev => ({ ...prev, [dayId]: mode }));
+    };
+
+    const handleBookingTabClick = (dayId: number) => {
+        setMode(dayId, "booking");
+        const bookingInfo = ACTIVITY_BOOKING_MESSAGES[dayId];
+        if (bookingInfo) {
+            triggerCrmChat(bookingInfo.queryMessage);
+        }
     };
 
     const getVideoKey = (dayId: number): keyof ItineraryTimelineProps["videosExist"] => {
@@ -575,16 +675,16 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                             <div className="bg-white p-4 sm:p-5 rounded-xl border border-[#C5A059]/25 shadow-lg shadow-[#800020]/5 w-full">
                                 {/* Title of the Multimedia Block */}
                                 <div className="text-center pb-3 border-b border-[#C5A059]/10 mb-4 select-none">
-                                    <h4 className="font-serif text-[#800020] uppercase font-bold text-sm tracking-widest">
-                                        VIDEOS RESUMEN DE LA ACTIVIDAD
+                                    <h4 className="font-serif text-[#800020] uppercase font-bold text-xs sm:text-[13px] tracking-wider leading-snug">
+                                        VIDEOS RESUMEN ACTIVIDAD , FLYERS Y RESERVAR CONSULTAR/ACTIVIDAD
                                     </h4>
                                 </div>
 
                                 {/* Mode Selector Toggle Tabs */}
-                                <div className="flex border border-[#C5A059]/25 rounded-lg overflow-hidden text-[10px] uppercase font-bold tracking-wider mb-4">
+                                <div className="flex border border-[#C5A059]/25 rounded-lg overflow-hidden text-[9px] sm:text-[10px] uppercase font-bold tracking-wider mb-4">
                                     <button
                                         onClick={() => setMode(day.id, "summary")}
-                                        className={`flex-1 py-2 text-center transition focus:outline-none ${currentMode === "summary"
+                                        className={`flex-1 py-2 px-1 text-center transition focus:outline-none ${currentMode === "summary"
                                             ? "bg-[#800020] text-white"
                                             : "bg-[#FAF9F6] text-stone-600 hover:text-[#800020]"
                                             }`}
@@ -592,17 +692,26 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                         VIDEO RESUMEN DE LA ACTIVIDAD
                                     </button>
                                     <button
-                                        onClick={() => setMode(day.id, "video")}
-                                        className={`flex-1 py-2 text-center transition focus:outline-none ${currentMode === "video"
+                                        onClick={() => setMode(day.id, "flyer")}
+                                        className={`flex-1 py-2 px-1 text-center transition focus:outline-none border-x border-[#C5A059]/25 ${currentMode === "flyer"
                                             ? "bg-[#800020] text-white"
                                             : "bg-[#FAF9F6] text-stone-600 hover:text-[#800020]"
                                             }`}
                                     >
-                                        Vídeos Relacionados
+                                        FLYER
+                                    </button>
+                                    <button
+                                        onClick={() => handleBookingTabClick(day.id)}
+                                        className={`flex-1 py-2 px-1 text-center transition focus:outline-none ${currentMode === "booking"
+                                            ? "bg-[#800020] text-white"
+                                            : "bg-[#FAF9F6] text-stone-600 hover:text-[#800020]"
+                                            }`}
+                                    >
+                                        RESERVAR Y CONSULTAR
                                     </button>
                                 </div>
 
-                                {/* Video or Summary Image Box */}
+                                {/* Video or Summary Image or Flyer or Booking Box */}
                                 <div className="relative aspect-video rounded-md overflow-hidden bg-stone-100 border border-stone-200 shadow-sm">
                                     {currentMode === "summary" ? (
                                         hasVideo ? (
@@ -619,142 +728,96 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                         ) : (
                                             /* SUMMARY IMAGE WITH INTERPRETER-STYLE OVERLAY */
                                             <div
-                                                onClick={() => setMode(day.id, "video")}
+                                                onClick={() => setMode(day.id, "flyer")}
                                                 className="relative w-full h-full cursor-pointer group"
-                                                title="Haz clic para ver los vídeos relacionados"
+                                                title="Haz clic para ver el flyer"
                                             >
                                                 <img
                                                     src={thumb.src}
                                                     alt={thumb.caption}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                                 />
-                                                {/* ccmfalla.com interpreter card theme overlay: dark filter with centered elegant elements */}
                                                 <div className="absolute inset-0 bg-black/45 group-hover:bg-[#800020]/65 transition-all duration-300 flex flex-col items-center justify-center p-6 text-center text-white">
-                                                    {/* Title */}
                                                     <h5 className="text-[17px] sm:text-[19px] font-bold text-white tracking-wide leading-snug drop-shadow-sm">
                                                         {DAY_OVERLAY_DETAILS[day.id].title}
                                                     </h5>
-
-                                                    {/* Subtitle / Category: all caps gold accent */}
                                                     <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#E9C168] mt-1.5 uppercase">
                                                         {DAY_OVERLAY_DETAILS[day.id].category}
                                                     </span>
-
-                                                    {/* Small details description in italic (Alegreya/Cormorant feel) */}
                                                     <p className="text-[12px] sm:text-[13px] italic text-[#FAF9F6]/90 mt-2 font-serif font-light max-w-[280px]">
                                                         {DAY_OVERLAY_DETAILS[day.id].description}
                                                     </p>
-
-                                                    {/* Date */}
                                                     <span className="text-[10px] text-stone-300 font-sans tracking-wider mt-2.5 opacity-85">
                                                         {DAY_OVERLAY_DETAILS[day.id].date}
                                                     </span>
-
-                                                    {/* Play Button Icon: Hollow white circle with custom play triangle arrow */}
-                                                    <div className="mt-4 flex items-center justify-center">
-                                                        <div className="w-9 h-9 rounded-full border border-white/50 flex flex-col items-center justify-center bg-black/10 group-hover:bg-[#800020]/80 group-hover:scale-110 shadow-md transition-all duration-300">
-                                                            <svg className="w-3.5 h-3.5 fill-current text-white translate-x-[0.5px]" viewBox="0 0 24 24">
-                                                                <path d="M8 5v14l11-7z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         )
-                                    ) : (
-                                        /* VIDEO PLAYLIST PLAYER & DUAL PLAYER CONTROLS */
+                                    ) : currentMode === "flyer" ? (
+                                        /* FLYER DISPLAY */
                                         (() => {
-                                            const dayVideos = ITINERARY_VIDEOS[day.id] || [];
-                                            const activeIdx = activeVideoIndexes[day.id] || 0;
-                                            const currentVideo = dayVideos[activeIdx];
-                                            const mediaType = timelineMediaTypes[day.id] || "completo";
-                                            const videoSrc = mediaType === "resumen" && currentVideo ? currentVideo.filePath.replace(".mp4", "_resumen.mp4") : currentVideo?.filePath;
-
-                                            if (currentVideo) {
-                                                if (currentVideo.youtubeUrl) {
-                                                    return (
-                                                        <div className="w-full h-full flex flex-col justify-between bg-[#1C1C1C] relative">
-                                                            {/* Cover Image and Clickable Link */}
-                                                            <a
-                                                                href={currentVideo.youtubeUrl}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="relative w-full h-full cursor-pointer group flex items-center justify-center aspect-video"
-                                                            >
-                                                                {/* Mini Overlay Cover with Day Photo */}
-                                                                <div className="absolute inset-0 bg-black/40 group-hover:bg-[#800020]/25 transition duration-300 z-10" />
-                                                                <img
-                                                                    src={thumb.src}
-                                                                    alt={currentVideo.title}
-                                                                    className="w-full h-full object-cover filter brightness-[0.7] group-hover:brightness-[0.9] transition"
-                                                                />
-
-                                                                {/* Centered YouTube Play Button */}
-                                                                <div
-                                                                    className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-[#E62117] text-white flex items-center justify-center shadow-lg group-hover:scale-110 active:scale-95 transition-all border border-[#FAF9F6] z-20"
-                                                                    aria-label={`Ver ${currentVideo.title} en YouTube`}
-                                                                >
-                                                                    <svg className="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24">
-                                                                        <path d="M8 5v14l11-7z" />
-                                                                    </svg>
-                                                                </div>
-
-                                                                {/* YouTube Label */}
-                                                                <div className="absolute bottom-3 left-3 bg-stone-950/80 px-2 py-0.5 rounded text-[10px] text-white border border-white/10 uppercase tracking-widest font-bold z-20 flex items-center gap-1">
-                                                                    <span>Ver en YouTube</span>
-                                                                    <svg className="w-3 h-3 fill-current text-white" viewBox="0 0 24 24">
-                                                                        <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-8z" />
-                                                                    </svg>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    );
-                                                }
-
-                                                return (
-                                                    <div className="w-full h-full flex flex-col justify-between bg-[#1C1C1C]">
-                                                        {/* Dual Player Toggle Switch (Timeline version) */}
-                                                        <div className="flex border-b border-stone-850 bg-stone-900 text-[10px] z-10">
-                                                            <button
-                                                                onClick={() => setTimelineMediaTypes(prev => ({ ...prev, [day.id]: "completo" }))}
-                                                                className={`flex-1 py-1.5 text-center font-bold uppercase transition ${mediaType === "completo" ? "bg-[#800020] text-white" : "text-stone-300 hover:bg-[#800020]/20"
-                                                                    }`}
-                                                            >
-                                                                ▶ Completo
-                                                            </button>
-                                                            <button
-                                                                onClick={() => setTimelineMediaTypes(prev => ({ ...prev, [day.id]: "resumen" }))}
-                                                                className={`flex-1 py-1.5 text-center font-bold uppercase transition ${mediaType === "resumen" ? "bg-[#800020] text-white" : "text-stone-300 hover:bg-[#800020]/20"
-                                                                    }`}
-                                                            >
-                                                                ⏱ Resumen
-                                                            </button>
-                                                        </div>
-                                                        <div className="flex-1 min-h-0 relative aspect-video">
-                                                            <video
-                                                                key={`${day.id}-${activeIdx}-${mediaType}`}
-                                                                src={videoSrc}
-                                                                controls
-                                                                autoPlay
-                                                                playsInline
-                                                                preload="metadata"
-                                                                muted={false}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                );
-                                            }
-
+                                            const dayFlyers = ACTIVITY_FLYERS[day.id] || [];
+                                            const activeFIdx = activeFlyerIndexes[day.id] || 0;
+                                            const currentFlyer = dayFlyers[activeFIdx] || dayFlyers[0] || { title: "Flyer", imagePath: "/flyers/yoga.jpeg" };
                                             return (
-                                                /* Fallback if video does not exist yet */
-                                                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#FAF9F6] border border-dashed border-[#C5A059]/30">
-                                                    <div className="w-10 h-10 rounded-full bg-[#800020]/5 flex items-center justify-center text-[#800020] mb-2 animate-bounce">
-                                                        <Music className="w-5 h-5" />
+                                                <div
+                                                    onClick={() => setModalFlyer({ src: currentFlyer.imagePath, title: currentFlyer.title })}
+                                                    className="relative w-full h-full cursor-pointer group bg-stone-900 flex items-center justify-center overflow-hidden"
+                                                    title="Haz clic para ver el flyer en alta resolución"
+                                                >
+                                                    <img
+                                                        src={currentFlyer.imagePath}
+                                                        alt={currentFlyer.title}
+                                                        className="w-full h-full object-contain group-hover:scale-105 transition duration-500"
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                                                        <span className="opacity-0 group-hover:opacity-100 bg-stone-950/85 text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full backdrop-blur-xs flex items-center gap-1.5 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg border border-white/20">
+                                                            <Maximize2 className="w-3.5 h-3.5 text-[#E9C168]" /> Ampliar Flyer
+                                                        </span>
                                                     </div>
-                                                    <h5 className="font-serif text-sm font-bold text-[#800020]">Vídeo en Sincronización</h5>
-                                                    <p className="text-[10px] text-stone-500 mt-1 max-w-[200px]">
-                                                        El fragmento cinematográfico está siendo mezclado con el audio del concierto.
+                                                </div>
+                                            );
+                                        })()
+                                    ) : (
+                                        /* RESERVAR Y CONSULTAR CARD */
+                                        (() => {
+                                            const bookingInfo = ACTIVITY_BOOKING_MESSAGES[day.id] || ACTIVITY_BOOKING_MESSAGES[1];
+                                            return (
+                                                <div className="w-full h-full flex flex-col justify-between p-4 sm:p-5 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FAF9F6] border border-[#C5A059]/30 rounded-md">
+                                                    <div className="space-y-1.5 text-center">
+                                                        <span className="inline-flex items-center gap-1 text-[9px] uppercase font-bold tracking-widest text-[#800020] bg-[#800020]/10 px-2.5 py-0.5 rounded-full border border-[#800020]/20">
+                                                            <Sparkles className="w-3 h-3 text-[#C5A059]" />
+                                                            Consulta & Reserva Inmediata
+                                                        </span>
+                                                        <h5 className="font-serif text-base sm:text-lg font-bold text-[#800020] leading-tight">
+                                                            {bookingInfo.title}
+                                                        </h5>
+                                                        <p className="text-[11.5px] text-stone-600 leading-relaxed max-w-sm mx-auto">
+                                                            {bookingInfo.subtitle}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="space-y-2 pt-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => triggerCrmChat(bookingInfo.queryMessage)}
+                                                            className="w-full py-2.5 px-3 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                                                        >
+                                                            <MessageSquare className="w-4 h-4" />
+                                                            <span>Abrir Asistente IA para Reservar</span>
+                                                        </button>
+                                                        <a
+                                                            href={`https://wa.me/34695172625?text=${encodeURIComponent(bookingInfo.queryMessage)}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="w-full py-2 px-3 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition shadow-xs flex items-center justify-center gap-2 cursor-pointer text-center active:scale-98"
+                                                        >
+                                                            <span>WhatsApp Directo (695 172 625)</span>
+                                                        </a>
+                                                    </div>
+
+                                                    <p className="text-[9.5px] text-stone-400 text-center pt-1">
+                                                        Atención personalizada las 24 horas · Confirmación instantánea
                                                     </p>
                                                 </div>
                                             );
@@ -762,26 +825,27 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                     )}
                                 </div>
 
-                                {/* Playlist selection buttons for day videos */}
-                                {currentMode === "video" && (ITINERARY_VIDEOS[day.id]?.length || 0) > 1 && (
+                                {/* Multi-flyer selection buttons (e.g. for Day 9 Varios: iaido, intenta, bienestar) */}
+                                {currentMode === "flyer" && (ACTIVITY_FLYERS[day.id]?.length || 0) > 1 && (
                                     <div className="mt-3 border-t border-stone-100 pt-3 select-none">
-                                        <span className="block text-[8px] uppercase tracking-wider text-stone-400 font-bold mb-1.5">
-                                            Lista de Reproducción del Día
+                                        <span className="block text-[8.5px] uppercase tracking-wider text-stone-400 font-bold mb-1.5">
+                                            Seleccionar Flyer de la Actividad:
                                         </span>
                                         <div className="flex flex-wrap gap-1.5">
-                                            {ITINERARY_VIDEOS[day.id].map((vid, idx) => {
-                                                const activeIdx = activeVideoIndexes[day.id] || 0;
-                                                const isCurrent = activeIdx === idx;
+                                            {ACTIVITY_FLYERS[day.id].map((fl, fIdx) => {
+                                                const activeFIdx = activeFlyerIndexes[day.id] || 0;
+                                                const isCur = activeFIdx === fIdx;
                                                 return (
                                                     <button
-                                                        key={idx}
-                                                        onClick={() => setActiveVideoIndexes(prev => ({ ...prev, [day.id]: idx }))}
-                                                        className={`text-[9px] uppercase tracking-wider font-bold py-1 px-2 rounded-md transition ${isCurrent
-                                                            ? "bg-[#800020] text-white"
+                                                        key={fIdx}
+                                                        type="button"
+                                                        onClick={() => setActiveFlyerIndexes(prev => ({ ...prev, [day.id]: fIdx }))}
+                                                        className={`text-[9.5px] uppercase tracking-wider font-bold py-1 px-2.5 rounded-md transition cursor-pointer ${isCur
+                                                            ? "bg-[#800020] text-white shadow-xs"
                                                             : "bg-[#FAF9F6] text-stone-600 hover:bg-[#800020]/10 hover:text-[#800020] border border-stone-200"
                                                             }`}
                                                     >
-                                                        {vid.title}
+                                                        {fl.title}
                                                     </button>
                                                 );
                                             })}
@@ -851,6 +915,38 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                     </div>
                 );
             })}
+
+            {/* Modal Lightbox for Flyer High-Resolution Viewing */}
+            {modalFlyer && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex flex-col items-center justify-center p-3 sm:p-6 animate-in fade-in"
+                    onClick={() => setModalFlyer(null)}
+                >
+                    <div
+                        className="relative max-w-4xl w-full max-h-[92vh] bg-stone-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col border border-white/20"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between px-4 py-3 bg-[#800020] text-white">
+                            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">{modalFlyer.title}</span>
+                            <button
+                                type="button"
+                                onClick={() => setModalFlyer(null)}
+                                aria-label="Cerrar vista previa"
+                                className="p-1 rounded-lg hover:bg-white/20 text-white cursor-pointer transition"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="overflow-auto max-h-[calc(92vh-60px)] p-2 sm:p-4 bg-stone-950 flex items-center justify-center">
+                            <img
+                                src={modalFlyer.src}
+                                alt={modalFlyer.title}
+                                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-md"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
