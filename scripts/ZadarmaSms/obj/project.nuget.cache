@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ICUKmjchJTc=",
+  "success": true,
+  "projectFilePath": "d:\\tmp\\antigraviti\\salvadora\\caso1\\scripts\\ZadarmaSms\\ZadarmaSms.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Administrator\\.nuget\\packages\\npgsql\\10.0.3\\npgsql.10.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

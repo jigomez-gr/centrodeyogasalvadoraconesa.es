@@ -932,7 +932,9 @@ export default function DemoLandingPage() {
                 <div>
                   <label className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1 flex items-center justify-between">
                     <span>Correo Electrónico</span>
-                    <span className="text-stone-400 font-normal lowercase">(opcional)</span>
+                    <span className="text-amber-800 bg-amber-50 text-[10px] font-medium px-2 py-0.5 rounded-full border border-amber-200">
+                      🕊️ Solicitado con respeto
+                    </span>
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-3" />
@@ -940,10 +942,13 @@ export default function DemoLandingPage() {
                       type="email"
                       value={waEmail}
                       onChange={(e) => setWaEmail(e.target.value)}
-                      placeholder="Ej: carmen@ejemplo.com"
+                      placeholder="Ej: carmen@ejemplo.com (para justificantes)"
                       className="w-full bg-stone-50 border border-stone-300 focus:border-emerald-600 focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-xs text-stone-800 outline-none transition"
                     />
                   </div>
+                  <p className="text-[10px] text-stone-500 mt-1">
+                    Solo lo utilizaremos con respeto para enviarte la confirmación formal de tu actividad.
+                  </p>
                 </div>
 
                 <div className="pt-2">

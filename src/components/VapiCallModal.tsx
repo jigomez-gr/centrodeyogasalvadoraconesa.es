@@ -231,6 +231,10 @@ export default function VapiCallModal() {
                 <p className="text-xs sm:text-sm text-stone-600 max-w-sm mx-auto">
                   Hemos ordenado la llamada hacia tu número. Cuando descuelgues, el asistente te saludará y responderá a todas tus preguntas sobre nuestras actividades.
                 </p>
+                <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-left text-[11px] text-amber-900 flex items-center gap-2">
+                  <span className="text-sm">📲</span>
+                  <span><strong>Confirmación por SMS:</strong> Tras acordar los detalles de tu cita, recibirás un mensaje SMS al instante con la confirmación de tu reserva.</span>
+                </div>
               </div>
 
               <div className="pt-2 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">

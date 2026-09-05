@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { cookies } from "next/headers";
+import { sendBookingConfirmationSms } from "@/lib/sms";
 
 export const dynamic = "force-dynamic";
 
@@ -26,10 +28,10 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { nombre, email, telefono, numeroPlazas, tipoHabitacion, comentarios } = body;
 
-        // Server-side validation
-        if (!nombre || !email || !telefono || !numeroPlazas || !tipoHabitacion) {
+        // Validación de campos de contacto primarios
+        if (!nombre || !telefono || !numeroPlazas || !tipoHabitacion) {
             return NextResponse.json(
-                { error: "Todos los campos obligatorios deben estar completos." },
+                { error: "Por favor, indica tu nombre, teléfono y la actividad deseada." },
                 { status: 400 }
             );
         }
@@ -42,7 +44,15 @@ export async function POST(request: Request) {
             );
         }
 
-        const validAccommodations = ["clase_semanal", "dos_clases_semanal", "gong", "puja", "constelaciones_constelar", "constelaciones_participar", "retiro_encuentro"];
+        const validAccommodations = [
+            "clase_semanal",
+            "dos_clases_semanal",
+            "gong",
+            "puja",
+            "constelaciones_constelar",
+            "constelaciones_participar",
+            "retiro_encuentro",
+        ];
         if (!validAccommodations.includes(tipoHabitacion)) {
             return NextResponse.json(
                 { error: "La modalidad de inscripción seleccionada no es válida." },
@@ -50,9 +60,7 @@ export async function POST(request: Request) {
             );
         }
 
-        // Availability check removed
-
-        // Price calculation
+        // Cálculo de importes por actividad
         let unitPrice = 25;
         if (tipoHabitacion === "clase_semanal") unitPrice = 25;
         else if (tipoHabitacion === "dos_clases_semanal") unitPrice = 42;
@@ -63,9 +71,16 @@ export async function POST(request: Request) {
         else if (tipoHabitacion === "retiro_encuentro") unitPrice = 100;
         const totalAmount = plazasCount * unitPrice;
 
-        const normalizedEmail = email.trim().toLowerCase();
+        // Procedimiento de tratamiento de email con respeto:
+        // Si el cliente lo proporciona, se normaliza y almacena.
+        // Si prefiere no indicarlo en el alta, se asigna un identificador interno de cortesía.
+        const cleanPhone = telefono.replace(/[\s\-\(\)\.]/g, "").trim();
+        const hasRealEmail = email && typeof email === "string" && email.includes("@") && email.trim().length > 4;
+        const normalizedEmail = hasRealEmail
+            ? email.trim().toLowerCase()
+            : `contacto_${cleanPhone || Date.now()}@salvadoraconesa.com`;
 
-        // Verify or create User registration
+        // Alta o verificación del usuario en la base de datos
         let user = await prisma.usuario.findUnique({
             where: { correo: normalizedEmail },
         });
@@ -77,11 +92,10 @@ export async function POST(request: Request) {
                     nombre,
                     movil: telefono,
                     idrolusuario: 3,
-                    estadoVerificacion: "verificado", // Automatic verification because they filled the form
+                    estadoVerificacion: "verificado",
                 },
             });
         } else {
-            // Update name and phone
             user = await prisma.usuario.update({
                 where: { correo: normalizedEmail },
                 data: {
@@ -91,7 +105,7 @@ export async function POST(request: Request) {
             });
         }
 
-        // Create reservation in DB with 'pendiente_pago' state
+        // Registrar la reserva en estado 'pendiente_pago'
         const reserva = await prisma.reserva.create({
             data: {
                 nombre,
@@ -105,10 +119,48 @@ export async function POST(request: Request) {
             },
         });
 
+        // Crear cookie de sesión para que el usuario pueda gestionar su reserva
+        try {
+            const sessionPayload = {
+                idusuario: user.idusuario,
+                correo: user.correo,
+                nombre: user.nombre || "",
+                apellido: user.apellido || "",
+                movil: user.movil || "",
+            };
+            const cookieStore = await cookies();
+            cookieStore.set("auth_session", JSON.stringify(sessionPayload), {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+                maxAge: 60 * 60 * 24 * 7,
+                path: "/",
+            });
+        } catch (cookieErr) {
+            console.warn("No se pudo guardar la cookie de sesión automática:", cookieErr);
+        }
+
+        // DISPARO DE SMS DE CONFIRMACIÓN (Zadarma API + CRM Fallback)
+        let smsResult = null;
+        try {
+            smsResult = await sendBookingConfirmationSms({
+                telefono,
+                nombre,
+                servicio: tipoHabitacion,
+                plazas: plazasCount,
+                email: hasRealEmail ? normalizedEmail : undefined,
+            });
+            console.log(`[RESERVA SMS RESULT] Para ${telefono}:`, smsResult);
+        } catch (smsErr) {
+            console.error("Error al disparar SMS de confirmación:", smsErr);
+        }
+
         return NextResponse.json({
             success: true,
             reservaId: reserva.id,
             reserva,
+            smsSent: smsResult?.success ?? false,
+            emailProvided: hasRealEmail,
         });
     } catch (error: any) {
         console.error("Error creating reservation:", error);

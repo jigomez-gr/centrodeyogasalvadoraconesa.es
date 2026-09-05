@@ -39,6 +39,7 @@
   "exclude": [
     "node_modules",
     "remotion-ad",
-    "integracion-landing"
+    "integracion-landing",
+    "integracion_sms_zadarma_crm"
   ]
 }

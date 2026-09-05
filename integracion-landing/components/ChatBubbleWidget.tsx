@@ -22,7 +22,7 @@ export function ChatBubbleWidget({
   apiUrl = "https://crm-salvadoraconesa.jigretera.com",
   businessName = "Centro de Yoga y Bienestar Salvadora",
   brandColor = "#4f46e5",
-  welcomeMessage = "¡Hola! 👋 Soy tu asistente de consultas de nuestros servicios, reservas y citas del Centro de Yoga. ¿En qué puedo ayudarte hoy?",
+  welcomeMessage = "¡Hola! 👋 Soy tu asistente de reservas y citas. ¿En qué te puedo ayudar hoy?",
 }: ChatBubbleProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);

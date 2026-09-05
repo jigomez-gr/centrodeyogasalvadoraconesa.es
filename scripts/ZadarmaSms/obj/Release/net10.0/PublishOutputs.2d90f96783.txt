@@ -1,0 +1,8 @@
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\ZadarmaSms.exe
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\appsettings.Development.json
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\appsettings.json
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\ZadarmaSms.dll
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\ZadarmaSms.deps.json
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\ZadarmaSms.runtimeconfig.json
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\ZadarmaSms.pdb
+d:\tmp\antigraviti\salvadora\caso1\scripts\ZadarmaSms\publish\Npgsql.dll

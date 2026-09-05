@@ -302,9 +302,7 @@ export default function DemoLandingPage() {
     }
     setSessionId(currentSess);
 
-    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
-
-    fetch(`${CRM_API_URL}/api/widget/config/booking`)
+    fetch("/api/widget/config/booking")
       .then((r) => r.json())
       .then((data) => {
         if (data.businessName) setBusinessName(data.businessName);
@@ -350,10 +348,8 @@ export default function DemoLandingPage() {
     setInputValue("");
     setIsTyping(true);
 
-    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
-
     try {
-      const res = await fetch(`${CRM_API_URL}/api/widget/chat/booking`, {
+      const res = await fetch("/api/widget/chat/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -401,9 +397,8 @@ export default function DemoLandingPage() {
     if (!waPhone.trim()) return;
 
     setWaLoading(true);
-    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
     try {
-      const res = await fetch(`${CRM_API_URL}/api/widget/handoff-whatsapp/booking`, {
+      const res = await fetch("/api/widget/handoff-whatsapp/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -463,14 +458,14 @@ export default function DemoLandingPage() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span className="flex h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-medium">
-              <strong>Portal de Reservas & Traspaso a WhatsApp</strong>
+              <strong>Portal de Reservas & Traspaso a WhatsApp:</strong> Prueba el registro de alumnos y citas en tiempo real.
             </span>
           </div>
           <Link
-            href="/"
+            href="/conversations"
             className="inline-flex items-center gap-1 bg-white/15 hover:bg-white/25 px-3 py-1 rounded text-xs font-bold transition whitespace-nowrap"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Volver a Inicio
+            <ArrowLeft className="w-3.5 h-3.5" /> Volver al CRM Inbox
           </Link>
         </div>
       </div>

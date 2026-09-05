@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import Stripe from "stripe";
+import { sendPaymentConfirmationSms } from "@/lib/sms";
 
 export const dynamic = "force-dynamic";
 
@@ -129,10 +130,10 @@ export async function POST(request: Request) {
                     // Create payments record
                     await prisma.pagosUsuario.create({
                         data: {
-                            codigoViaje: "BARCELONA_NOV_2026",
-                            fechaSalida: new Date("2026-11-02"),
+                            codigoViaje: "CENTRO_YOGA_SALVADORA",
+                            fechaSalida: new Date(),
                             idusuario: user.idusuario,
-                            descripcionViaje: `Pago del viaje registrado físicamente (${checkoutAmount} €)`,
+                            descripcionViaje: `Abono de reserva - Centro de Yoga Salvadora Conesa (${checkoutAmount} €)`,
                             cantidadAbonada: checkoutAmount,
                             procesado: "N",
                             stripeSessionId: mockSessionId,
@@ -164,6 +165,19 @@ export async function POST(request: Request) {
                         totalPaid,
                         remaining: Math.max(0, reserva.importeTotal - totalPaid),
                     });
+
+                    // Disparar SMS de confirmación de pago vía Zadarma API
+                    try {
+                        await sendPaymentConfirmationSms({
+                            telefono: reserva.telefono,
+                            nombre: reserva.nombre,
+                            servicio: reserva.tipoHabitacion,
+                            importe: checkoutAmount,
+                        });
+                    } catch (smsErr) {
+                        console.error("Error al enviar SMS de confirmación de pago:", smsErr);
+                    }
+
                     return NextResponse.json({ status: "success", info: "Simulated success manually" });
                 }
             } catch (err: any) {
@@ -235,10 +249,10 @@ export async function POST(request: Request) {
                 // Create physical payment log
                 await prisma.pagosUsuario.create({
                     data: {
-                        codigoViaje: "BARCELONA_NOV_2026",
-                        fechaSalida: new Date("2026-11-02"),
+                        codigoViaje: "CENTRO_YOGA_SALVADORA",
+                        fechaSalida: new Date(),
                         idusuario: user.idusuario,
-                        descripcionViaje: `Pago Fraccionado vía Stripe`,
+                        descripcionViaje: `Abono de inscripción vía Stripe (${checkoutAmount} €)`,
                         cantidadAbonada: checkoutAmount,
                         procesado: "N",
                         stripeSessionId: session.id,
@@ -269,6 +283,18 @@ export async function POST(request: Request) {
                     totalPaid,
                     remaining: Math.max(0, reserva.importeTotal - totalPaid),
                 });
+
+                // Disparar SMS de confirmación de pago vía Zadarma API
+                try {
+                    await sendPaymentConfirmationSms({
+                        telefono: reserva.telefono,
+                        nombre: reserva.nombre,
+                        servicio: reserva.tipoHabitacion,
+                        importe: checkoutAmount,
+                    });
+                } catch (smsErr) {
+                    console.error("Error al enviar SMS de confirmación de pago:", smsErr);
+                }
                 break;
             }
 
