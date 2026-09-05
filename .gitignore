@@ -38,3 +38,8 @@ Thumbs.db
 
 # raw audio folder
 /sonidos_mp3
+
+# build and scripts
+/scripts/
+**/bin/
+**/obj/
