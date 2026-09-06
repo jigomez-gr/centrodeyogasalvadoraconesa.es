@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 
 import { ChatBubbleWidget } from "@/components/ChatBubbleWidget";
 import VapiCallModal from "@/components/VapiCallModal";
+import { WebMcpProvider } from "@/components/WebMcpProvider";
 
 export default function RootLayout({
   children,
@@ -37,6 +38,7 @@ export default function RootLayout({
         <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
       </head>
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1C1C1C]">
+        <WebMcpProvider />
         {children}
         <ChatBubbleWidget agentKey="booking" brandColor="#800020" />
         <VapiCallModal />
