@@ -41,5 +41,6 @@ Disallow: /api/
 # Content Signals for AI Crawlers
 Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
-# Sitemap
+# Sitemap & Agentmap
 Sitemap: https://centrodeyogasalvadoraconesa.es/sitemap.xml
+Agentmap: https://centrodeyogasalvadoraconesa.es/.well-known/ai-catalog.json

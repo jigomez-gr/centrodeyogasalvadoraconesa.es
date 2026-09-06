@@ -33,6 +33,9 @@ export default function RootLayout({
       lang="es"
       className={`${cormorant.variable} ${outfit.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1C1C1C]">
         {children}
         <ChatBubbleWidget agentKey="booking" brandColor="#800020" />
