@@ -75,3 +75,5 @@ Disallow: /api/
 # Sitemap & Agentmap
 Sitemap: https://centrodeyogasalvadoraconesa.es/sitemap.xml
 Agentmap: https://centrodeyogasalvadoraconesa.es/.well-known/ai-catalog.json
+Agentmap: https://centrodeyogasalvadoraconesa.es/ai-catalog.json
+

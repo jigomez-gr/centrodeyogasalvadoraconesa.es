@@ -286,7 +286,25 @@ export function proxy(request: NextRequest) {
   }
 
   // ARD AI Catalog Discovery
-  if (pathname === "/.well-known/ai-catalog.json") {
+  if (
+    pathname === "/.well-known/ai-catalog.json" ||
+    pathname === "/.well-known/ai-catalog" ||
+    pathname === "/.well-known/ai-catalog/" ||
+    pathname === "/ai-catalog.json" ||
+    pathname === "/ai-catalog" ||
+    pathname === "/ai-catalog/"
+  ) {
+    if (request.method === "OPTIONS") {
+      return new NextResponse(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+    }
+
     const aiCatalog = {
       specVersion: "1.0",
       host: {
@@ -326,6 +344,17 @@ export function proxy(request: NextRequest) {
             "que disciplinas de yoga se imparten",
           ],
         },
+        {
+          identifier: "urn:air:centrodeyogasalvadoraconesa.es:skill:booking-assistant",
+          displayName: "Booking Assistant Skill",
+          type: "text/markdown",
+          url: "https://centrodeyogasalvadoraconesa.es/.well-known/agent-skills/booking-assistant/SKILL.md",
+          representativeQueries: [
+            "reservar clase de kundalini yoga",
+            "asistente de reservas para clases y banos de gong",
+            "como apuntarse a los talleres de yoga",
+          ],
+        },
       ],
     };
 
@@ -334,6 +363,8 @@ export function proxy(request: NextRequest) {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        "Access-Control-Allow-Headers": "*",
       },
     });
   }
@@ -568,7 +599,12 @@ When communicating with protected endpoints, provide credentials via the standar
     });
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set(
+    "Link",
+    '</.well-known/ai-catalog.json>; rel="ai-catalog", </ai-catalog.json>; rel="ai-catalog", </.well-known/mcp/server-card.json>; rel="mcp-server-card", </.well-known/agent-card.json>; rel="agent-card"'
+  );
+  return response;
 }
 
 export const config = {
@@ -579,6 +615,9 @@ export const config = {
     "/.well-known/mcp.json",
     "/.well-known/agent-card.json",
     "/.well-known/ai-catalog.json",
+    "/.well-known/ai-catalog",
+    "/ai-catalog.json",
+    "/ai-catalog",
     "/.well-known/agent-skills",
     "/.well-known/agent-skills/:path*",
     "/.well-known/api-catalog",
