@@ -439,18 +439,55 @@ export function proxy(request: NextRequest) {
   }
 
   // RFC 9728 OAuth Protected Resource Metadata
-  if (pathname === "/.well-known/oauth-protected-resource") {
+  if (
+    pathname === "/.well-known/oauth-protected-resource" ||
+    pathname === "/.well-known/oauth-protected-resource/" ||
+    pathname === "/oauth-protected-resource" ||
+    pathname === "/oauth-protected-resource/"
+  ) {
+    if (request.method === "OPTIONS") {
+      return new NextResponse(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+    }
+
+    const host = request.headers.get("x-forwarded-host") || request.headers.get("host") || "centrodeyogasalvadoraconesa.es";
+    const proto = host.includes("centrodeyogasalvadoraconesa.es") ? "https" : (request.headers.get("x-forwarded-proto") || "https");
+    const canonicalOrigin = `${proto}://${host}`;
+
+    // RFC 9728 Section 2 requires resource to be an absolute URI matching the protected resource URL.
+    // Honor query param ?resource= if explicitly requested; otherwise default to origin with trailing slash per RFC 9728 Section 2 / 3.1
+    const queryResource = request.nextUrl.searchParams.get("resource");
+    const resourceUrl = queryResource || `${canonicalOrigin}/`;
+
     const prm = {
-      resource: "https://centrodeyogasalvadoraconesa.es",
-      authorization_servers: ["https://centrodeyogasalvadoraconesa.es"],
+      resource: resourceUrl,
+      authorization_servers: [
+        `${canonicalOrigin}/`,
+        canonicalOrigin,
+        "https://centrodeyogasalvadoraconesa.es/",
+        "https://centrodeyogasalvadoraconesa.es",
+      ],
       scopes_supported: ["openid", "profile", "read:classes", "write:bookings"],
       bearer_methods_supported: ["header"],
+      resource_documentation: "https://centrodeyogasalvadoraconesa.es/llms.txt",
+      resource_policy_uri: "https://centrodeyogasalvadoraconesa.es/politica-de-privacidad",
+      resource_tos_uri: "https://centrodeyogasalvadoraconesa.es/ley-de-proteccion-de-datos",
     };
 
     return new NextResponse(JSON.stringify(prm, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        "Access-Control-Allow-Headers": "*",
+        "Cache-Control": "public, max-age=3600",
       },
     });
   }
@@ -602,7 +639,11 @@ When communicating with protected endpoints, provide credentials via the standar
   const response = NextResponse.next();
   response.headers.set(
     "Link",
-    '</.well-known/ai-catalog.json>; rel="ai-catalog", </ai-catalog.json>; rel="ai-catalog", </.well-known/mcp/server-card.json>; rel="mcp-server-card", </.well-known/agent-card.json>; rel="agent-card"'
+    '</.well-known/oauth-protected-resource>; rel="oauth-protected-resource", </oauth-protected-resource>; rel="oauth-protected-resource", </.well-known/ai-catalog.json>; rel="ai-catalog", </ai-catalog.json>; rel="ai-catalog", </.well-known/mcp/server-card.json>; rel="mcp-server-card", </.well-known/agent-card.json>; rel="agent-card"'
+  );
+  response.headers.set(
+    "WWW-Authenticate",
+    'Bearer resource_metadata="https://centrodeyogasalvadoraconesa.es/.well-known/oauth-protected-resource"'
   );
   return response;
 }
@@ -622,6 +663,9 @@ export const config = {
     "/.well-known/agent-skills/:path*",
     "/.well-known/api-catalog",
     "/.well-known/oauth-protected-resource",
+    "/.well-known/oauth-protected-resource/:path*",
+    "/oauth-protected-resource",
+    "/oauth-protected-resource/:path*",
     "/.well-known/oauth-authorization-server",
     "/.well-known/openid-configuration",
     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|auth\\.md|\\.well-known/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
