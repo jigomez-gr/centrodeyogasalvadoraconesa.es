@@ -165,6 +165,6 @@ export const config = {
     /*
      * Match all page routes, exclude internal Next.js assets, API, and static files
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico)).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|\\.well-known|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
   ],
 };
