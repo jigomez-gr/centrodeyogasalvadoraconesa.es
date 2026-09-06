@@ -134,6 +134,32 @@ Garantizamos la confidencialidad absoluta en todos los canales de interacción, 
 `,
 };
 
+const STUDIO_INFO_SKILL_MD = `# Studio Information and Class Schedule
+
+Retrieve information about classes, therapy sessions, workshops, schedules, and location for Centro de Yoga y Bienestar Salvadora Conesa.
+
+## Usage
+
+Agents can consult class descriptions, pricing, and directions:
+- Classes: Kundalini Yoga, Nagna Yoga, Gong Baths, Puja de Gong, Therapeutic Fasting Retreats, and Postural Alignment Workshops.
+- Location: Fuenlabrada, Madrid, Spain
+- Contact: salvadora@centrodeyogasalvadoraconesa.es / Phone & WhatsApp: +34 695 17 26 25
+- Website: https://centrodeyogasalvadoraconesa.es
+- Canonical documentation: https://centrodeyogasalvadoraconesa.es/llms.txt
+`;
+
+const BOOKING_ASSISTANT_SKILL_MD = `# Yoga and Gong Session Booking Assistant
+
+Facilitate class bookings and reservations for yoga classes, sound bath sessions, and retreats at Centro de Yoga y Bienestar Salvadora Conesa.
+
+## Booking Endpoints & Actions
+
+- Reservation portal: https://centrodeyogasalvadoraconesa.es/reserva
+- Direct booking API: POST https://centrodeyogasalvadoraconesa.es/api/reservas
+- Real-time customer support: WhatsApp +34 695 17 26 25
+- Cancellation policy: 24-hour advance notification required for rescheduling.
+`;
+
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -312,8 +338,12 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  // Agent Skills Discovery Index
-  if (pathname === "/.well-known/agent-skills/index.json") {
+  // Agent Skills Discovery Index (RFC 0.2.0)
+  if (
+    pathname === "/.well-known/agent-skills/index.json" ||
+    pathname === "/.well-known/agent-skills" ||
+    pathname === "/.well-known/agent-skills/"
+  ) {
     const skillsIndex = {
       $schema: "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
       skills: [
@@ -342,6 +372,37 @@ export function proxy(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  }
+
+  // Agent Skills - studio-info SKILL.md
+  if (
+    pathname === "/.well-known/agent-skills/studio-info/SKILL.md" ||
+    pathname === "/.well-known/agent-skills/studio-info" ||
+    pathname === "/.well-known/agent-skills/studio-info/"
+  ) {
+    return new NextResponse(STUDIO_INFO_SKILL_MD, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  }
+
+  // Agent Skills - booking-assistant SKILL.md
+  if (
+    pathname === "/.well-known/agent-skills/booking-assistant/SKILL.md" ||
+    pathname === "/.well-known/agent-skills/booking-assistant" ||
+    pathname === "/.well-known/agent-skills/booking-assistant/"
+  ) {
+    return new NextResponse(BOOKING_ASSISTANT_SKILL_MD, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
@@ -518,7 +579,8 @@ export const config = {
     "/.well-known/mcp.json",
     "/.well-known/agent-card.json",
     "/.well-known/ai-catalog.json",
-    "/.well-known/agent-skills/index.json",
+    "/.well-known/agent-skills",
+    "/.well-known/agent-skills/:path*",
     "/.well-known/api-catalog",
     "/.well-known/oauth-protected-resource",
     "/.well-known/oauth-authorization-server",
