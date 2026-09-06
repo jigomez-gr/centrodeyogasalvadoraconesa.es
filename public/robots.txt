@@ -5,8 +5,12 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# AI Crawlers and Search Agents
+# OpenAI AI Crawlers and Search
 User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
 Allow: /
 Disallow: /api/
 
@@ -14,19 +18,36 @@ User-agent: ChatGPT-User
 Allow: /
 Disallow: /api/
 
+# Anthropic AI Crawlers
+User-agent: Claude-Web
+Allow: /
+Disallow: /api/
+
 User-agent: ClaudeBot
 Allow: /
 Disallow: /api/
 
-User-agent: Anthropic-AI
+User-agent: anthropic-ai
 Allow: /
 Disallow: /api/
 
+# Google AI Crawlers
 User-agent: Google-Extended
 Allow: /
 Disallow: /api/
 
-User-agent: PerplexityBot
+# Amazon AI Crawlers
+User-agent: Amazonbot
+Allow: /
+Disallow: /api/
+
+# ByteDance AI Crawlers
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+
+# Common Crawl & Other AI Crawlers
+User-agent: CCBot
 Allow: /
 Disallow: /api/
 
@@ -34,7 +55,7 @@ User-agent: Applebot-Extended
 Allow: /
 Disallow: /api/
 
-User-agent: CCBot
+User-agent: PerplexityBot
 Allow: /
 Disallow: /api/
 
