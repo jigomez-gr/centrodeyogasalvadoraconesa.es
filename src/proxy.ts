@@ -135,11 +135,51 @@ Garantizamos la confidencialidad absoluta en todos los canales de interacción, 
 };
 
 export function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // RFC 9727 API Catalog Discovery
+  if (pathname === "/.well-known/api-catalog") {
+    const apiCatalog = {
+      linkset: [
+        {
+          anchor: "https://centrodeyogasalvadoraconesa.es/api/reservas",
+          "service-doc": [
+            {
+              href: "https://centrodeyogasalvadoraconesa.es/llms.txt",
+              type: "text/plain",
+            },
+          ],
+          "service-desc": [
+            {
+              href: "https://centrodeyogasalvadoraconesa.es/.well-known/mcp/server-card.json",
+              type: "application/json",
+            },
+          ],
+        },
+        {
+          anchor: "https://centrodeyogasalvadoraconesa.es/api/mcp",
+          "service-desc": [
+            {
+              href: "https://centrodeyogasalvadoraconesa.es/.well-known/mcp/server-card.json",
+              type: "application/json",
+            },
+          ],
+        },
+      ],
+    };
+
+    return new NextResponse(JSON.stringify(apiCatalog, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/linkset+json; charset=utf-8",
+      },
+    });
+  }
+
   const accept = request.headers.get("accept") || "";
 
   // Check if client explicitly requests Markdown
   if (accept.includes("text/markdown")) {
-    const pathname = request.nextUrl.pathname;
     const normalizedPath = pathname.endsWith("/") && pathname.length > 1
       ? pathname.slice(0, -1)
       : pathname;
@@ -162,9 +202,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all page routes, exclude internal Next.js assets, API, and static files
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|\\.well-known|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
+    "/.well-known/api-catalog",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|\\.well-known/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
   ],
 };
+
