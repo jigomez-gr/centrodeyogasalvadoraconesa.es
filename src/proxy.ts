@@ -176,6 +176,176 @@ export function proxy(request: NextRequest) {
     });
   }
 
+  // SEP-1649 / SEP-2127 MCP Server Card Discovery
+  if (
+    pathname === "/.well-known/mcp/server-card.json" ||
+    pathname === "/.well-known/mcp" ||
+    pathname === "/.well-known/mcp.json"
+  ) {
+    const serverCard = {
+      serverInfo: {
+        name: "Centro de Yoga Salvadora Conesa MCP Server",
+        version: "1.0.0",
+      },
+      description:
+        "Herramientas de consulta de servicios, horarios, clases de yoga (Kundalini, Nagna) y gestion de reservas para el Centro de Yoga y Bienestar Salvadora Conesa.",
+      transport: {
+        type: "streamable-http",
+        endpoint: "https://centrodeyogasalvadoraconesa.es/api/mcp",
+      },
+      endpoint: "https://centrodeyogasalvadoraconesa.es/api/mcp",
+      url: "https://centrodeyogasalvadoraconesa.es/api/mcp",
+      capabilities: {
+        tools: true,
+        resources: true,
+        prompts: false,
+      },
+    };
+
+    return new NextResponse(JSON.stringify(serverCard, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
+  // A2A Protocol Agent Card Discovery
+  if (pathname === "/.well-known/agent-card.json") {
+    const agentCard = {
+      name: "Centro de Yoga Salvadora Conesa Assistant",
+      version: "1.0.0",
+      description:
+        "Agente autónomo para reservas de clases, talleres de yoga y baños de gong en Fuenlabrada.",
+      url: "https://centrodeyogasalvadoraconesa.es",
+      supportedInterfaces: [
+        {
+          url: "https://centrodeyogasalvadoraconesa.es/api/vapi/call",
+          protocolBinding: "HTTP+JSON",
+          protocolVersion: "1.0",
+        },
+      ],
+      capabilities: {
+        streaming: false,
+        pushNotifications: false,
+      },
+      skills: [
+        {
+          id: "yoga-class-booking",
+          name: "Yoga Class Booking",
+          description:
+            "Permite consultar disponibilidad y reservar clases de Kundalini Yoga y Nagna Yoga.",
+        },
+        {
+          id: "gong-bath-reservation",
+          name: "Gong Bath Reservation",
+          description:
+            "Permite reservar sesiones de baños y puja de gong terapéuticos.",
+        },
+        {
+          id: "studio-information",
+          name: "Studio Information",
+          description:
+            "Ofrece información detallada de horarios, precios, ubicación y disciplinas del centro.",
+        },
+      ],
+    };
+
+    return new NextResponse(JSON.stringify(agentCard, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
+  // ARD AI Catalog Discovery
+  if (pathname === "/.well-known/ai-catalog.json") {
+    const aiCatalog = {
+      specVersion: "1.0",
+      host: {
+        displayName: "Centro de Yoga y Bienestar Salvadora Conesa",
+        identifier: "did:web:centrodeyogasalvadoraconesa.es",
+      },
+      entries: [
+        {
+          identifier: "urn:air:centrodeyogasalvadoraconesa.es:server:mcp",
+          displayName: "Salvadora Conesa MCP Server",
+          type: "application/mcp-server-card+json",
+          url: "https://centrodeyogasalvadoraconesa.es/.well-known/mcp/server-card.json",
+          representativeQueries: [
+            "clases de yoga en Fuenlabrada",
+            "reservar sesion de bano de gong",
+            "horarios y precios de kundalini yoga",
+          ],
+        },
+        {
+          identifier: "urn:air:centrodeyogasalvadoraconesa.es:agent:a2a",
+          displayName: "Salvadora Conesa A2A Booking Agent",
+          type: "application/a2a-agent-card+json",
+          url: "https://centrodeyogasalvadoraconesa.es/.well-known/agent-card.json",
+          representativeQueries: [
+            "agente para reservar clase de nagna yoga",
+            "contactar con el asistente del centro de yoga",
+            "consultar retiros de ayuno terapeutico",
+          ],
+        },
+        {
+          identifier: "urn:air:centrodeyogasalvadoraconesa.es:skill:studio-info",
+          displayName: "Studio Information Skill",
+          type: "text/markdown",
+          url: "https://centrodeyogasalvadoraconesa.es/.well-known/agent-skills/studio-info/SKILL.md",
+          representativeQueries: [
+            "donde esta el centro de yoga de salvadora conesa",
+            "que disciplinas de yoga se imparten",
+          ],
+        },
+      ],
+    };
+
+    return new NextResponse(JSON.stringify(aiCatalog, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  }
+
+  // Agent Skills Discovery Index
+  if (pathname === "/.well-known/agent-skills/index.json") {
+    const skillsIndex = {
+      $schema: "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+      skills: [
+        {
+          name: "studio-info",
+          type: "skill-md",
+          description:
+            "Retrieve information about classes, therapy sessions, workshops, schedules, and location for Centro de Yoga y Bienestar Salvadora Conesa.",
+          url: "/.well-known/agent-skills/studio-info/SKILL.md",
+          digest:
+            "sha256:2067ee00c61715a2a77ec687b571006bb8c76f70312fedd8e2ea370e653144c5",
+        },
+        {
+          name: "booking-assistant",
+          type: "skill-md",
+          description:
+            "Facilitate class bookings and reservations for yoga classes, sound bath sessions, and retreats at Centro de Yoga y Bienestar Salvadora Conesa.",
+          url: "/.well-known/agent-skills/booking-assistant/SKILL.md",
+          digest:
+            "sha256:2a0358a27f50b8e1afd9d6d8544a152b5bcbeea706c157d9304e348f63c8ab06",
+        },
+      ],
+    };
+
+    return new NextResponse(JSON.stringify(skillsIndex, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
   // RFC 9728 OAuth Protected Resource Metadata
   if (pathname === "/.well-known/oauth-protected-resource") {
     const prm = {
@@ -343,6 +513,12 @@ When communicating with protected endpoints, provide credentials via the standar
 export const config = {
   matcher: [
     "/auth.md",
+    "/.well-known/mcp/server-card.json",
+    "/.well-known/mcp",
+    "/.well-known/mcp.json",
+    "/.well-known/agent-card.json",
+    "/.well-known/ai-catalog.json",
+    "/.well-known/agent-skills/index.json",
     "/.well-known/api-catalog",
     "/.well-known/oauth-protected-resource",
     "/.well-known/oauth-authorization-server",
