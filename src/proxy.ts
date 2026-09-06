@@ -176,6 +176,67 @@ export function proxy(request: NextRequest) {
     });
   }
 
+  // RFC 9728 OAuth Protected Resource Metadata
+  if (pathname === "/.well-known/oauth-protected-resource") {
+    const prm = {
+      resource: "https://centrodeyogasalvadoraconesa.es",
+      authorization_servers: ["https://centrodeyogasalvadoraconesa.es"],
+      scopes_supported: ["openid", "profile", "read:classes", "write:bookings"],
+      bearer_methods_supported: ["header"],
+    };
+
+    return new NextResponse(JSON.stringify(prm, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
+  // RFC 8414 OAuth 2.0 Authorization Server Metadata
+  if (pathname === "/.well-known/oauth-authorization-server") {
+    const oauth = {
+      issuer: "https://centrodeyogasalvadoraconesa.es",
+      authorization_endpoint: "https://centrodeyogasalvadoraconesa.es/api/auth/authorize",
+      token_endpoint: "https://centrodeyogasalvadoraconesa.es/api/auth/token",
+      jwks_uri: "https://centrodeyogasalvadoraconesa.es/.well-known/jwks.json",
+      response_types_supported: ["code", "token"],
+      grant_types_supported: ["authorization_code", "client_credentials", "refresh_token"],
+      scopes_supported: ["openid", "profile", "read:classes", "write:bookings"],
+      token_endpoint_auth_methods_supported: ["client_secret_basic", "client_secret_post"],
+    };
+
+    return new NextResponse(JSON.stringify(oauth, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
+  // OpenID Connect Discovery Metadata
+  if (pathname === "/.well-known/openid-configuration") {
+    const oidc = {
+      issuer: "https://centrodeyogasalvadoraconesa.es",
+      authorization_endpoint: "https://centrodeyogasalvadoraconesa.es/api/auth/authorize",
+      token_endpoint: "https://centrodeyogasalvadoraconesa.es/api/auth/token",
+      jwks_uri: "https://centrodeyogasalvadoraconesa.es/.well-known/jwks.json",
+      response_types_supported: ["code", "token"],
+      subject_types_supported: ["public"],
+      id_token_signing_alg_values_supported: ["RS256"],
+      grant_types_supported: ["authorization_code", "client_credentials", "refresh_token"],
+      scopes_supported: ["openid", "profile", "read:classes", "write:bookings"],
+      token_endpoint_auth_methods_supported: ["client_secret_basic", "client_secret_post"],
+    };
+
+    return new NextResponse(JSON.stringify(oidc, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    });
+  }
+
   const accept = request.headers.get("accept") || "";
 
   // Check if client explicitly requests Markdown
@@ -203,6 +264,9 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/.well-known/api-catalog",
+    "/.well-known/oauth-protected-resource",
+    "/.well-known/oauth-authorization-server",
+    "/.well-known/openid-configuration",
     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|\\.well-known/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
   ],
 };

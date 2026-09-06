@@ -1,0 +1,15 @@
+{
+  "resource": "https://centrodeyogasalvadoraconesa.es",
+  "authorization_servers": [
+    "https://centrodeyogasalvadoraconesa.es"
+  ],
+  "scopes_supported": [
+    "openid",
+    "profile",
+    "read:classes",
+    "write:bookings"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ]
+}
