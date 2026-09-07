@@ -163,6 +163,47 @@ Facilitate class bookings and reservations for yoga classes, sound bath sessions
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // Web Bot Auth (draft-meunier-http-message-signatures-directory / IETF WebBotAuth)
+  if (
+    pathname === "/.well-known/http-message-signatures-directory" ||
+    pathname === "/http-message-signatures-directory"
+  ) {
+    if (request.method === "OPTIONS") {
+      return new NextResponse(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
+    }
+
+    const jwks = {
+      keys: [
+        {
+          crv: "Ed25519",
+          x: "lAYsPmMuz3wrhDp5dhoiFZXH993bKmpYLA3g5L9ttqk",
+          kty: "OKP",
+          kid: "sJ8yht9x-x_dhPNkBzFdesdiBLEO5Y-ebiPIu86P00o",
+          use: "sig",
+        },
+      ],
+    };
+
+    return new NextResponse(JSON.stringify(jwks, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type":
+          "application/http-message-signatures-directory+json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        "Access-Control-Allow-Headers": "*",
+        "Cache-Control": "public, max-age=86400",
+      },
+    });
+  }
+
   // RFC 9727 API Catalog Discovery
   if (pathname === "/.well-known/api-catalog") {
     const apiCatalog = {
@@ -668,6 +709,8 @@ export const config = {
     "/oauth-protected-resource/:path*",
     "/.well-known/oauth-authorization-server",
     "/.well-known/openid-configuration",
+    "/.well-known/http-message-signatures-directory",
+    "/http-message-signatures-directory",
     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|auth\\.md|\\.well-known/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|pdf|txt|ico|json|md)).*)",
   ],
 };
