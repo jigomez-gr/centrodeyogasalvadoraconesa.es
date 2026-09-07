@@ -265,7 +265,12 @@ export default function RootLayout({
       className={`${cormorant.variable} ${outfit.variable} h-full antialiased`}
     >
       <head>
+        <link rel="api-catalog" href="/.well-known/api-catalog" />
         <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
+        <link rel="service-desc" href="/.well-known/mcp/server-card.json" />
+        <link rel="service-doc" href="/llms.txt" />
+        <link rel="describedby" href="/.well-known/agent-card.json" />
+        <link rel="oauth-protected-resource" href="/.well-known/oauth-protected-resource" />
         <script
           id="webmcp-init"
           dangerouslySetInnerHTML={{

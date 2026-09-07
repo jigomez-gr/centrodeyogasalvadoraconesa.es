@@ -639,7 +639,7 @@ When communicating with protected endpoints, provide credentials via the standar
   const response = NextResponse.next();
   response.headers.set(
     "Link",
-    '</.well-known/oauth-protected-resource>; rel="oauth-protected-resource", </oauth-protected-resource>; rel="oauth-protected-resource", </.well-known/ai-catalog.json>; rel="ai-catalog", </ai-catalog.json>; rel="ai-catalog", </.well-known/mcp/server-card.json>; rel="mcp-server-card", </.well-known/agent-card.json>; rel="agent-card"'
+    '</.well-known/api-catalog>; rel="api-catalog", </.well-known/ai-catalog.json>; rel="ai-catalog", </.well-known/mcp/server-card.json>; rel="service-desc", </llms.txt>; rel="service-doc", </.well-known/agent-card.json>; rel="describedby", </.well-known/oauth-protected-resource>; rel="oauth-protected-resource", </.well-known/mcp/server-card.json>; rel="mcp-server-card", </.well-known/agent-card.json>; rel="agent-card"'
   );
   response.headers.set(
     "WWW-Authenticate",
