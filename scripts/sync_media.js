@@ -110,12 +110,11 @@ function runSync() {
   }
 
   if (!canConnectSsh) {
-    console.log(`[INFO] No hay conexión SSH directa sin contraseña con ${remoteUser}@${remoteHost}.`);
-    console.log(`Para subir los archivos modificados a producción puedes ejecutar manualmente:`);
-    console.log(`       scp -P ${remotePort} -r "${localBase}/*" ${remoteUser}@${remoteHost}:${remotePath}/`);
-    console.log(`(O configura tu clave SSH con: ssh-copy-id ${remoteUser}@${remoteHost} para subida 100% automática)\n`);
-    // Guardamos estado para no repetir el aviso si no hay cambios adicionales
-    fs.writeFileSync(cacheFile, JSON.stringify(currentManifest, null, 2), 'utf8');
+    console.log(`[AVISO] No hay clave SSH pública autorizada sin contraseña para ${remoteUser}@${remoteHost}.`);
+    console.log(`Para copiar todos los videos y medios a tu servidor, ejecuta en tu terminal:`);
+    console.log(`\n  scp -P ${remotePort} -r "${localBase}/*" ${remoteUser}@${remoteHost}:${remotePath}/\n`);
+    console.log(`(Te pedirá la contraseña de ${remoteUser} y copiará todos los videos, flyers y documentos)\n`);
+    // NO guardamos en cache hasta que realmente se copien con éxito
     return;
   }
 
@@ -140,8 +139,8 @@ function runSync() {
     }
   }
 
-  fs.writeFileSync(cacheFile, JSON.stringify(currentManifest, null, 2), 'utf8');
   if (successCount > 0) {
+    fs.writeFileSync(cacheFile, JSON.stringify(currentManifest, null, 2), 'utf8');
     console.log(`\n✓ ${successCount} archivo(s) sincronizado(s) exitosamente con ${remoteHost}.`);
   }
 }
