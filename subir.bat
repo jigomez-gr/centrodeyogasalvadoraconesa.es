@@ -29,6 +29,15 @@ echo [INFO] Videos y blobs pesados desacoplados en media_base fuera de Git.
 echo.
 
 REM ============================================================
+REM 3. COMPROBAR Y SINCRONIZAR MEDIOS (VIDEOS / FLYERS / DOCS)
+REM ============================================================
+
+if exist "scripts\sync_media.js" (
+    node scripts\sync_media.js
+)
+echo.
+
+REM ============================================================
 REM 4. MOSTRAR CAMBIOS
 REM ============================================================
 
