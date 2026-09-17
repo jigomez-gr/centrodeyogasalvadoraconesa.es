@@ -21,33 +21,11 @@ if errorlevel 1 (
 )
 
 REM ============================================================
-REM 2. COMPROBAR GIT LFS
+REM 2. COMPROBAR GIT
 REM ============================================================
 
-git lfs version >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] Git LFS no esta instalado.
-    exit /b 2
-)
-
-git lfs install >nul 2>&1
-
-REM ============================================================
-REM 3. COMPROBAR QUE MP4 USA LFS
-REM ============================================================
-
-for /f "tokens=3" %%A in ('git check-attr filter -- public/videos/itinerario-4.mp4') do (
-    if /I not "%%A"=="lfs" (
-        echo [ERROR] Los MP4 no estan configurados correctamente para Git LFS.
-        echo.
-        git check-attr filter -- public/videos/itinerario-4.mp4
-        echo.
-        echo Revisa .gitattributes.
-        exit /b 3
-    )
-)
-
-echo [OK] Git LFS configurado.
+echo [OK] Repositorio Git verificado.
+echo [INFO] Videos y blobs pesados desacoplados en media_base fuera de Git.
 echo.
 
 REM ============================================================
