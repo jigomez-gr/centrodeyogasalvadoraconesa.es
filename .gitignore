@@ -43,3 +43,13 @@ Thumbs.db
 /scripts/
 **/bin/
 **/obj/
+
+# Media blobs decoupled from Git (stored in media_base outside repository)
+*.mp4
+*.zip
+/video_hero/
+/viajesprevios/
+/videos_itinerario/
+/videos_interpretes/
+/auxiliares/
+/media_base/

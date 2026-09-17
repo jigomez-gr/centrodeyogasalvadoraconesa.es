@@ -1,3 +1,11 @@
+export interface CrmCategory {
+  id: string;
+  code: string;
+  name: string;
+  description?: string | null;
+  displayOrder: number;
+}
+
 export interface CrmService {
   id: string;
   name: string;
@@ -17,6 +25,12 @@ export interface CrmService {
   firstClassFree?: boolean;
   freeForYogaStudents?: boolean;
   whatsappBookingUrl?: string;
+  categoryId?: string | null;
+  categoryCode?: string | null;
+  categoryName?: string | null;
+  categoryDescription?: string | null;
+  flyerPath?: string | null;
+  flyerUrl?: string | null;
 }
 
 export interface CrmServicesResponse {
@@ -26,6 +40,7 @@ export interface CrmServicesResponse {
   brandColor?: string;
   logoUrl?: string | null;
   whatsappNumber: string;
+  categories?: CrmCategory[];
   services: CrmService[];
 }
 
@@ -192,6 +207,37 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
   },
 ];
 
+export const FALLBACK_CRM_CATEGORIES: CrmCategory[] = [
+  {
+    id: "cat_longevidad",
+    code: "longevidad_artes",
+    name: "Longevidad & Artes Tradicionales",
+    description: "Bienestar Experience, longevidad activa, biohacking e Iaidō (esgrima japonesa) en Club Social Parque Granada y Centro.",
+    displayOrder: 1,
+  },
+  {
+    id: "cat_yoga",
+    code: "yoga_meditacion",
+    name: "Yoga & Meditación",
+    description: "ESCUELA SALVADORA CONESA · CLASES REGULARES\nHatha Yoga Terapéutico, Meditaciones y Terapias",
+    displayOrder: 2,
+  },
+  {
+    id: "cat_talleres",
+    code: "talleres_eventos",
+    name: "Talleres, Eventos y Retiros",
+    description: "ENCUENTROS, SONIDO Y RETIROS\nBaños de Gong, Pujas de 11h, Constelaciones Familiares y Retiros de Ayuno.",
+    displayOrder: 3,
+  },
+  {
+    id: "cat_salud",
+    code: "salud_terapeutica",
+    name: "Salud & Terapias Individuales",
+    description: "Acompañamiento psicoterapéutico individual (Gestalt) y consultas especializadas de salud.",
+    displayOrder: 4,
+  },
+];
+
 /**
  * Fetches services from CRM API with timeout and fallback.
  */
@@ -199,6 +245,7 @@ export async function fetchCrmServices(): Promise<{
   success: boolean;
   businessName: string;
   whatsappNumber: string;
+  categories: CrmCategory[];
   services: CrmService[];
 }> {
   try {
@@ -224,6 +271,7 @@ export async function fetchCrmServices(): Promise<{
         success: true,
         businessName: data.businessName || "Centro de Yoga y Bienestar Salvadora",
         whatsappNumber: data.whatsappNumber || "34695172625",
+        categories: data.categories && data.categories.length > 0 ? data.categories : FALLBACK_CRM_CATEGORIES,
         services: data.services,
       };
     }
@@ -237,6 +285,7 @@ export async function fetchCrmServices(): Promise<{
       success: true,
       businessName: "Centro de Yoga y Bienestar Salvadora",
       whatsappNumber: "34695172625",
+      categories: FALLBACK_CRM_CATEGORIES,
       services: FALLBACK_CRM_SERVICES,
     };
   }
@@ -336,6 +385,7 @@ export function findServiceByCodeOrId(
 
 /**
  * Dynamic categorization for landing display sections.
+ * Prioritizes CRM assigned categoryCode if present, falling back to name/type heuristics.
  */
 export function categorizeCrmServices(services: CrmService[]) {
   const destacadas: CrmService[] = [];
@@ -344,6 +394,23 @@ export function categorizeCrmServices(services: CrmService[]) {
   const saludTerapeutica: CrmService[] = [];
 
   for (const s of services) {
+    if (s.categoryCode === "longevidad_artes") {
+      destacadas.push(s);
+      continue;
+    }
+    if (s.categoryCode === "yoga_meditacion") {
+      regularesYoga.push(s);
+      continue;
+    }
+    if (s.categoryCode === "talleres_eventos") {
+      talleresEventos.push(s);
+      continue;
+    }
+    if (s.categoryCode === "salud_terapeutica") {
+      saludTerapeutica.push(s);
+      continue;
+    }
+
     const lower = s.name.toLowerCase();
 
     // Activities in Club Social Parque Granada / Bienestar Experience

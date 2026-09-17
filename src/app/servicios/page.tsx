@@ -21,7 +21,9 @@ import { SimuladorDiagnosticoModal } from "@/components/SimuladorDiagnosticoModa
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { VapiVoiceBookingButton } from "@/components/VapiVoiceBookingButton";
 import {
+  CrmCategory,
   CrmService,
+  FALLBACK_CRM_CATEGORIES,
   FALLBACK_CRM_SERVICES,
   formatServicePrice,
   formatDuration,
@@ -39,7 +41,9 @@ export default function DemoLandingPage() {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [isCrmChatOpen, setIsCrmChatOpen] = useState(false);
 
-  // Dynamic services from CRM
+  // Categories & Dynamic services from CRM
+  const [categories, setCategories] = useState<CrmCategory[]>(FALLBACK_CRM_CATEGORIES);
+  const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>("all");
   const [services, setServices] = useState<CrmService[]>(FALLBACK_CRM_SERVICES);
   const [whatsappPhone, setWhatsappPhone] = useState("+34695172625");
   const [crmLoading, setCrmLoading] = useState(true);
@@ -52,6 +56,9 @@ export default function DemoLandingPage() {
           const data = await res.json();
           if (data && data.services && Array.isArray(data.services) && data.services.length > 0) {
             setServices(data.services);
+            if (data.categories && Array.isArray(data.categories) && data.categories.length > 0) {
+              setCategories(data.categories);
+            }
             if (data.whatsappNumber) {
               setWhatsappPhone(data.whatsappNumber);
             }
@@ -289,8 +296,56 @@ export default function DemoLandingPage() {
         </div>
       </section>
 
+      {/* ─── BARRA DE FILTRADO POR CATEGORÍA ─── */}
+      <section className="max-w-6xl mx-auto px-4 pt-2 pb-4">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 border border-stone-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-stone-700">
+            <span className="text-base">🏷️</span>
+            <span>Filtrar por Categoría:</span>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => setSelectedCategoryCode("all")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                selectedCategoryCode === "all"
+                  ? "bg-[#800020] text-white shadow-xs"
+                  : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+              }`}
+            >
+              Todas las Categorías ({services.length})
+            </button>
+
+            {categories.map((cat) => {
+              const count = services.filter(
+                (s) =>
+                  s.categoryCode === cat.code ||
+                  (cat.code === "longevidad_artes" && destacadas.some((d) => d.id === s.id)) ||
+                  (cat.code === "yoga_meditacion" && regularesYoga.some((r) => r.id === s.id)) ||
+                  (cat.code === "talleres_eventos" && talleresEventos.some((t) => t.id === s.id)) ||
+                  (cat.code === "salud_terapeutica" && saludTerapeutica.some((st) => st.id === s.id))
+              ).length;
+
+              return (
+                <button
+                  key={cat.id || cat.code}
+                  onClick={() => setSelectedCategoryCode(cat.code)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    selectedCategoryCode === cat.code
+                      ? "bg-[#800020] text-white shadow-xs"
+                      : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                  }`}
+                >
+                  {cat.name} ({count})
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ─── SECCIÓN 1: OTRAS ACTIVIDADES ADICIONALES (BIENESTAR EXPERIENCE & IAIDŌ) ─── */}
-      {destacadas.length > 0 && (
+      {destacadas.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes") && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6 pb-3 border-b-2 border-[#0B4A72]">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
@@ -394,6 +449,20 @@ export default function DemoLandingPage() {
                       </div>
                     ) : (
                       <div>
+                        {/* Cartel / Flyer si existe */}
+                        {(act.flyerUrl || act.flyerPath) && (
+                          <div className="mb-3 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+                            <img
+                              src={act.flyerUrl || act.flyerPath || ""}
+                              alt={act.name}
+                              className="w-full h-40 sm:h-48 object-cover hover:scale-105 transition-transform duration-300"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = "none";
+                              }}
+                            />
+                          </div>
+                        )}
+
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
                             {act.name}
@@ -465,15 +534,16 @@ export default function DemoLandingPage() {
       )}
 
       {/* ─── SECCIÓN 2: ESCUELA DE YOGA & TERAPIAS REGULARES ─── */}
-      <section className="max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-6 pb-3 border-b-2 border-stone-300">
-          <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#800020]">
-            ESCUELA SALVADORA CONESA · CLASES REGULARES
-          </span>
-          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            Hatha Yoga Terapéutico, Meditaciones y Terapias
-          </h3>
-        </div>
+      {(selectedCategoryCode === "all" || selectedCategoryCode === "yoga_meditacion" || selectedCategoryCode === "salud_terapeutica") && (
+        <section className="max-w-6xl mx-auto px-4 py-8">
+          <div className="mb-6 pb-3 border-b-2 border-stone-300">
+            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#800020]">
+              ESCUELA SALVADORA CONESA · CLASES REGULARES
+            </span>
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
+              Hatha Yoga Terapéutico, Meditaciones y Terapias
+            </h3>
+          </div>
 
         {/* Banner Informativo Políticas de Yoga */}
         <div className="mb-6 bg-amber-50/95 border-2 border-amber-200/90 rounded-2xl p-5 text-xs text-stone-800 shadow-sm space-y-2">
@@ -549,6 +619,21 @@ export default function DemoLandingPage() {
                     )}
                   </div>
 
+                  {/* Cartel / Flyer si existe */}
+                  {(svc.flyerUrl || svc.flyerPath) && (
+                    <div className="mb-3 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
+                      <img
+                        src={svc.flyerUrl || svc.flyerPath || ""}
+                        alt={svc.name}
+                        className="w-full h-36 sm:h-40 object-cover hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          // Hide on load error
+                          (e.target as HTMLElement).style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+
                   <h4 className="font-serif text-base font-bold text-stone-900 mb-1.5 leading-snug">
                     {svc.name}
                   </h4>
@@ -604,9 +689,10 @@ export default function DemoLandingPage() {
           })}
         </div>
       </section>
+      )}
 
       {/* ─── SECCIÓN 3: TALLERES, EVENTOS Y RETIROS ESPECIALES ─── */}
-      {talleresEventos.length > 0 && (
+      {talleresEventos.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos") && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6 pb-3 border-b-2 border-purple-300">
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-900">
@@ -651,6 +737,20 @@ export default function DemoLandingPage() {
                         </div>
                       )}
                     </div>
+
+                    {/* Cartel / Flyer si existe */}
+                    {(ev.flyerUrl || ev.flyerPath) && (
+                      <div className="mb-3 overflow-hidden rounded-xl border border-purple-200 bg-purple-50">
+                        <img
+                          src={ev.flyerUrl || ev.flyerPath || ""}
+                          alt={ev.name}
+                          className="w-full h-36 sm:h-40 object-cover hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            (e.target as HTMLElement).style.display = "none";
+                          }}
+                        />
+                      </div>
+                    )}
 
                     <h4 className="font-serif text-lg font-bold text-stone-900 mb-1.5 leading-snug">
                       {ev.name}

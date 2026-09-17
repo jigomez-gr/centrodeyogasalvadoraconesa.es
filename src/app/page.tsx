@@ -24,20 +24,26 @@ import {
   Sparkles, Moon, Heart, Network, Activity
 } from "lucide-react";
 
-// Server-side helper to check if mp4 videos exist in /public/videos
+// Server-side helper to check if mp4 videos exist in external media directory or /public/videos
 function checkVideosExist() {
+  const externalVideosDir = process.env.MEDIA_VIDEOS_DIR || "d:/tmp/antigraviti/salvadora/media_base/videos";
   const publicVideosDir = path.join(process.cwd(), "public", "videos");
+
+  const checkVideo = (filename: string) =>
+    fs.existsSync(path.join(externalVideosDir, filename)) ||
+    fs.existsSync(path.join(publicVideosDir, filename));
+
   return {
-    "itinerario-1": fs.existsSync(path.join(publicVideosDir, "itinerario-1.mp4")),
-    "itinerario-2": fs.existsSync(path.join(publicVideosDir, "itinerario-2.mp4")),
-    "itinerario-3": fs.existsSync(path.join(publicVideosDir, "itinerario-3.mp4")),
-    "itinerario-4": fs.existsSync(path.join(publicVideosDir, "itinerario-4.mp4")),
-    "itinerario-5": fs.existsSync(path.join(publicVideosDir, "itinerario-5.mp4")),
-    "itinerario-6": fs.existsSync(path.join(publicVideosDir, "itinerario-6.mp4")),
-    "itinerario-7": fs.existsSync(path.join(publicVideosDir, "itinerario-7.mp4")),
-    "itinerario-8": fs.existsSync(path.join(publicVideosDir, "itinerario-8.mp4")),
-    "itinerario-9": fs.existsSync(path.join(publicVideosDir, "itinerario-9.mp4")),
-    resumen: fs.existsSync(path.join(publicVideosDir, "resumen.mp4")),
+    "itinerario-1": checkVideo("itinerario-1.mp4"),
+    "itinerario-2": checkVideo("itinerario-2.mp4"),
+    "itinerario-3": checkVideo("itinerario-3.mp4"),
+    "itinerario-4": checkVideo("itinerario-4.mp4"),
+    "itinerario-5": checkVideo("itinerario-5.mp4"),
+    "itinerario-6": checkVideo("itinerario-6.mp4"),
+    "itinerario-7": checkVideo("itinerario-7.mp4"),
+    "itinerario-8": checkVideo("itinerario-8.mp4"),
+    "itinerario-9": checkVideo("itinerario-9.mp4"),
+    resumen: checkVideo("resumen.mp4"),
   };
 }
 
