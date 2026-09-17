@@ -30,7 +30,9 @@ export async function GET(
     let physicalPath = "";
     let mimeType = "video/mp4";
 
-    // 1. Try resolving via PostgreSQL ccmfalla.media_assets
+    // 1. Resolve candidates for physical path
+    const candidatePaths: string[] = [];
+
     try {
       const assetKey = filename.replace(/\.[^/.]+$/, "");
       const rows: any = await prisma.$queryRaw`
@@ -40,29 +42,39 @@ export async function GET(
         LIMIT 1
       `;
       if (rows && rows.length > 0) {
-        physicalPath = rows[0].physical_path;
         mimeType = rows[0].mime_type || mimeType;
+        const dbPath = rows[0].physical_path;
+        if (dbPath) {
+          candidatePaths.push(dbPath);
+          // Also adapt if db stored Windows path and server is Linux
+          const baseName = path.basename(dbPath);
+          candidatePaths.push(path.join(videosDir, baseName));
+          candidatePaths.push(path.join(docsDir, baseName));
+          candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
+          candidatePaths.push(`/var/data/salvadora/media/documentos/${baseName}`);
+        }
       }
     } catch (dbErr) {
       // Non-blocking fallback to direct filesystem
     }
 
-    // 2. Direct filesystem fallback if not in DB or DB path not found
-    if (!physicalPath || !fs.existsSync(physicalPath)) {
-      const possibleVideo = path.join(videosDir, filename);
-      const possibleDoc = path.join(docsDir, filename);
+    // Direct folder lookups
+    candidatePaths.push(path.join(videosDir, filename));
+    candidatePaths.push(path.join(docsDir, filename));
+    candidatePaths.push(`/var/data/salvadora/media/videos/${filename}`);
+    candidatePaths.push(`/var/data/salvadora/media/documentos/${filename}`);
+    candidatePaths.push(path.join(process.cwd(), "public", "videos", filename));
 
-      if (fs.existsSync(possibleVideo)) {
-        physicalPath = possibleVideo;
-        mimeType = filename.endsWith(".mp4") ? "video/mp4" : "application/octet-stream";
-      } else if (fs.existsSync(possibleDoc)) {
-        physicalPath = possibleDoc;
-        mimeType = filename.endsWith(".pdf") ? "application/pdf" : "text/plain";
+    for (const cand of candidatePaths) {
+      if (cand && fs.existsSync(cand)) {
+        physicalPath = cand;
+        break;
       }
     }
 
-    if (!physicalPath || !fs.existsSync(physicalPath)) {
-      return new NextResponse("Media asset not found", { status: 404 });
+    if (!physicalPath) {
+      console.warn(`[Media Stream] Not found: ${filename}. Checked paths:`, candidatePaths);
+      return new NextResponse(`Media asset not found: ${filename}. Please ensure /var/data/salvadora/media/videos/${filename} exists on the server.`, { status: 404 });
     }
 
     const stat = fs.statSync(physicalPath);
