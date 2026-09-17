@@ -41,6 +41,8 @@ Thumbs.db
 
 # build and scripts
 /scripts/
+!/scripts/sync_media.js
+.media_manifest.json
 **/bin/
 **/obj/
 
