@@ -12,13 +12,16 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ filename: string }> }
+  { params }: { params: Promise<{ filename: string[] | string }> }
 ) {
   try {
     const { filename } = await params;
-    if (!filename) {
+    if (!filename || (Array.isArray(filename) && filename.length === 0)) {
       return new NextResponse("Filename is required", { status: 400 });
     }
+
+    const rawPath = Array.isArray(filename) ? filename.join("/") : String(filename);
+    const baseName = Array.isArray(filename) ? filename[filename.length - 1] : String(filename);
 
     const storageRoot =
       process.env.MEDIA_STORAGE_ROOT || "d:/tmp/antigraviti/salvadora/media_base";
@@ -34,11 +37,11 @@ export async function GET(
     const candidatePaths: string[] = [];
 
     try {
-      const assetKey = filename.replace(/\.[^/.]+$/, "");
+      const assetKey = baseName.replace(/\.[^/.]+$/, "");
       const rows: any = await prisma.$queryRaw`
         SELECT physical_path, mime_type 
         FROM ccmfalla.media_assets 
-        WHERE key = ${assetKey} OR public_url LIKE ${"%" + filename} OR physical_path LIKE ${"%" + filename}
+        WHERE key = ${assetKey} OR public_url LIKE ${"%" + baseName} OR physical_path LIKE ${"%" + baseName}
         LIMIT 1
       `;
       if (rows && rows.length > 0) {
@@ -46,24 +49,39 @@ export async function GET(
         const dbPath = rows[0].physical_path;
         if (dbPath) {
           candidatePaths.push(dbPath);
-          // Also adapt if db stored Windows path and server is Linux
-          const baseName = path.basename(dbPath);
-          candidatePaths.push(path.join(videosDir, baseName));
-          candidatePaths.push(path.join(docsDir, baseName));
-          candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
-          candidatePaths.push(`/var/data/salvadora/media/documentos/${baseName}`);
+          const dbBase = path.basename(dbPath);
+          candidatePaths.push(path.join(videosDir, dbBase));
+          candidatePaths.push(path.join(docsDir, dbBase));
+          candidatePaths.push(`/var/data/salvadora/media/videos/${dbBase}`);
+          candidatePaths.push(`/var/data/salvadora/media/documentos/${dbBase}`);
         }
       }
     } catch (dbErr) {
       // Non-blocking fallback to direct filesystem
     }
 
-    // Direct folder lookups
-    candidatePaths.push(path.join(videosDir, filename));
-    candidatePaths.push(path.join(docsDir, filename));
-    candidatePaths.push(`/var/data/salvadora/media/videos/${filename}`);
-    candidatePaths.push(`/var/data/salvadora/media/documentos/${filename}`);
-    candidatePaths.push(path.join(process.cwd(), "public", "videos", filename));
+    // Direct folder lookups with full subpath
+    candidatePaths.push(path.join(videosDir, rawPath));
+    candidatePaths.push(path.join(docsDir, rawPath));
+    candidatePaths.push(path.join(storageRoot, rawPath));
+    candidatePaths.push(`/var/data/salvadora/media/videos/${rawPath}`);
+    candidatePaths.push(`/var/data/salvadora/media/documentos/${rawPath}`);
+    candidatePaths.push(`/var/data/salvadora/media/${rawPath}`);
+    candidatePaths.push(path.join(process.cwd(), "public", "videos", rawPath));
+
+    // Fallbacks with baseName and known subdirectories
+    candidatePaths.push(path.join(videosDir, baseName));
+    candidatePaths.push(path.join(videosDir, "el_espacio_para_mejorar_las_asanas", baseName));
+    candidatePaths.push(path.join(videosDir, "nagna_yoga", baseName));
+    candidatePaths.push(`/var/data/salvadora/media/videos/el_espacio_para_mejorar_las_asanas/${baseName}`);
+    candidatePaths.push(`/var/data/salvadora/media/videos/nagna_yoga/${baseName}`);
+    candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
+    candidatePaths.push(path.join(process.cwd(), "public", "videos", baseName));
+
+    // Fallback relative to repository root if media_base is alongside
+    candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", rawPath));
+    candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", "el_espacio_para_mejorar_las_asanas", baseName));
+    candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", "nagna_yoga", baseName));
 
     for (const cand of candidatePaths) {
       if (cand && fs.existsSync(cand)) {
@@ -73,8 +91,8 @@ export async function GET(
     }
 
     if (!physicalPath) {
-      console.warn(`[Media Stream] Not found: ${filename}. Checked paths:`, candidatePaths);
-      return new NextResponse(`Media asset not found: ${filename}. Please ensure /var/data/salvadora/media/videos/${filename} exists on the server.`, { status: 404 });
+      console.warn(`[Media Stream] Not found: ${rawPath}. Checked paths:`, candidatePaths);
+      return new NextResponse(`Media asset not found: ${rawPath}. Please ensure /var/data/salvadora/media/videos/${rawPath} exists on the server.`, { status: 404 });
     }
 
     const stat = fs.statSync(physicalPath);
