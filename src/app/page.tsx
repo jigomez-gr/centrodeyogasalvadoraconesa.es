@@ -207,47 +207,53 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section id="inicio" className="relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-start overflow-hidden">
+      <section id="inicio" className="hero-compact-laptop relative bg-[#FAF9F6] pt-14 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-start overflow-hidden">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
-          <div className="inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold mb-1.5 sm:mb-2">
+          <div className="hero-tag inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold mb-1.5 sm:mb-2">
             <span className="hidden sm:inline">Clases Regulares, Yoga, Baños de Gong, Gestalt, Constelaciones Familiares, Pujas Gong, Talleres y Retiros y Actividades Varias</span>
             <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
           </div>
 
-          <h1 className="font-serif text-xl sm:text-3.5xl md:text-[44px] lg:text-[48px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
+          <h1 className="hero-title font-serif text-xl sm:text-3.5xl md:text-[44px] lg:text-[48px] font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
             CENTRO DE YOGA FUENLABRADA
           </h1>
 
-          <p className="text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold text-center max-w-3xl mb-3 sm:mb-4.5 mt-1 px-4 sm:px-0">
+          <p className="hero-desc text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold text-center max-w-3xl mb-3 sm:mb-4.5 mt-1 px-4 sm:px-0">
             Desde 1986, guiando la práctica del yoga en un espacio cercano y sereno en Calle Holanda, 1, Fuenlabrada, junto al Metro Parque Europa (Línea 12 – MetroSur).
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-[960px] w-[min(90vw,calc((100vh-310px)*16/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
+          <div className="hero-video-frame max-w-[960px] w-[min(90vw,calc((100vh-310px)*16/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
             <HeroMedia />
           </div>
 
           {/* Call to Actions in Editorial Style */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
-            <CrmBookingButton message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.">
+            <CrmBookingButton
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200 cursor-pointer"
+              message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa."
+            >
               CONSULTA SERVICIOS
             </CrmBookingButton>
-            <VapiCallButton inquiry="Consulta general sobre clases de yoga y terapias">
+            <VapiCallButton
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-6 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-200 cursor-pointer select-none"
+              inquiry="Consulta general sobre clases de yoga y terapias"
+            >
               TE LLAMAMOS GRATIS (IA)
             </VapiCallButton>
             <a
               href="#itinerario"
-              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
             >
               Ver Actividades
             </a>
             <Link
               href="/servicios"
-              className="w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#800020] text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/90 shadow-md hover:scale-102 transition duration-250"
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#800020] text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/90 shadow-md hover:scale-102 transition duration-250"
             >
               Reservar por Actividad
             </Link>
