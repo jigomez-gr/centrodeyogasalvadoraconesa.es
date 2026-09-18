@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { Readable } from "stream";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -78,10 +79,13 @@ export async function GET(
     candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
     candidatePaths.push(path.join(process.cwd(), "public", "videos", baseName));
 
-    // Fallback relative to repository root if media_base is alongside
+    // Fallback relative to repository root if media_base or auxiliares is alongside
     candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", rawPath));
     candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", "el_espacio_para_mejorar_las_asanas", baseName));
     candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", "nagna_yoga", baseName));
+    candidatePaths.push(path.resolve(process.cwd(), "..", "auxiliares", "viajesprevios", baseName));
+    candidatePaths.push(path.join("d:/tmp/antigraviti/salvadora/auxiliares/viajesprevios", baseName));
+    candidatePaths.push(`/var/data/salvadora/media/videos/viajesprevios/${baseName}`);
 
     for (const cand of candidatePaths) {
       if (cand && fs.existsSync(cand)) {
@@ -115,6 +119,7 @@ export async function GET(
 
       const chunkSize = end - start + 1;
       const fileStream = fs.createReadStream(physicalPath, { start, end });
+      const webStream = Readable.toWeb(fileStream);
 
       const headers = new Headers({
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
@@ -123,20 +128,21 @@ export async function GET(
         "Content-Type": mimeType,
       });
 
-      return new NextResponse(fileStream as any, {
+      return new NextResponse(webStream as any, {
         status: 206,
         headers,
       });
     }
 
     const fileStream = fs.createReadStream(physicalPath);
+    const webStream = Readable.toWeb(fileStream);
     const headers = new Headers({
       "Content-Length": fileSize.toString(),
       "Content-Type": mimeType,
       "Accept-Ranges": "bytes",
     });
 
-    return new NextResponse(fileStream as any, {
+    return new NextResponse(webStream as any, {
       status: 200,
       headers,
     });

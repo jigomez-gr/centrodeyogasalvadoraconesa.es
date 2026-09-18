@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
     User,
     Mail,
@@ -21,7 +21,9 @@ import {
     Clock
 } from "lucide-react";
 import {
+    CrmCategory,
     CrmService,
+    FALLBACK_CRM_CATEGORIES,
     FALLBACK_CRM_SERVICES,
     findServiceByCodeOrId,
     formatServicePrice
@@ -148,10 +150,13 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
         }
     };
 
-    // Dynamic CRM Services
+    // Dynamic CRM Services & Categories
     const [services, setServices] = useState<CrmService[]>(
         initialServices && initialServices.length > 0 ? initialServices : FALLBACK_CRM_SERVICES
     );
+    const [categories, setCategories] = useState<CrmCategory[]>(FALLBACK_CRM_CATEGORIES);
+    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("all");
+    const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>("all");
 
     useEffect(() => {
         loadSession();
@@ -163,6 +168,9 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
                     if (data.services && Array.isArray(data.services) && data.services.length > 0) {
                         setServices(data.services);
                     }
+                    if (data.categories && Array.isArray(data.categories) && data.categories.length > 0) {
+                        setCategories(data.categories);
+                    }
                 }
             } catch (err) {
                 console.warn("Could not load dynamic services for booking form:", err);
@@ -170,6 +178,46 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
         }
         loadCrmServices();
     }, []);
+
+    const sortedCategories = useMemo(() => {
+        return [...categories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+    }, [categories]);
+
+    // Group services by category in displayOrder
+    const groupedServices = useMemo(() => {
+        const filtered = services.filter((s) => {
+            if (selectedCategoryFilter !== "all") {
+                const matchesId = s.categoryId === selectedCategoryFilter;
+                const matchesCode = s.categoryCode === selectedCategoryFilter;
+                if (!matchesId && !matchesCode) return false;
+            }
+            if (selectedTypeFilter !== "all" && s.serviceType !== selectedTypeFilter) {
+                return false;
+            }
+            return true;
+        });
+
+        const groups: { category: CrmCategory | null; services: CrmService[] }[] = [];
+
+        for (const cat of sortedCategories) {
+            const catSvcs = filtered
+                .filter((s) => s.categoryId === cat.id || s.categoryCode === cat.code)
+                .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+            if (catSvcs.length > 0) {
+                groups.push({ category: cat, services: catSvcs });
+            }
+        }
+
+        // Uncategorized
+        const uncategorized = filtered
+            .filter((s) => !s.categoryId && !s.categoryCode)
+            .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+        if (uncategorized.length > 0) {
+            groups.push({ category: null, services: uncategorized });
+        }
+
+        return groups;
+    }, [services, sortedCategories, selectedCategoryFilter, selectedTypeFilter]);
 
     // Dynamic Price calculation from CRM catalog
     const matchedService = findServiceByCodeOrId(services, tipoHabitacion);
@@ -678,69 +726,197 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
                                     </div>
                                 </div>
 
-                                {/* SELECCIÓN DE ACTIVIDAD / SERVICIO */}
-                                <div className="space-y-2 sm:col-span-2 pt-1">
-                                    <label className="block text-xs font-bold text-stone-800">
-                                        Servicio o Actividad a Reservar <span className="text-[#800020]">*</span>
-                                    </label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                        {services.map((svc) => {
-                                            const isSelected =
-                                                tipoHabitacion === svc.id ||
-                                                (tipoHabitacion === "clase_semanal" && svc.name.includes("1 clase semanal"));
-                                            const priceDisplay = formatServicePrice(svc);
+                                {/* SELECCIÓN DE ACTIVIDAD / SERVICIO CON FILTROS Y GRUPOS ORDENADOS */}
+                                <div className="space-y-4 sm:col-span-2 pt-1">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-2.5">
+                                        <div>
+                                            <label className="block text-xs font-bold text-stone-900 uppercase tracking-wider">
+                                                Servicio o Actividad a Reservar <span className="text-[#800020]">*</span>
+                                            </label>
+                                            <span className="text-[11px] text-stone-500">
+                                                Selecciona la actividad agrupada por orden de categoría:
+                                            </span>
+                                        </div>
 
+                                        {/* Filtro por tipo rápido */}
+                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                            <button
+                                                type="button"
+                                                onClick={() => setSelectedTypeFilter("all")}
+                                                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                                                    selectedTypeFilter === "all"
+                                                        ? "bg-[#0B4A72] text-white shadow-2xs"
+                                                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                                                }`}
+                                            >
+                                                Todos los tipos
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSelectedTypeFilter("recurring")}
+                                                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                                                    selectedTypeFilter === "recurring"
+                                                        ? "bg-[#0B4A72] text-white shadow-2xs"
+                                                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                                                }`}
+                                            >
+                                                🗓️ Clases
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSelectedTypeFilter("event")}
+                                                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                                                    selectedTypeFilter === "event"
+                                                        ? "bg-purple-700 text-white shadow-2xs"
+                                                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                                                }`}
+                                            >
+                                                ✨ Eventos / Talleres
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Barra de Filtros por Categoría */}
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                        <span className="text-xs font-bold text-stone-700 mr-1">📁 Categorías:</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => setSelectedCategoryFilter("all")}
+                                            className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                                                selectedCategoryFilter === "all"
+                                                    ? "bg-[#800020] text-white shadow-2xs"
+                                                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                                            }`}
+                                        >
+                                            Todas ({services.length})
+                                        </button>
+                                        {sortedCategories.map((cat) => {
+                                            const count = services.filter((s) => s.categoryId === cat.id || s.categoryCode === cat.code).length;
+                                            if (count === 0) return null;
+                                            const isCatActive = selectedCategoryFilter === cat.id || selectedCategoryFilter === cat.code;
                                             return (
-                                                <label
-                                                    key={svc.id}
-                                                    className={`flex flex-col justify-between p-3.5 rounded-xl border cursor-pointer transition ${
-                                                        isSelected
-                                                            ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]"
-                                                            : "bg-white border-stone-200 hover:border-stone-400"
+                                                <button
+                                                    key={cat.id || cat.code}
+                                                    type="button"
+                                                    onClick={() => setSelectedCategoryFilter(cat.id || cat.code)}
+                                                    className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                                                        isCatActive
+                                                            ? "bg-[#800020] text-white shadow-2xs"
+                                                            : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                                                     }`}
                                                 >
-                                                    <div className="flex items-start gap-2.5">
-                                                        <input
-                                                            type="radio"
-                                                            name="serviceType"
-                                                            value={svc.id}
-                                                            checked={isSelected}
-                                                            onChange={() => setTipoHabitacion(svc.id)}
-                                                            className="mt-0.5 text-[#800020] focus:ring-[#800020]"
-                                                        />
-                                                        <div>
-                                                            <div className="flex items-center gap-1.5 flex-wrap">
-                                                                <span className="block text-xs font-bold text-stone-900 leading-snug">
-                                                                    {svc.name}
-                                                                </span>
-                                                                {svc.firstClassFree && (
-                                                                    <span className="text-[9px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded border border-amber-300">
-                                                                        1ª Gratis
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                            <span className="block text-[11px] text-stone-500 mt-1 leading-snug line-clamp-2">
-                                                                {svc.description || svc.scheduleText || "Actividad del centro"}
-                                                            </span>
-                                                            {svc.scheduleText && (
-                                                                <span className="block text-[10px] text-[#0B4A72] font-semibold mt-1">
-                                                                    🕒 {svc.scheduleText}
-                                                                </span>
-                                                            )}
-                                                            {svc.maxCapacity && (
-                                                                <span className="block text-[10px] text-stone-400 mt-0.5">
-                                                                    👥 Aforo: {svc.maxCapacity} plazas
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <span className="block text-xs font-bold text-[#800020] mt-2.5 pl-6">
-                                                        {priceDisplay}
-                                                    </span>
-                                                </label>
+                                                    {cat.name} ({count})
+                                                </button>
                                             );
                                         })}
                                     </div>
+
+                                    {/* Grupos de Servicios por Categoría y Orden */}
+                                    {groupedServices.length === 0 ? (
+                                        <div className="p-8 text-center text-sm text-stone-500 bg-stone-50 rounded-xl border border-stone-200">
+                                            No hay actividades disponibles para los filtros seleccionados.
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-6">
+                                            {groupedServices.map(({ category, services: catServices }) => (
+                                                <div key={category ? (category.id || category.code) : "uncategorized"} className="space-y-2.5">
+                                                    <div className="flex items-center justify-between border-b border-stone-200/80 pb-1.5">
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            {category ? (
+                                                                <>
+                                                                    <span className="font-mono text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300">
+                                                                        Orden #{category.displayOrder}
+                                                                    </span>
+                                                                    <h4 className="font-serif font-bold text-sm sm:text-base text-[#800020]">
+                                                                        {category.name}
+                                                                    </h4>
+                                                                    {category.description && (
+                                                                        <span className="text-[11px] text-stone-500 hidden md:inline">
+                                                                            • {category.description.split("\n")[0]}
+                                                                        </span>
+                                                                    )}
+                                                                </>
+                                                            ) : (
+                                                                <h4 className="font-serif font-bold text-sm text-stone-600 italic">
+                                                                    Otras Actividades
+                                                                </h4>
+                                                            )}
+                                                        </div>
+                                                        <span className="text-[11px] font-medium text-stone-500">
+                                                            {catServices.length} {catServices.length === 1 ? "actividad" : "actividades"}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                                        {catServices.map((svc) => {
+                                                            const isSelected =
+                                                                tipoHabitacion === svc.id ||
+                                                                (tipoHabitacion === "clase_semanal" && svc.name.includes("1 clase semanal"));
+                                                            const priceDisplay = formatServicePrice(svc);
+
+                                                            return (
+                                                                <label
+                                                                    key={svc.id}
+                                                                    className={`flex flex-col justify-between p-3.5 rounded-xl border cursor-pointer transition ${
+                                                                        isSelected
+                                                                            ? "bg-[#800020]/5 border-[#800020] ring-1 ring-[#800020]"
+                                                                            : "bg-white border-stone-200 hover:border-stone-400"
+                                                                    }`}
+                                                                >
+                                                                    <div className="flex items-start gap-2.5">
+                                                                        <input
+                                                                            type="radio"
+                                                                            name="serviceType"
+                                                                            value={svc.id}
+                                                                            checked={isSelected}
+                                                                            onChange={() => setTipoHabitacion(svc.id)}
+                                                                            className="mt-0.5 text-[#800020] focus:ring-[#800020]"
+                                                                        />
+                                                                        <div>
+                                                                            <div className="flex items-center gap-1.5 flex-wrap">
+                                                                                <span className="font-mono text-[9px] bg-stone-100 text-stone-600 px-1.5 py-0.2 rounded font-bold" title="Orden">
+                                                                                    #{svc.displayOrder ?? 0}
+                                                                                </span>
+                                                                                <span className="block text-xs font-bold text-stone-900 leading-snug">
+                                                                                    {svc.name}
+                                                                                </span>
+                                                                                {svc.firstClassFree && (
+                                                                                    <span className="text-[9px] font-bold bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded border border-amber-300">
+                                                                                        1ª Gratis
+                                                                                    </span>
+                                                                                )}
+                                                                            </div>
+                                                                            <span className="block text-[11px] text-stone-500 mt-1 leading-snug line-clamp-2">
+                                                                                {svc.description || svc.scheduleText || "Actividad del centro"}
+                                                                            </span>
+                                                                            {svc.scheduleText && (
+                                                                                <span className="block text-[10px] text-[#0B4A72] font-semibold mt-1">
+                                                                                    🕒 {svc.scheduleText}
+                                                                                </span>
+                                                                            )}
+                                                                            {svc.eventDatesText && (
+                                                                                <span className="block text-[10px] text-purple-700 font-semibold mt-1">
+                                                                                    📅 {svc.eventDatesText}
+                                                                                </span>
+                                                                            )}
+                                                                            {svc.maxCapacity && (
+                                                                                <span className="block text-[10px] text-stone-400 mt-0.5">
+                                                                                    👥 Aforo: {svc.maxCapacity} plazas
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <span className="block text-xs font-bold text-[#800020] mt-2.5 pl-6">
+                                                                        {priceDisplay}
+                                                                    </span>
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* NÚMERO DE PLAZAS */}

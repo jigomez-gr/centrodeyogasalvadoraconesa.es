@@ -32,15 +32,32 @@ export function ChatBubbleWidget({
   const [sessionId, setSessionId] = useState("");
   const [rgpdAccepted, setRgpdAccepted] = useState(true);
   const [clearToast, setClearToast] = useState(false);
-  const [showMobileTooltip, setShowMobileTooltip] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // En pantallas móviles, ocultar el tooltip automáticamente tras 6 segundos para no ocupar espacio permanentemente
+  // Auto-ocultar el tooltip tras 6 segundos en TODOS los dispositivos para no tapar permanentemente los botones inferiores (como Reservar en portátiles)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowMobileTooltip(false);
-    }, 6000);
-    return () => clearTimeout(timer);
+    try {
+      const dismissed = sessionStorage.getItem("crm_widget_tooltip_dismissed");
+      if (!dismissed) {
+        setShowTooltip(true);
+        const timer = setTimeout(() => {
+          setShowTooltip(false);
+        }, 6000);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      setShowTooltip(true);
+    }
   }, []);
+
+  const handleDismissTooltip = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setShowTooltip(false);
+    try {
+      sessionStorage.setItem("crm_widget_tooltip_dismissed", "true");
+    } catch {}
+  };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -459,15 +476,19 @@ export function ChatBubbleWidget({
         </div>
       )}
 
-      {/* Floating Toggle Button with Tooltip (ALWAYS deployed on desktop; temporary & dismissible on mobile) */}
+      {/* Floating Toggle Button with Tooltip */}
       {!isOpen && (
-        <div className="relative flex items-center">
-          {/* Tooltip: permanente en escritorio (sm:flex), temporal (6s) y descartable en móvil */}
+        <div
+          className="relative flex items-center group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Tooltip: temporal (6s), descartable con X en todos los dispositivos y visible on-hover */}
           <div
             onClick={() => setIsOpen(true)}
             className={`${
-              showMobileTooltip ? "flex" : "hidden sm:flex"
-            } items-center cursor-pointer mr-2.5 sm:mr-3 select-none transition-all duration-300 animate-in fade-in`}
+              showTooltip || isHovered ? "flex" : "hidden"
+            } items-center cursor-pointer mr-2.5 sm:mr-3 select-none transition-all duration-300 animate-in fade-in z-50`}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {
@@ -477,17 +498,14 @@ export function ChatBubbleWidget({
               }
             }}
           >
-            <div className="bg-stone-900/95 text-white text-[11px] sm:text-xs font-medium px-3.5 py-2 rounded-xl shadow-2xl max-w-[calc(100vw-95px)] sm:max-w-[340px] md:max-w-[420px] text-right sm:text-left leading-snug backdrop-blur-xs border border-white/15 tracking-normal hover:bg-stone-800 transition-colors flex items-start sm:items-center gap-1.5">
+            <div className="bg-stone-900/95 text-white text-[11px] sm:text-xs font-medium px-3.5 py-2 rounded-xl shadow-2xl max-w-[calc(100vw-95px)] sm:max-w-[280px] md:max-w-[340px] text-right sm:text-left leading-snug backdrop-blur-xs border border-white/15 tracking-normal hover:bg-stone-800 transition-colors flex items-start sm:items-center gap-1.5">
               <span>{tooltipText}</span>
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowMobileTooltip(false);
-                }}
+                onClick={handleDismissTooltip}
                 title="Cerrar aviso"
                 aria-label="Cerrar aviso"
-                className="sm:hidden -mr-1 p-0.5 text-stone-400 hover:text-white shrink-0 rounded hover:bg-white/10"
+                className="-mr-1 p-0.5 text-stone-400 hover:text-white shrink-0 rounded hover:bg-white/10 cursor-pointer"
               >
                 <X className="h-3.5 w-3.5" />
               </button>

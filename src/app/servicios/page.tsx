@@ -89,9 +89,9 @@ function ServiciosContent() {
         if (res.ok) {
           const data = await res.json();
           if (data && data.services && Array.isArray(data.services) && data.services.length > 0) {
-            setServices(data.services);
+            setServices([...data.services].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)));
             if (data.categories && Array.isArray(data.categories) && data.categories.length > 0) {
-              setCategories(data.categories);
+              setCategories([...data.categories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)));
             }
             if (data.whatsappNumber) {
               setWhatsappPhone(data.whatsappNumber);
