@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -30,12 +31,16 @@ import {
   categorizeCrmServices,
 } from "@/lib/crmServices";
 
-export default function DemoLandingPage() {
+function ServiciosContent() {
   const showAnalizaIA =
     process.env.NEXT_PUBLIC_ENABLE_ANALIZAIA !== "N" &&
     process.env.NEXT_PUBLIC_ENABLE_ANALIZAIA !== "n" &&
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "N" &&
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "n";
+
+  const searchParams = useSearchParams();
+  const paramCategory = searchParams.get("categoria") || searchParams.get("category") || "all";
+  const paramType = searchParams.get("tipo") || searchParams.get("type") || "all";
 
   const [simuladorOpen, setSimuladorOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | null>(null);
@@ -43,10 +48,39 @@ export default function DemoLandingPage() {
 
   // Categories & Dynamic services from CRM
   const [categories, setCategories] = useState<CrmCategory[]>(FALLBACK_CRM_CATEGORIES);
-  const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>("all");
+  const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>(paramCategory);
+  const [selectedType, setSelectedType] = useState<string>(paramType);
   const [services, setServices] = useState<CrmService[]>(FALLBACK_CRM_SERVICES);
   const [whatsappPhone, setWhatsappPhone] = useState("+34695172625");
   const [crmLoading, setCrmLoading] = useState(true);
+
+  useEffect(() => {
+    const cat = searchParams.get("categoria") || searchParams.get("category");
+    const typ = searchParams.get("tipo") || searchParams.get("type");
+    if (cat) setSelectedCategoryCode(cat);
+    if (typ) setSelectedType(typ);
+  }, [searchParams]);
+
+  const updateFilters = (newCat: string, newType: string) => {
+    setSelectedCategoryCode(newCat);
+    setSelectedType(newType);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (newCat !== "all") {
+        url.searchParams.set("categoria", newCat);
+      } else {
+        url.searchParams.delete("categoria");
+        url.searchParams.delete("category");
+      }
+      if (newType !== "all") {
+        url.searchParams.set("tipo", newType);
+      } else {
+        url.searchParams.delete("tipo");
+        url.searchParams.delete("type");
+      }
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
 
   useEffect(() => {
     async function loadServices() {
@@ -91,6 +125,21 @@ export default function DemoLandingPage() {
 
   // Dynamically categorized services
   const { destacadas, regularesYoga, talleresEventos, saludTerapeutica } = categorizeCrmServices(services);
+
+  // Filter services by selectedType
+  const filterByType = (list: CrmService[]) =>
+    list.filter((s) => selectedType === "all" || s.serviceType === selectedType);
+
+  const visibleDestacadas = filterByType(destacadas);
+  const visibleRegularesYoga = filterByType(regularesYoga);
+  const visibleTalleresEventos = filterByType(talleresEventos);
+  const visibleSaludTerapeutica = filterByType(saludTerapeutica);
+
+  const totalFilteredCount =
+    (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes" ? visibleDestacadas.length : 0) +
+    (selectedCategoryCode === "all" || selectedCategoryCode === "yoga_meditacion" ? visibleRegularesYoga.length : 0) +
+    (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos" ? visibleTalleresEventos.length : 0) +
+    (selectedCategoryCode === "all" || selectedCategoryCode === "salud_terapeutica" ? visibleSaludTerapeutica.length : 0);
 
   const handleServiceSelect = (svc: CrmService, preferredShift?: string) => {
     setSelectedService(svc.name);
@@ -296,56 +345,102 @@ export default function DemoLandingPage() {
         </div>
       </section>
 
-      {/* ─── BARRA DE FILTRADO POR CATEGORÍA ─── */}
+      {/* ─── BARRA DE FILTRADO POR CATEGORÍA Y TIPO ─── */}
       <section className="max-w-6xl mx-auto px-4 pt-2 pb-4">
-        <div className="bg-white rounded-2xl p-3 sm:p-4 border border-stone-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-stone-700">
-            <span className="text-base">🏷️</span>
-            <span>Filtrar por Categoría:</span>
+        <div className="bg-white rounded-2xl p-4 border border-stone-200 shadow-xs space-y-3">
+          {/* Fila 1: Filtro por Categoría */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-stone-700 shrink-0">
+              <span className="text-base">📁</span>
+              <span>Categoría:</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              <button
+                onClick={() => updateFilters("all", selectedType)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  selectedCategoryCode === "all"
+                    ? "bg-[#800020] text-white shadow-xs"
+                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                }`}
+              >
+                Todas las Categorías ({filterByType(services).length})
+              </button>
+
+              {categories.map((cat) => {
+                const count = filterByType(
+                  services.filter(
+                    (s) =>
+                      s.categoryCode === cat.code ||
+                      (cat.code === "longevidad_artes" && destacadas.some((d) => d.id === s.id)) ||
+                      (cat.code === "yoga_meditacion" && regularesYoga.some((r) => r.id === s.id)) ||
+                      (cat.code === "talleres_eventos" && talleresEventos.some((t) => t.id === s.id)) ||
+                      (cat.code === "salud_terapeutica" && saludTerapeutica.some((st) => st.id === s.id))
+                  )
+                ).length;
+
+                return (
+                  <button
+                    key={cat.id || cat.code}
+                    onClick={() => updateFilters(cat.code, selectedType)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      selectedCategoryCode === cat.code
+                        ? "bg-[#800020] text-white shadow-xs"
+                        : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                    }`}
+                  >
+                    {cat.name} ({count})
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 w-full sm:w-auto">
-            <button
-              onClick={() => setSelectedCategoryCode("all")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                selectedCategoryCode === "all"
-                  ? "bg-[#800020] text-white shadow-xs"
-                  : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-              }`}
-            >
-              Todas las Categorías ({services.length})
-            </button>
+          {/* Fila 2: Filtro por Tipo de Servicio */}
+          <div className="pt-2.5 border-t border-stone-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-stone-700 shrink-0">
+              <span className="text-base">🏷️</span>
+              <span>Tipo de Actividad:</span>
+            </div>
 
-            {categories.map((cat) => {
-              const count = services.filter(
-                (s) =>
-                  s.categoryCode === cat.code ||
-                  (cat.code === "longevidad_artes" && destacadas.some((d) => d.id === s.id)) ||
-                  (cat.code === "yoga_meditacion" && regularesYoga.some((r) => r.id === s.id)) ||
-                  (cat.code === "talleres_eventos" && talleresEventos.some((t) => t.id === s.id)) ||
-                  (cat.code === "salud_terapeutica" && saludTerapeutica.some((st) => st.id === s.id))
-              ).length;
-
-              return (
-                <button
-                  key={cat.id || cat.code}
-                  onClick={() => setSelectedCategoryCode(cat.code)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    selectedCategoryCode === cat.code
-                      ? "bg-[#800020] text-white shadow-xs"
-                      : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                  }`}
-                >
-                  {cat.name} ({count})
-                </button>
-              );
-            })}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => updateFilters(selectedCategoryCode, "all")}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  selectedType === "all"
+                    ? "bg-[#0B4A72] text-white font-bold shadow-xs"
+                    : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                }`}
+              >
+                Todos los tipos
+              </button>
+              <button
+                onClick={() => updateFilters(selectedCategoryCode, "recurring")}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  selectedType === "recurring"
+                    ? "bg-[#0B4A72] text-white font-bold shadow-xs"
+                    : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                }`}
+              >
+                🗓️ Clases y Citas Periódicas
+              </button>
+              <button
+                onClick={() => updateFilters(selectedCategoryCode, "event")}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  selectedType === "event"
+                    ? "bg-purple-700 text-white font-bold shadow-xs"
+                    : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                }`}
+              >
+                ✨ Eventos, Talleres y Retiros
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ─── SECCIÓN 1: OTRAS ACTIVIDADES ADICIONALES (BIENESTAR EXPERIENCE & IAIDŌ) ─── */}
-      {destacadas.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes") && (
+      {visibleDestacadas.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes") && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6 pb-3 border-b-2 border-[#0B4A72]">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
@@ -358,13 +453,13 @@ export default function DemoLandingPage() {
                 </h3>
               </div>
               <span className="text-xs text-stone-600 font-medium">
-                {crmLoading ? "Sincronizando..." : `${destacadas.length} actividades disponibles`}
+                {crmLoading ? "Sincronizando..." : `${visibleDestacadas.length} actividades disponibles`}
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {destacadas.map((act) => {
+            {visibleDestacadas.map((act) => {
               const meta = getCategoryMeta(act);
               const isBienestar = act.name.toLowerCase().includes("bienestar experience");
               const priceDisplay = formatServicePrice(act);
@@ -534,7 +629,9 @@ export default function DemoLandingPage() {
       )}
 
       {/* ─── SECCIÓN 2: ESCUELA DE YOGA & TERAPIAS REGULARES ─── */}
-      {(selectedCategoryCode === "all" || selectedCategoryCode === "yoga_meditacion" || selectedCategoryCode === "salud_terapeutica") && (
+      {((selectedCategoryCode === "all" && (visibleRegularesYoga.length > 0 || visibleSaludTerapeutica.length > 0)) ||
+        (selectedCategoryCode === "yoga_meditacion" && visibleRegularesYoga.length > 0) ||
+        (selectedCategoryCode === "salud_terapeutica" && visibleSaludTerapeutica.length > 0)) && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6 pb-3 border-b-2 border-stone-300">
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#800020]">
@@ -580,7 +677,10 @@ export default function DemoLandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[...regularesYoga, ...saludTerapeutica].map((svc) => {
+          {[
+            ...(selectedCategoryCode === "salud_terapeutica" ? [] : visibleRegularesYoga),
+            ...(selectedCategoryCode === "yoga_meditacion" ? [] : visibleSaludTerapeutica),
+          ].map((svc) => {
             const meta = getCategoryMeta(svc);
             const priceDisplay = formatServicePrice(svc);
             const durationDisplay = formatDuration(svc.durationMinutes);
@@ -692,7 +792,7 @@ export default function DemoLandingPage() {
       )}
 
       {/* ─── SECCIÓN 3: TALLERES, EVENTOS Y RETIROS ESPECIALES ─── */}
-      {talleresEventos.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos") && (
+      {visibleTalleresEventos.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos") && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="mb-6 pb-3 border-b-2 border-purple-300">
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-900">
@@ -704,7 +804,7 @@ export default function DemoLandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {talleresEventos.map((ev) => {
+            {visibleTalleresEventos.map((ev) => {
               const meta = getCategoryMeta(ev);
               const priceDisplay = formatServicePrice(ev);
               const durationDisplay = formatDuration(ev.durationMinutes);
@@ -800,6 +900,27 @@ export default function DemoLandingPage() {
                 </div>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {/* ─── MENSAJE CUANDO NINGUNA ACTIVIDAD COINCIDE CON LOS FILTROS ─── */}
+      {totalFilteredCount === 0 && (
+        <section className="max-w-6xl mx-auto px-4 py-12 text-center">
+          <div className="bg-white rounded-3xl border border-stone-200 p-10 max-w-lg mx-auto shadow-sm space-y-3">
+            <span className="text-3xl">🔍</span>
+            <h4 className="font-serif text-lg font-bold text-stone-900">
+              No se han encontrado actividades con estos filtros
+            </h4>
+            <p className="text-xs text-stone-500">
+              Prueba a seleccionar &quot;Todas las Categorías&quot; o &quot;Todos los tipos&quot; para ver las actividades disponibles.
+            </p>
+            <button
+              onClick={() => updateFilters("all", "all")}
+              className="mt-2 px-4 py-2 bg-[#800020] text-white rounded-xl text-xs font-bold hover:bg-[#660019] transition cursor-pointer"
+            >
+              Restablecer todos los filtros
+            </button>
           </div>
         </section>
       )}
@@ -1003,5 +1124,19 @@ export default function DemoLandingPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function DemoLandingPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#F8F7F4] flex items-center justify-center p-8 text-stone-500 text-sm">
+          Cargando catálogo de servicios...
+        </div>
+      }
+    >
+      <ServiciosContent />
+    </Suspense>
   );
 }

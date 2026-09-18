@@ -31,6 +31,7 @@ export interface CrmService {
   categoryDescription?: string | null;
   flyerPath?: string | null;
   flyerUrl?: string | null;
+  displayOrder?: number;
 }
 
 export interface CrmServicesResponse {
@@ -239,9 +240,12 @@ export const FALLBACK_CRM_CATEGORIES: CrmCategory[] = [
 ];
 
 /**
- * Fetches services from CRM API with timeout and fallback.
+ * Fetches services from CRM API with timeout, filters and fallback.
  */
-export async function fetchCrmServices(): Promise<{
+export async function fetchCrmServices(filters?: {
+  category?: string;
+  type?: string;
+}): Promise<{
   success: boolean;
   businessName: string;
   whatsappNumber: string;
@@ -252,7 +256,13 @@ export async function fetchCrmServices(): Promise<{
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-    const res = await fetch(CRM_SERVICES_ENDPOINT, {
+    const queryParams = new URLSearchParams();
+    if (filters?.category) queryParams.set("category", filters.category);
+    if (filters?.type) queryParams.set("type", filters.type);
+    const queryString = queryParams.toString();
+    const endpointUrl = queryString ? `${CRM_SERVICES_ENDPOINT}?${queryString}` : CRM_SERVICES_ENDPOINT;
+
+    const res = await fetch(endpointUrl, {
       signal: controller.signal,
       next: { revalidate: 60 },
       headers: {
@@ -267,12 +277,16 @@ export async function fetchCrmServices(): Promise<{
 
     const data: CrmServicesResponse = await res.json();
     if (data && data.services && Array.isArray(data.services) && data.services.length > 0) {
+      const rawCategories = data.categories && data.categories.length > 0 ? data.categories : FALLBACK_CRM_CATEGORIES;
+      const sortedCategories = [...rawCategories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+      const sortedServices = [...data.services].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
       return {
         success: true,
         businessName: data.businessName || "Centro de Yoga y Bienestar Salvadora",
         whatsappNumber: data.whatsappNumber || "34695172625",
-        categories: data.categories && data.categories.length > 0 ? data.categories : FALLBACK_CRM_CATEGORIES,
-        services: data.services,
+        categories: sortedCategories,
+        services: sortedServices,
       };
     }
 
@@ -285,8 +299,8 @@ export async function fetchCrmServices(): Promise<{
       success: true,
       businessName: "Centro de Yoga y Bienestar Salvadora",
       whatsappNumber: "34695172625",
-      categories: FALLBACK_CRM_CATEGORIES,
-      services: FALLBACK_CRM_SERVICES,
+      categories: [...FALLBACK_CRM_CATEGORIES].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)),
+      services: [...FALLBACK_CRM_SERVICES].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)),
     };
   }
 }
@@ -451,11 +465,17 @@ export function categorizeCrmServices(services: CrmService[]) {
     regularesYoga.push(s);
   }
 
+  const sortByOrder = (a: CrmService, b: CrmService) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0);
+  destacadas.sort(sortByOrder);
+  regularesYoga.sort(sortByOrder);
+  talleresEventos.sort(sortByOrder);
+  saludTerapeutica.sort(sortByOrder);
+
   return {
     destacadas,
     regularesYoga,
     talleresEventos,
     saludTerapeutica,
-    all: services,
+    all: [...services].sort(sortByOrder),
   };
 }
