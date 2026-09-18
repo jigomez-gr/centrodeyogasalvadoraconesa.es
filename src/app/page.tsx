@@ -227,7 +227,7 @@ export default async function Home() {
           </p>
 
           {/* Framed Media Block mimicking ccmfalla.com Paintings */}
-          <div className="max-w-[800px] sm:max-w-[1080px] w-[min(90vw,calc((100vh-320px)*16/9))] sm:w-[min(90vw,calc((100vh-320px)*20/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
+          <div className="max-w-[960px] w-[min(90vw,calc((100vh-310px)*16/9))] bg-white p-1.5 sm:p-2.5 rounded-lg border border-[#C5A059]/25 shadow-xl shadow-[#800020]/5 mb-2 hover:shadow-2xl transition duration-500">
             <HeroMedia />
           </div>
 
