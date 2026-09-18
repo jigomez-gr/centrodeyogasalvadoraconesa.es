@@ -7,6 +7,7 @@ export default function HeroMedia() {
     const [isMuted, setIsMuted] = useState(true);
     const [isPlaying, setIsPlaying] = useState(true); // video playing
     const videoRef = useRef<HTMLVideoElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // Sync state with video muting
     useEffect(() => {
@@ -15,6 +16,37 @@ export default function HeroMedia() {
 
         video.muted = isMuted;
     }, [isMuted]);
+
+    // Ambient dynamic backdrop that projects subtle blurred colors on widescreen displays
+    useEffect(() => {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
+        if (!video || !canvas) return;
+
+        const ctx = canvas.getContext("2d", { alpha: false });
+        if (!ctx) return;
+
+        let animId: number;
+        let lastUpdate = 0;
+
+        const renderAmbient = (time: number) => {
+            // Update every ~100ms (10fps is plenty for a blurred ambient glow, negligible CPU)
+            if (time - lastUpdate > 100) {
+                if (!video.paused && !video.ended && video.readyState >= 2) {
+                    try {
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    } catch {
+                        // Ignore potential initial frame errors
+                    }
+                }
+                lastUpdate = time;
+            }
+            animId = requestAnimationFrame(renderAmbient);
+        };
+
+        animId = requestAnimationFrame(renderAmbient);
+        return () => cancelAnimationFrame(animId);
+    }, []);
 
     const toggleMute = () => {
         setIsMuted(!isMuted);
@@ -47,21 +79,33 @@ export default function HeroMedia() {
     };
 
     return (
-        <div className="relative w-full aspect-video sm:aspect-[20/9] rounded-md overflow-hidden bg-black/5 border border-stone-200 group">
-            {/* Video Element */}
+        <div className="relative w-full aspect-video sm:aspect-[20/9] rounded-md overflow-hidden bg-[#181214] border border-stone-200 group">
+            {/* Ambient Dynamic Background for Widescreen viewports (sm and up) */}
+            <canvas
+                ref={canvasRef}
+                width={32}
+                height={18}
+                aria-hidden="true"
+                className="hidden sm:block absolute inset-0 w-full h-full object-cover blur-3xl scale-125 opacity-70 pointer-events-none transition-opacity duration-700 select-none"
+            />
+
+            {/* Subtle darkening veil on the ambient glow for cinematic contrast */}
+            <div className="hidden sm:block absolute inset-0 bg-black/20 pointer-events-none" />
+
+            {/* Crisp Main Video: 100% complete, uncropped */}
             <video
                 ref={videoRef}
                 autoPlay
                 loop
                 muted={isMuted}
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover select-none"
+                className="relative w-full h-full object-contain select-none z-10"
             >
                 <source src="/videos/hero.mp4" type="video/mp4" />
             </video>
 
             {/* Controls Overlay */}
-            <div className="absolute inset-0 bg-transparent flex flex-col justify-between p-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="absolute inset-0 bg-transparent flex flex-col justify-between p-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
                 {/* Top Control Bar */}
                 <div className="flex items-center justify-between w-full pointer-events-auto">
                     {/* Audio toggle button */}
