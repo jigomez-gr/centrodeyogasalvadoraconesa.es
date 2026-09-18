@@ -7,6 +7,49 @@ import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 /**
+ * Convert a Node fs.ReadStream to a WHATWG ReadableStream safely.
+ * When browsers abort/seek during video playback, the controller will not throw
+ * "Invalid state: Controller is already closed" as calls are protected by isClosed.
+ */
+function createSafeWebStream(nodeStream: fs.ReadStream): ReadableStream {
+  let isClosed = false;
+  return new ReadableStream({
+    start(controller) {
+      nodeStream.on("data", (chunk) => {
+        if (isClosed) return;
+        try {
+          controller.enqueue(chunk);
+        } catch {
+          isClosed = true;
+          nodeStream.destroy();
+        }
+      });
+      nodeStream.on("end", () => {
+        if (isClosed) return;
+        isClosed = true;
+        try {
+          controller.close();
+        } catch {}
+      });
+      nodeStream.on("error", (err) => {
+        if (isClosed) return;
+        isClosed = true;
+        try {
+          controller.error(err);
+        } catch {}
+      });
+      nodeStream.on("close", () => {
+        isClosed = true;
+      });
+    },
+    cancel() {
+      isClosed = true;
+      nodeStream.destroy();
+    },
+  });
+}
+
+/**
  * Streaming HTTP 206 Partial Content for video/document playback.
  * Serves media from external storage directory (MEDIA_STORAGE_ROOT)
  * and resolves physical path via PostgreSQL (media_assets) or direct filename lookup.
@@ -119,7 +162,7 @@ export async function GET(
 
       const chunkSize = end - start + 1;
       const fileStream = fs.createReadStream(physicalPath, { start, end });
-      const webStream = Readable.toWeb(fileStream);
+      const webStream = createSafeWebStream(fileStream);
 
       const headers = new Headers({
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
@@ -135,7 +178,7 @@ export async function GET(
     }
 
     const fileStream = fs.createReadStream(physicalPath);
-    const webStream = Readable.toWeb(fileStream);
+    const webStream = createSafeWebStream(fileStream);
     const headers = new Headers({
       "Content-Length": fileSize.toString(),
       "Content-Type": mimeType,

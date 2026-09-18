@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -29,6 +29,7 @@ import {
   formatServicePrice,
   formatDuration,
   categorizeCrmServices,
+  serviceMatchesCategory,
 } from "@/lib/crmServices";
 
 function ServiciosContent() {
@@ -123,23 +124,42 @@ function ServiciosContent() {
   const [waLoading, setWaLoading] = useState(false);
   const [waSuccess, setWaSuccess] = useState(false);
 
-  // Dynamically categorized services
-  const { destacadas, regularesYoga, talleresEventos, saludTerapeutica } = categorizeCrmServices(services);
+  // Sorted categories by displayOrder
+  const sortedCategories = useMemo(() => {
+    return [...categories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+  }, [categories]);
 
   // Filter services by selectedType
   const filterByType = (list: CrmService[]) =>
     list.filter((s) => selectedType === "all" || s.serviceType === selectedType);
 
-  const visibleDestacadas = filterByType(destacadas);
-  const visibleRegularesYoga = filterByType(regularesYoga);
-  const visibleTalleresEventos = filterByType(talleresEventos);
-  const visibleSaludTerapeutica = filterByType(saludTerapeutica);
+  // Dynamic sections by category according to category.displayOrder
+  const groupedSections = useMemo(() => {
+    const sections: { category: CrmCategory; services: CrmService[] }[] = [];
+    for (const cat of sortedCategories) {
+      if (selectedCategoryCode !== "all" && selectedCategoryCode !== cat.code && selectedCategoryCode !== cat.id) {
+        continue;
+      }
+      const catSvcs = filterByType(
+        services.filter((s) => serviceMatchesCategory(s, cat))
+      ).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+      if (catSvcs.length > 0) {
+        sections.push({ category: cat, services: catSvcs });
+      }
+    }
+    return sections;
+  }, [services, sortedCategories, selectedCategoryCode, selectedType]);
+
+  const uncategorizedServices = useMemo(() => {
+    if (selectedCategoryCode !== "all") return [];
+    return filterByType(
+      services.filter((s) => !sortedCategories.some((cat) => serviceMatchesCategory(s, cat)))
+    ).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+  }, [services, sortedCategories, selectedCategoryCode, selectedType]);
 
   const totalFilteredCount =
-    (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes" ? visibleDestacadas.length : 0) +
-    (selectedCategoryCode === "all" || selectedCategoryCode === "yoga_meditacion" ? visibleRegularesYoga.length : 0) +
-    (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos" ? visibleTalleresEventos.length : 0) +
-    (selectedCategoryCode === "all" || selectedCategoryCode === "salud_terapeutica" ? visibleSaludTerapeutica.length : 0);
+    groupedSections.reduce((acc, g) => acc + g.services.length, 0) + uncategorizedServices.length;
 
   const handleServiceSelect = (svc: CrmService, preferredShift?: string) => {
     setSelectedService(svc.name);
@@ -367,29 +387,24 @@ function ServiciosContent() {
                 Todas las Categorías ({filterByType(services).length})
               </button>
 
-              {categories.map((cat) => {
+              {sortedCategories.map((cat) => {
                 const count = filterByType(
-                  services.filter(
-                    (s) =>
-                      s.categoryCode === cat.code ||
-                      (cat.code === "longevidad_artes" && destacadas.some((d) => d.id === s.id)) ||
-                      (cat.code === "yoga_meditacion" && regularesYoga.some((r) => r.id === s.id)) ||
-                      (cat.code === "talleres_eventos" && talleresEventos.some((t) => t.id === s.id)) ||
-                      (cat.code === "salud_terapeutica" && saludTerapeutica.some((st) => st.id === s.id))
-                  )
+                  services.filter((s) => serviceMatchesCategory(s, cat))
                 ).length;
 
                 return (
                   <button
                     key={cat.id || cat.code}
-                    onClick={() => updateFilters(cat.code, selectedType)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      selectedCategoryCode === cat.code
+                    onClick={() => updateFilters(cat.code || cat.id, selectedType)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedCategoryCode === cat.code || selectedCategoryCode === cat.id
                         ? "bg-[#800020] text-white shadow-xs"
                         : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                     }`}
                   >
-                    {cat.name} ({count})
+                    <span className="font-mono text-[10px] opacity-75">#{cat.displayOrder}</span>
+                    <span>{cat.name}</span>
+                    <span className="opacity-80">({count})</span>
                   </button>
                 );
               })}
@@ -439,462 +454,362 @@ function ServiciosContent() {
         </div>
       </section>
 
-      {/* ─── SECCIÓN 1: OTRAS ACTIVIDADES ADICIONALES (BIENESTAR EXPERIENCE & IAIDŌ) ─── */}
-      {visibleDestacadas.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "longevidad_artes") && (
-        <section className="max-w-6xl mx-auto px-4 py-8">
-          <div className="mb-6 pb-3 border-b-2 border-[#0B4A72]">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-              <div>
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#0B4A72] flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" /> ACTIVIDADES DESTACADAS · CLUB SOCIAL PARQUE GRANADA & CENTRO
-                </span>
-                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-                  Longevidad (Bienestar Experience) & Iaidō (Esgrima Japonesa)
-                </h3>
-              </div>
-              <span className="text-xs text-stone-600 font-medium">
-                {crmLoading ? "Sincronizando..." : `${visibleDestacadas.length} actividades disponibles`}
-              </span>
-            </div>
-          </div>
+      {/* ─── SECCIONES DINÁMICAS POR CATEGORÍA EN ORDEN ESPECIFICADO (displayOrder) ─── */}
+      {groupedSections.map(({ category: cat, services: catServices }) => {
+        const isYogaCategory =
+          cat.code === "yoga_meditacion" ||
+          cat.code === "yoga" ||
+          cat.name.toLowerCase().includes("yoga");
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {visibleDestacadas.map((act) => {
+        const isLongevidadCategory =
+          cat.code === "longevidad_artes" ||
+          cat.code === "longevidad" ||
+          cat.name.toLowerCase().includes("longevidad");
+
+        const isTalleresCategory =
+          cat.code === "talleres_eventos" ||
+          cat.name.toLowerCase().includes("taller") ||
+          cat.name.toLowerCase().includes("retiro") ||
+          cat.name.toLowerCase().includes("gong");
+
+        // Border & Accent coloring per category
+        const borderTopColor = isYogaCategory
+          ? "border-[#800020]"
+          : isLongevidadCategory
+          ? "border-[#0B4A72]"
+          : isTalleresCategory
+          ? "border-purple-600"
+          : "border-stone-400";
+
+        const tagColor = isYogaCategory
+          ? "text-[#800020]"
+          : isLongevidadCategory
+          ? "text-[#0B4A72]"
+          : isTalleresCategory
+          ? "text-purple-900"
+          : "text-stone-700";
+
+        return (
+          <section key={cat.id || cat.code} className="max-w-6xl mx-auto px-4 py-8">
+            <div className={`mb-6 pb-3 border-b-2 ${borderTopColor}`}>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                <div>
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="font-mono text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                      Orden #{cat.displayOrder}
+                    </span>
+                    <span className={`text-[11px] font-extrabold uppercase tracking-widest ${tagColor} flex items-center gap-1.5`}>
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      ESCUELA SALVADORA CONESA · {isLongevidadCategory ? "CLUB SOCIAL PARQUE GRANADA & CENTRO" : "SEDE OFICIAL"}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
+                    {cat.name}
+                  </h3>
+                  {cat.description && (
+                    <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl whitespace-pre-line">
+                      {cat.description}
+                    </p>
+                  )}
+                </div>
+                <span className="text-xs text-stone-600 font-medium whitespace-nowrap">
+                  {crmLoading ? "Sincronizando..." : `${catServices.length} ${catServices.length === 1 ? "actividad" : "actividades"}`}
+                </span>
+              </div>
+            </div>
+
+            {/* Banner Informativo Políticas de Yoga (si corresponde a Yoga) */}
+            {isYogaCategory && (
+              <div className="mb-6 bg-amber-50/95 border-2 border-amber-200/90 rounded-2xl p-5 text-xs text-stone-800 shadow-sm space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🧘</span>
+                  <h4 className="font-bold text-amber-950 text-sm sm:text-base">
+                    Condiciones de Matriculación y Flexibilidad para Alumnos:
+                  </h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1 text-stone-700 leading-relaxed">
+                  <div className="space-y-2">
+                    <p>
+                      • 🎁 <strong>1ª Clase de prueba de REGALO:</strong> Tu primera clase en las disciplinas marcadas es gratuita (0 €), sin compromiso ni permanencia.
+                    </p>
+                    <p>
+                      • 📅 <strong>Cuotas de Alumno con Turno Fijo:</strong> 1 clase semanal (25 €/mes) o 2 clases semanales (42 €/mes) con plaza reservada fija garantizada.
+                    </p>
+                    <p>
+                      • 🎟️ <strong>Clases sueltas / esporádicas:</strong> 10 € por clase para quien no desee matricularse mensualmente.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <p>
+                      • 🔄 <strong>Política de recuperaciones (hasta 3 meses / 90 días):</strong> Si avisas con antelación, puedes recuperar tus clases en cualquier otro turno disponible.
+                    </p>
+                    <p>
+                      • ✨ <strong>Meditaciones Guiadas:</strong> Gratuitas para los alumnos matriculados en Yoga. No alumnos: 15 €/mes (o 3 € sesión suelta).
+                    </p>
+                    <p>
+                      • 📩 <strong>Confirmación Inmediata:</strong> Avisos por SMS y correo electrónico al confirmar cada plaza o reserva.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Grid de Servicios de esta Categoría */}
+            <div
+              className={`grid ${
+                isLongevidadCategory
+                  ? "grid-cols-1 lg:grid-cols-2 gap-6"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+              }`}
+            >
+              {catServices.map((act) => {
+                const meta = getCategoryMeta(act);
+                const isBienestar = act.name.toLowerCase().includes("bienestar experience");
+                const priceDisplay = formatServicePrice(act);
+                const durationDisplay = formatDuration(act.durationMinutes);
+
+                return (
+                  <div
+                    key={act.id}
+                    className="bg-white rounded-3xl border-2 border-stone-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:border-[#800020] relative overflow-hidden group"
+                  >
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-amber-100/50 via-transparent to-transparent rounded-bl-full pointer-events-none" />
+
+                    <div>
+                      {/* Header Badges */}
+                      <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+                        <span className="text-xs font-bold px-3 py-1 rounded-full bg-stone-100 text-stone-800 flex items-center gap-1.5 border border-stone-200">
+                          <span>{meta.icon}</span> {meta.label}
+                        </span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {act.firstClassFree && (
+                            <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 uppercase">
+                              Prueba Gratis
+                            </span>
+                          )}
+                          {act.freeForYogaStudents && (
+                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 border border-purple-300">
+                              ✨ ¡Gratis Alumnos Yoga!
+                            </span>
+                          )}
+                          {act.maxCapacity && (
+                            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200 flex items-center gap-1">
+                              <Users className="w-3 h-3" /> Aforo: {act.maxCapacity} {act.maxCapacity === 1 ? "plaza" : "plazas"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Title & Emblem for Bienestar Experience */}
+                      {isBienestar ? (
+                        <div className="space-y-4 mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-stone-900 text-white flex items-center justify-center p-2 border-2 border-amber-500 shadow-md text-center">
+                              <div className="leading-tight">
+                                <span className="block text-[8px] font-bold tracking-widest text-amber-300 uppercase">BIEN</span>
+                                <span className="block text-[10px] font-extrabold tracking-wider uppercase">ESTAR</span>
+                                <span className="block text-[8px] font-bold tracking-widest text-stone-300 uppercase">EXP</span>
+                              </div>
+                            </div>
+                            <div>
+                              <h4 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors leading-snug">
+                                {act.name}
+                              </h4>
+                              <p className="text-xs font-semibold text-emerald-700 mt-0.5">
+                                {priceDisplay} • {act.allowedModalities?.map((m) => m === "in_person" ? "Presencial" : m === "virtual" ? "Online" : m).join(" · ") || "Presencial y Online"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <p className="text-xs sm:text-sm text-stone-700 leading-relaxed whitespace-pre-line">
+                            {act.description}
+                          </p>
+
+                          <div className="pt-2">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B4A72] block mb-1.5">
+                              🔬 Disciplinas y Áreas Incluidas:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                "Biohacking",
+                                "Longevidad",
+                                "Rejuvenecimiento",
+                                "Ciclos Circadianos",
+                                "Psicología Positiva",
+                                "Terapia de Sonido",
+                                "Nutrición Celular",
+                                "Meditación",
+                              ].map((t) => (
+                                <span
+                                  key={t}
+                                  className="inline-block bg-amber-50 text-amber-900 border border-amber-200/80 px-2 py-0.5 rounded-md text-[10px] font-medium"
+                                >
+                                  • {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          {/* Cartel / Flyer si existe */}
+                          {(act.flyerUrl || act.flyerPath) && (
+                            <div className="mb-3 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+                              <img
+                                src={act.flyerUrl || act.flyerPath || ""}
+                                alt={act.name}
+                                className="w-full h-40 sm:h-48 object-cover hover:scale-105 transition-transform duration-300"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = "none";
+                                }}
+                              />
+                            </div>
+                          )}
+
+                          <div className="flex justify-between items-start mb-2 gap-2">
+                            <h4 className="font-serif text-lg sm:text-xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors leading-snug">
+                              {act.name}
+                            </h4>
+                            <span className="font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg text-xs border border-emerald-200 shrink-0 ml-2">
+                              {priceDisplay}
+                            </span>
+                          </div>
+
+                          {act.eventDatesText && (
+                            <div className="mb-2 inline-block bg-purple-100 text-purple-950 font-bold text-[11px] px-2.5 py-0.5 rounded-md">
+                              🗓️ {act.eventDatesText}
+                            </div>
+                          )}
+
+                          <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-4 whitespace-pre-line">
+                            {act.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Horarios dinámicos desde CRM */}
+                      {(act.scheduleText || act.eventDatesText) && (
+                        <div className="bg-[#FAF9F6] rounded-2xl p-4 border border-stone-200/90 space-y-2 mb-4">
+                          <div className="text-xs font-bold text-[#800020] uppercase tracking-wider flex items-center gap-1.5">
+                            <Clock className="w-4 h-4 text-[#0B4A72]" /> Horarios y Turnos Oficiales:
+                          </div>
+                          <div className="text-xs text-stone-800">
+                            {act.scheduleText || act.eventDatesText}
+                          </div>
+                          <div className="text-[11px] text-stone-600 italic pt-1 border-t border-stone-200 flex items-center justify-between">
+                            <span>Duración: {durationDisplay}</span>
+                            {act.maxCapacity && <span>Aforo: {act.maxCapacity} plazas</span>}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="pt-3 border-t border-stone-100 space-y-2.5">
+                      <button
+                        onClick={() => handleServiceSelect(act)}
+                        className="w-full py-3 px-4 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Calendar className="w-4 h-4" /> Reservar / Consultar Disponibilidad
+                      </button>
+                      <div className="flex items-center justify-between text-xs pt-1">
+                        {act.whatsappBookingUrl ? (
+                          <a
+                            href={act.whatsappBookingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1"
+                          >
+                            <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
+                          </a>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setSelectedService(act.name);
+                              setWaModalOpen(true);
+                            }}
+                            className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1 cursor-pointer"
+                          >
+                            <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
+                          </button>
+                        )}
+                        <span className="text-stone-500 font-medium text-[11px]">Pago en centro</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* ─── SECCIÓN PARA OTRAS ACTIVIDADES SIN CATEGORÍA ─── */}
+      {uncategorizedServices.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 py-8">
+          <div className="mb-6 pb-3 border-b-2 border-stone-400">
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+              Otras Actividades y Consultas
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {uncategorizedServices.map((act) => {
               const meta = getCategoryMeta(act);
-              const isBienestar = act.name.toLowerCase().includes("bienestar experience");
               const priceDisplay = formatServicePrice(act);
               const durationDisplay = formatDuration(act.durationMinutes);
 
               return (
                 <div
                   key={act.id}
-                  className="bg-white rounded-3xl border-2 border-stone-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:border-[#800020] relative overflow-hidden group"
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-amber-100/50 via-transparent to-transparent rounded-bl-full pointer-events-none" />
-
-                  <div>
-                    {/* Header Badges */}
-                    <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
-                      <span className="text-xs font-bold px-3 py-1 rounded-full bg-stone-100 text-stone-800 flex items-center gap-1.5 border border-stone-200">
-                        <span>{meta.icon}</span> {meta.label}
-                      </span>
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        {act.firstClassFree && (
-                          <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 uppercase">
-                            Prueba Gratis
-                          </span>
-                        )}
-                        {act.maxCapacity && (
-                          <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200 flex items-center gap-1">
-                            <Users className="w-3 h-3" /> Aforo: {act.maxCapacity} {act.maxCapacity === 1 ? "plaza" : "plazas"}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Title & Emblem for Bienestar Experience */}
-                    {isBienestar ? (
-                      <div className="space-y-4 mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-stone-900 text-white flex items-center justify-center p-2 border-2 border-amber-500 shadow-md text-center">
-                            <div className="leading-tight">
-                              <span className="block text-[8px] font-bold tracking-widest text-amber-300 uppercase">BIEN</span>
-                              <span className="block text-[10px] font-extrabold tracking-wider uppercase">ESTAR</span>
-                              <span className="block text-[8px] font-bold tracking-widest text-stone-300 uppercase">EXP</span>
-                            </div>
-                          </div>
-                          <div>
-                            <h4 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors leading-snug">
-                              {act.name}
-                            </h4>
-                            <p className="text-xs font-semibold text-emerald-700 mt-0.5">
-                              {priceDisplay} • {act.allowedModalities?.map(m => m === "in_person" ? "Presencial" : m === "virtual" ? "Online" : m).join(" · ") || "Presencial y Online"}
-                            </p>
-                          </div>
-                        </div>
-
-                        <p className="text-xs sm:text-sm text-stone-700 leading-relaxed whitespace-pre-line">
-                          {act.description}
-                        </p>
-
-                        <div className="pt-2">
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0B4A72] block mb-1.5">
-                            🔬 Disciplinas y Áreas Incluidas:
-                          </span>
-                          <div className="flex flex-wrap gap-1.5">
-                            {[
-                              "Biohacking",
-                              "Longevidad",
-                              "Rejuvenecimiento",
-                              "Ciclos Circadianos",
-                              "Psicología Positiva",
-                              "Terapia de Sonido",
-                              "Nutrición Celular",
-                              "Meditación",
-                            ].map((t) => (
-                              <span
-                                key={t}
-                                className="inline-block bg-amber-50 text-amber-900 border border-amber-200/80 px-2 py-0.5 rounded-md text-[10px] font-medium"
-                              >
-                                • {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        {/* Cartel / Flyer si existe */}
-                        {(act.flyerUrl || act.flyerPath) && (
-                          <div className="mb-3 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-                            <img
-                              src={act.flyerUrl || act.flyerPath || ""}
-                              alt={act.name}
-                              className="w-full h-40 sm:h-48 object-cover hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = "none";
-                              }}
-                            />
-                          </div>
-                        )}
-
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
-                            {act.name}
-                          </h4>
-                          <span className="font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg text-xs border border-emerald-200 shrink-0 ml-2">
-                            {priceDisplay}
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-stone-700 leading-relaxed mb-4 whitespace-pre-line">
-                          {act.description}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Horarios dinámicos desde CRM */}
-                    {(act.scheduleText || act.eventDatesText) && (
-                      <div className="bg-[#FAF9F6] rounded-2xl p-4 border border-stone-200/90 space-y-2 mb-4">
-                        <div className="text-xs font-bold text-[#800020] uppercase tracking-wider flex items-center gap-1.5">
-                          <Clock className="w-4 h-4 text-[#0B4A72]" /> Horarios y Turnos Oficiales:
-                        </div>
-                        <div className="text-xs text-stone-800">
-                          {act.scheduleText || act.eventDatesText}
-                        </div>
-                        <div className="text-[11px] text-stone-600 italic pt-1 border-t border-stone-200 flex items-center justify-between">
-                          <span>Duración: {durationDisplay}</span>
-                          {act.maxCapacity && <span>Aforo máximo: {act.maxCapacity} plazas</span>}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="pt-3 border-t border-stone-100 space-y-2.5">
-                    <button
-                      onClick={() => handleServiceSelect(act)}
-                      className="w-full py-3 px-4 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <Calendar className="w-4 h-4" /> Reservar / Consultar Disponibilidad
-                    </button>
-                    <div className="flex items-center justify-between text-xs pt-1">
-                      {act.whatsappBookingUrl ? (
-                        <a
-                          href={act.whatsappBookingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1"
-                        >
-                          <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
-                        </a>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setSelectedService(act.name);
-                            setWaModalOpen(true);
-                          }}
-                          className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1 cursor-pointer"
-                        >
-                          <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
-                        </button>
-                      )}
-                      <span className="text-stone-500 font-medium">Pago en centro</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* ─── SECCIÓN 2: ESCUELA DE YOGA & TERAPIAS REGULARES ─── */}
-      {((selectedCategoryCode === "all" && (visibleRegularesYoga.length > 0 || visibleSaludTerapeutica.length > 0)) ||
-        (selectedCategoryCode === "yoga_meditacion" && visibleRegularesYoga.length > 0) ||
-        (selectedCategoryCode === "salud_terapeutica" && visibleSaludTerapeutica.length > 0)) && (
-        <section className="max-w-6xl mx-auto px-4 py-8">
-          <div className="mb-6 pb-3 border-b-2 border-stone-300">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#800020]">
-              ESCUELA SALVADORA CONESA · CLASES REGULARES
-            </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              Hatha Yoga Terapéutico, Meditaciones y Terapias
-            </h3>
-          </div>
-
-        {/* Banner Informativo Políticas de Yoga */}
-        <div className="mb-6 bg-amber-50/95 border-2 border-amber-200/90 rounded-2xl p-5 text-xs text-stone-800 shadow-sm space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🧘</span>
-            <h4 className="font-bold text-amber-950 text-sm sm:text-base">
-              Condiciones de Matriculación y Flexibilidad para Alumnos:
-            </h4>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1 text-stone-700 leading-relaxed">
-            <div className="space-y-2">
-              <p>
-                • 🎁 <strong>1ª Clase de prueba de REGALO:</strong> Tu primera clase en las disciplinas marcadas es gratuita (0 €), sin compromiso ni permanencia.
-              </p>
-              <p>
-                • 📅 <strong>Cuotas de Alumno con Turno Fijo:</strong> 1 clase semanal (25 €/mes) o 2 clases semanales (42 €/mes) con plaza reservada fija garantizada.
-              </p>
-              <p>
-                • 🎟️ <strong>Clases sueltas / esporádicas:</strong> 10 € por clase para quien no desee matricularse mensualmente.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <p>
-                • 🔄 <strong>Política de recuperaciones (hasta 3 meses / 90 días):</strong> Si avisas con antelación, puedes recuperar tus clases en cualquier otro turno disponible.
-              </p>
-              <p>
-                • ✨ <strong>Meditaciones Guiadas:</strong> Gratuitas para los alumnos matriculados en Yoga. No alumnos: 15 €/mes (o 3 € sesión suelta).
-              </p>
-              <p>
-                • 📩 <strong>Confirmación Inmediata:</strong> Avisos por SMS y correo electrónico al confirmar cada plaza o reserva.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[
-            ...(selectedCategoryCode === "salud_terapeutica" ? [] : visibleRegularesYoga),
-            ...(selectedCategoryCode === "yoga_meditacion" ? [] : visibleSaludTerapeutica),
-          ].map((svc) => {
-            const meta = getCategoryMeta(svc);
-            const priceDisplay = formatServicePrice(svc);
-            const durationDisplay = formatDuration(svc.durationMinutes);
-
-            return (
-              <div
-                key={svc.id}
-                className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between hover:border-[#800020]/40"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-1 mb-2.5">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 flex items-center gap-1">
-                      <span>{meta.icon}</span> {meta.label}
-                    </span>
-                    <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                      {priceDisplay}
-                    </span>
-                  </div>
-
-                  {/* Badges especiales */}
-                  <div className="flex flex-wrap gap-1 mb-2">
-                    {svc.firstClassFree && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 inline-block">
-                        ⭐ 1ª Clase de Regalo (0€)
-                      </span>
-                    )}
-                    {svc.freeForYogaStudents && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-900 border border-purple-300 inline-block">
-                        ✨ ¡Gratis Alumnos Yoga!
-                      </span>
-                    )}
-                    {svc.maxCapacity && (
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200 inline-flex items-center gap-1">
-                        <Users className="w-2.5 h-2.5" /> Aforo: {svc.maxCapacity} plazas
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Cartel / Flyer si existe */}
-                  {(svc.flyerUrl || svc.flyerPath) && (
-                    <div className="mb-3 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
-                      <img
-                        src={svc.flyerUrl || svc.flyerPath || ""}
-                        alt={svc.name}
-                        className="w-full h-36 sm:h-40 object-cover hover:scale-105 transition-transform duration-300"
-                        onError={(e) => {
-                          // Hide on load error
-                          (e.target as HTMLElement).style.display = "none";
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  <h4 className="font-serif text-base font-bold text-stone-900 mb-1.5 leading-snug">
-                    {svc.name}
-                  </h4>
-                  <p className="text-xs text-stone-600 leading-relaxed mb-3 whitespace-pre-line">
-                    {svc.description}
-                  </p>
-
-                  {svc.scheduleText && (
-                    <div className="bg-[#FAF9F6] rounded-xl p-3 border border-stone-200 text-xs space-y-1 mb-3">
-                      <div className="font-bold text-[#800020] text-[11px] uppercase flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" /> Horarios Oficiales:
-                      </div>
-                      <div className="text-[11px] text-stone-800">
-                        {svc.scheduleText}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="pt-2 border-t border-stone-100 space-y-2">
-                  <button
-                    onClick={() => handleServiceSelect(svc)}
-                    className="w-full py-2 px-3 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <Calendar className="w-3.5 h-3.5" /> Reservar Plaza
-                  </button>
-                  <div className="flex items-center justify-between text-[11px] text-stone-500">
-                    <span>{durationDisplay}</span>
-                    {svc.whatsappBookingUrl ? (
-                      <a
-                        href={svc.whatsappBookingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-emerald-700 font-bold hover:underline"
-                      >
-                        WhatsApp
-                      </a>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          setSelectedService(svc.name);
-                          setWaModalOpen(true);
-                        }}
-                        className="text-emerald-700 font-bold hover:underline cursor-pointer"
-                      >
-                        WhatsApp
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-      )}
-
-      {/* ─── SECCIÓN 3: TALLERES, EVENTOS Y RETIROS ESPECIALES ─── */}
-      {visibleTalleresEventos.length > 0 && (selectedCategoryCode === "all" || selectedCategoryCode === "talleres_eventos") && (
-        <section className="max-w-6xl mx-auto px-4 py-8">
-          <div className="mb-6 pb-3 border-b-2 border-purple-300">
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-purple-900">
-              ENCUENTROS, SONIDO Y RETIROS
-            </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              Baños de Gong, Pujas, Constelaciones y Retiros
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleTalleresEventos.map((ev) => {
-              const meta = getCategoryMeta(ev);
-              const priceDisplay = formatServicePrice(ev);
-              const durationDisplay = formatDuration(ev.durationMinutes);
-
-              return (
-                <div
-                  key={ev.id}
-                  className="bg-white rounded-3xl border border-purple-200/80 p-5 shadow-xs hover:shadow-lg transition flex flex-col justify-between hover:border-purple-600"
+                  className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between hover:border-[#800020]/40"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-2.5">
-                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-900 border border-purple-200 flex items-center gap-1">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 flex items-center gap-1">
                         <span>{meta.icon}</span> {meta.label}
                       </span>
-                      <span className="text-xs font-extrabold text-stone-900 bg-amber-100 px-2.5 py-0.5 rounded-md">
+                      <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                         {priceDisplay}
                       </span>
                     </div>
 
-                    {/* Fecha de evento o aforo */}
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {ev.eventDatesText && (
-                        <div className="inline-block bg-purple-100 text-purple-950 font-bold text-[11px] px-2.5 py-0.5 rounded-md">
-                          🗓️ {ev.eventDatesText}
-                        </div>
-                      )}
-                      {ev.maxCapacity && (
-                        <div className="inline-flex items-center gap-1 bg-stone-100 text-stone-700 text-[11px] px-2.5 py-0.5 rounded-md border border-stone-200">
-                          <Users className="w-3 h-3" /> Aforo: {ev.maxCapacity} plazas
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Cartel / Flyer si existe */}
-                    {(ev.flyerUrl || ev.flyerPath) && (
-                      <div className="mb-3 overflow-hidden rounded-xl border border-purple-200 bg-purple-50">
-                        <img
-                          src={ev.flyerUrl || ev.flyerPath || ""}
-                          alt={ev.name}
-                          className="w-full h-36 sm:h-40 object-cover hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = "none";
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    <h4 className="font-serif text-lg font-bold text-stone-900 mb-1.5 leading-snug">
-                      {ev.name}
+                    <h4 className="font-serif text-base font-bold text-stone-900 mb-1.5 leading-snug">
+                      {act.name}
                     </h4>
                     <p className="text-xs text-stone-600 leading-relaxed mb-3 whitespace-pre-line">
-                      {ev.description}
+                      {act.description}
                     </p>
 
-                    {ev.scheduleText && (
-                      <div className="bg-stone-50 rounded-xl p-2.5 border border-stone-200 text-[11px] text-stone-700 mb-3">
-                        <span className="font-bold text-[#800020]">Horario:</span> {ev.scheduleText}
+                    {act.scheduleText && (
+                      <div className="bg-[#FAF9F6] rounded-xl p-3 border border-stone-200 text-xs space-y-1 mb-3">
+                        <div className="font-bold text-[#800020] text-[11px] uppercase flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" /> Horario:
+                        </div>
+                        <div className="text-[11px] text-stone-800">
+                          {act.scheduleText}
+                        </div>
                       </div>
                     )}
                   </div>
 
                   <div className="pt-2 border-t border-stone-100 space-y-2">
                     <button
-                      onClick={() => handleServiceSelect(ev)}
-                      className="w-full py-2.5 px-4 bg-purple-900 hover:bg-purple-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer"
+                      onClick={() => handleServiceSelect(act)}
+                      className="w-full py-2 px-3 bg-[#800020] hover:bg-[#800020]/90 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-1 cursor-pointer"
                     >
-                      <Calendar className="w-3.5 h-3.5" /> Solicitar Reserva
+                      <Calendar className="w-3.5 h-3.5" /> Reservar Plaza
                     </button>
                     <div className="flex items-center justify-between text-[11px] text-stone-500">
-                      <span>Duración: {durationDisplay}</span>
-                      {ev.whatsappBookingUrl ? (
-                        <a
-                          href={ev.whatsappBookingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-emerald-700 font-bold hover:underline"
-                        >
-                          WhatsApp
-                        </a>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setSelectedService(ev.name);
-                            setWaModalOpen(true);
-                          }}
-                          className="text-emerald-700 font-bold hover:underline cursor-pointer"
-                        >
-                          WhatsApp
-                        </button>
-                      )}
+                      <span>{durationDisplay}</span>
+                      <button
+                        onClick={() => {
+                          setSelectedService(act.name);
+                          setWaModalOpen(true);
+                        }}
+                        className="text-emerald-700 font-bold hover:underline cursor-pointer"
+                      >
+                        WhatsApp
+                      </button>
                     </div>
                   </div>
                 </div>

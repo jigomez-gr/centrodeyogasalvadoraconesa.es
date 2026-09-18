@@ -26,7 +26,8 @@ import {
     FALLBACK_CRM_CATEGORIES,
     FALLBACK_CRM_SERVICES,
     findServiceByCodeOrId,
-    formatServicePrice
+    formatServicePrice,
+    serviceMatchesCategory
 } from "@/lib/crmServices";
 
 interface UserSession {
@@ -67,9 +68,10 @@ interface UserSession {
 
 interface BookingFormProps {
     initialServices?: CrmService[];
+    initialCategories?: CrmCategory[];
 }
 
-export default function BookingForm({ initialServices }: BookingFormProps = {}) {
+export default function BookingForm({ initialServices, initialCategories }: BookingFormProps = {}) {
     // Tab Navigation: 'alta' (default) vs 'consulta' (consultar estado existente)
     const [activeTab, setActiveTab] = useState<"alta" | "consulta">("alta");
 
@@ -154,7 +156,9 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
     const [services, setServices] = useState<CrmService[]>(
         initialServices && initialServices.length > 0 ? initialServices : FALLBACK_CRM_SERVICES
     );
-    const [categories, setCategories] = useState<CrmCategory[]>(FALLBACK_CRM_CATEGORIES);
+    const [categories, setCategories] = useState<CrmCategory[]>(
+        initialCategories && initialCategories.length > 0 ? initialCategories : FALLBACK_CRM_CATEGORIES
+    );
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("all");
     const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>("all");
 
@@ -187,9 +191,16 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
     const groupedServices = useMemo(() => {
         const filtered = services.filter((s) => {
             if (selectedCategoryFilter !== "all") {
-                const matchesId = s.categoryId === selectedCategoryFilter;
-                const matchesCode = s.categoryCode === selectedCategoryFilter;
-                if (!matchesId && !matchesCode) return false;
+                const targetCat = sortedCategories.find(
+                    (c) => c.id === selectedCategoryFilter || c.code === selectedCategoryFilter
+                );
+                if (targetCat) {
+                    if (!serviceMatchesCategory(s, targetCat)) return false;
+                } else {
+                    const matchesId = s.categoryId === selectedCategoryFilter;
+                    const matchesCode = s.categoryCode === selectedCategoryFilter;
+                    if (!matchesId && !matchesCode) return false;
+                }
             }
             if (selectedTypeFilter !== "all" && s.serviceType !== selectedTypeFilter) {
                 return false;
@@ -201,7 +212,7 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
 
         for (const cat of sortedCategories) {
             const catSvcs = filtered
-                .filter((s) => s.categoryId === cat.id || s.categoryCode === cat.code)
+                .filter((s) => serviceMatchesCategory(s, cat))
                 .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
             if (catSvcs.length > 0) {
                 groups.push({ category: cat, services: catSvcs });
@@ -210,7 +221,7 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
 
         // Uncategorized
         const uncategorized = filtered
-            .filter((s) => !s.categoryId && !s.categoryCode)
+            .filter((s) => !sortedCategories.some((cat) => serviceMatchesCategory(s, cat)))
             .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
         if (uncategorized.length > 0) {
             groups.push({ category: null, services: uncategorized });
@@ -791,7 +802,7 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
                                             Todas ({services.length})
                                         </button>
                                         {sortedCategories.map((cat) => {
-                                            const count = services.filter((s) => s.categoryId === cat.id || s.categoryCode === cat.code).length;
+                                            const count = services.filter((s) => serviceMatchesCategory(s, cat)).length;
                                             if (count === 0) return null;
                                             const isCatActive = selectedCategoryFilter === cat.id || selectedCategoryFilter === cat.code;
                                             return (
@@ -799,13 +810,15 @@ export default function BookingForm({ initialServices }: BookingFormProps = {}) 
                                                     key={cat.id || cat.code}
                                                     type="button"
                                                     onClick={() => setSelectedCategoryFilter(cat.id || cat.code)}
-                                                    className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                                                    className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
                                                         isCatActive
                                                             ? "bg-[#800020] text-white shadow-2xs"
                                                             : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                                                     }`}
                                                 >
-                                                    {cat.name} ({count})
+                                                    <span className="font-mono text-[10px] opacity-75">#{cat.displayOrder}</span>
+                                                    <span>{cat.name}</span>
+                                                    <span className="opacity-80">({count})</span>
                                                 </button>
                                             );
                                         })}

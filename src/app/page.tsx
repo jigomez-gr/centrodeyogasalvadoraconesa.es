@@ -62,7 +62,7 @@ function getSubImages(dayNum: number): string[] {
 
 export default async function Home() {
   const videosExist = checkVideosExist();
-  const { services } = await fetchCrmServices();
+  const { services, categories } = await fetchCrmServices();
 
   const hatha1Svc = findServiceByCodeOrId(services, "clase_semanal");
   const hatha2Svc = findServiceByCodeOrId(services, "dos_clases_semanal");
@@ -807,7 +807,7 @@ export default async function Home() {
             </h2>
           </div>
 
-          <BookingForm initialServices={services} />
+          <BookingForm initialServices={services} initialCategories={categories} />
         </div>
       </section>
 

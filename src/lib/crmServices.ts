@@ -479,3 +479,48 @@ export function categorizeCrmServices(services: CrmService[]) {
     all: [...services].sort(sortByOrder),
   };
 }
+
+/**
+ * Robust category matching helper. Matches by categoryId, categoryCode, or name/type heuristics.
+ */
+export function serviceMatchesCategory(s: CrmService, cat: CrmCategory): boolean {
+  if (s.categoryId && (s.categoryId === cat.id || s.categoryId === cat.code)) return true;
+  if (s.categoryCode && (s.categoryCode === cat.code || s.categoryCode === cat.id)) return true;
+
+  // Fallback heuristics if neither categoryId nor categoryCode is assigned to the service
+  if (!s.categoryId && !s.categoryCode) {
+    const lower = s.name.toLowerCase();
+    if (cat.code === "longevidad_artes" || cat.code === "longevidad") {
+      return lower.includes("bienestar") || lower.includes("iaidō") || lower.includes("iaido");
+    }
+    if (cat.code === "salud_terapeutica") {
+      return lower.includes("médica") || lower.includes("fisioterapia") || lower.includes("gestalt");
+    }
+    if (cat.code === "talleres_eventos") {
+      return (
+        s.serviceType === "event" ||
+        lower.includes("gong") ||
+        lower.includes("puja") ||
+        lower.includes("constelaciones") ||
+        lower.includes("retiro") ||
+        lower.includes("conferencia")
+      );
+    }
+    if (cat.code === "yoga_meditacion") {
+      return (
+        !lower.includes("bienestar") &&
+        !lower.includes("iaidō") &&
+        !lower.includes("iaido") &&
+        !lower.includes("médica") &&
+        !lower.includes("fisioterapia") &&
+        !lower.includes("gestalt") &&
+        s.serviceType !== "event" &&
+        !lower.includes("gong") &&
+        !lower.includes("puja") &&
+        !lower.includes("constelaciones") &&
+        !lower.includes("retiro")
+      );
+    }
+  }
+  return false;
+}
