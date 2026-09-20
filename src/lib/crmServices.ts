@@ -199,6 +199,8 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     flyerPath: "public/flyers/ayuno.jpeg",
     flyerParticularUrl: "/flyers/ayuno_particular.jpg",
     flyerParticularPath: "public/flyers/ayuno_particular.jpg",
+    videoParticularUrl: "/videos/ayunoterapeuticoparticular.mp4",
+    videoParticularPath: "public/videos/ayunoterapeuticoparticular.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Retiro%20de%20Ayuno%20Terap%C3%A9utico.",
   },
   {
