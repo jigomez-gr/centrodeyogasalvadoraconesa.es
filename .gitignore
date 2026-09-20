@@ -55,3 +55,6 @@ Thumbs.db
 /videos_interpretes/
 /auxiliares/
 /media_base/
+/database_dump/
+*.sql
+*.dump
