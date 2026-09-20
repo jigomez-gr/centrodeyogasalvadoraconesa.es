@@ -600,6 +600,44 @@ function ServiciosContent() {
                         </div>
                       </div>
 
+                      {/* Multimedia con prioridad estricta:
+                          1º Video Particular (MP4)
+                          2º Flyer Particular
+                          3º Flyer General / Itinerario */}
+                      {(act.videoParticularUrl || act.videoParticularPath) ? (
+                        <div className="mb-4 overflow-hidden rounded-2xl border border-stone-200 bg-black aspect-video w-full shadow-xs">
+                          <video
+                            src={act.videoParticularUrl || act.videoParticularPath || ""}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (act.flyerParticularUrl || act.flyerParticularPath) ? (
+                        <div className="mb-4 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100 aspect-video w-full shadow-xs">
+                          <img
+                            src={act.flyerParticularUrl || act.flyerParticularPath || ""}
+                            alt={act.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = "none";
+                            }}
+                          />
+                        </div>
+                      ) : (act.flyerUrl || act.flyerPath) ? (
+                        <div className="mb-4 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100 aspect-video w-full shadow-xs">
+                          <img
+                            src={act.flyerUrl || act.flyerPath || ""}
+                            alt={act.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = "none";
+                            }}
+                          />
+                        </div>
+                      ) : null}
+
                       {/* Title & Emblem for Bienestar Experience */}
                       {isBienestar ? (
                         <div className="space-y-4 mb-4">
@@ -652,20 +690,6 @@ function ServiciosContent() {
                         </div>
                       ) : (
                         <div>
-                          {/* Cartel / Flyer si existe */}
-                          {(act.flyerUrl || act.flyerPath) && (
-                            <div className="mb-3 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-                              <img
-                                src={act.flyerUrl || act.flyerPath || ""}
-                                alt={act.name}
-                                className="w-full h-40 sm:h-48 object-cover hover:scale-105 transition-transform duration-300"
-                                onError={(e) => {
-                                  (e.target as HTMLElement).style.display = "none";
-                                }}
-                              />
-                            </div>
-                          )}
-
                           <div className="flex justify-between items-start mb-2 gap-2">
                             <h4 className="font-serif text-lg sm:text-xl font-bold text-stone-900 group-hover:text-[#800020] transition-colors leading-snug">
                               {act.name}

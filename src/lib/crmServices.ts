@@ -31,6 +31,12 @@ export interface CrmService {
   categoryDescription?: string | null;
   flyerPath?: string | null;
   flyerUrl?: string | null;
+  flyerParticularPath?: string | null;
+  flyerParticularUrl?: string | null;
+  videoParticularPath?: string | null;
+  videoParticularUrl?: string | null;
+  fechaDesde?: string | null;
+  fechaHasta?: string | null;
   displayOrder?: number;
 }
 
@@ -277,9 +283,16 @@ export async function fetchCrmServices(filters?: {
 
     const data: CrmServicesResponse = await res.json();
     if (data && data.services && Array.isArray(data.services) && data.services.length > 0) {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const visibleServices = data.services.filter((s) => {
+        const from = s.fechaDesde || "2000-01-01";
+        const until = s.fechaHasta || "2099-12-31";
+        return todayStr >= from && todayStr <= until;
+      });
+
       const rawCategories = data.categories && data.categories.length > 0 ? data.categories : FALLBACK_CRM_CATEGORIES;
       const sortedCategories = [...rawCategories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
-      const sortedServices = [...data.services].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+      const sortedServices = [...visibleServices].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
 
       return {
         success: true,
