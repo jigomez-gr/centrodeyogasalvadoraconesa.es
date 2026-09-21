@@ -91,21 +91,6 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Hatha%20Yoga%20Terap%C3%A9utico%20(2%20clases%20semanales).",
   },
   {
-    id: "3993614b-aa86-422e-b05f-6a58d43867c5",
-    name: "Iaidō (Esgrima Japonesa)",
-    serviceType: "recurring",
-    description: "Arte marcial tradicional japonés de desenvainado y manejo de la katana. Práctica de katas, concentración, precisión y presencia. Horarios: Lunes de 20:00 a 21:00 y Jueves de 20:30 a 22:00. Lugar: Club Social Parque Granada. Primera clase de prueba gratuita. Información y reservas por WhatsApp: 695 172 625.",
-    scheduleText: "Lunes de 20:00 a 21:00 y Jueves de 20:30 a 22:00",
-    durationMinutes: 60,
-    price: "0.00",
-    currency: "EUR",
-    maxCapacity: 20,
-    allowedModalities: ["in_person"],
-    firstClassFree: true,
-    freeForYogaStudents: false,
-    whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Iaid%C5%8D%20(Esgrima%20Japonesa).",
-  },
-  {
     id: "469fa9b9-227d-4168-bda7-cac5cf3e7f46",
     name: "Bienestar Experience (Longevidad y Bienestar Integral)",
     serviceType: "recurring",
@@ -224,8 +209,8 @@ export const FALLBACK_CRM_CATEGORIES: CrmCategory[] = [
   {
     id: "cat_longevidad",
     code: "longevidad_artes",
-    name: "Longevidad & Artes Tradicionales",
-    description: "Bienestar Experience, longevidad activa, biohacking e Iaidō (esgrima japonesa) en Club Social Parque Granada y Centro.",
+    name: "Longevidad & Bienestar Integral",
+    description: "Bienestar Experience, longevidad activa, biohacking, nutrición celular y psicología positiva.",
     displayOrder: 1,
   },
   {
@@ -446,20 +431,17 @@ export function categorizeCrmServices(services: CrmService[]) {
 
     const lower = s.name.toLowerCase();
 
-    // Activities in Club Social Parque Granada / Bienestar Experience
+    // Activities in Bienestar Experience
     if (
       lower.includes("bienestar experience") ||
-      lower.includes("iaidō") ||
-      lower.includes("iaido")
+      lower.includes("bienestar")
     ) {
       destacadas.push(s);
       continue;
     }
 
-    // Health / Clinics / Physio / Gestalt
+    // Health / Gestalt
     if (
-      lower.includes("consulta médica") ||
-      lower.includes("fisioterapia") ||
       lower.includes("gestalt")
     ) {
       saludTerapeutica.push(s);
@@ -510,10 +492,10 @@ export function serviceMatchesCategory(s: CrmService, cat: CrmCategory): boolean
   if (!s.categoryId && !s.categoryCode) {
     const lower = s.name.toLowerCase();
     if (cat.code === "longevidad_artes" || cat.code === "longevidad") {
-      return lower.includes("bienestar") || lower.includes("iaidō") || lower.includes("iaido");
+      return lower.includes("bienestar");
     }
     if (cat.code === "salud_terapeutica") {
-      return lower.includes("médica") || lower.includes("fisioterapia") || lower.includes("gestalt");
+      return lower.includes("gestalt");
     }
     if (cat.code === "talleres_eventos") {
       return (
@@ -528,10 +510,6 @@ export function serviceMatchesCategory(s: CrmService, cat: CrmCategory): boolean
     if (cat.code === "yoga_meditacion") {
       return (
         !lower.includes("bienestar") &&
-        !lower.includes("iaidō") &&
-        !lower.includes("iaido") &&
-        !lower.includes("médica") &&
-        !lower.includes("fisioterapia") &&
         !lower.includes("gestalt") &&
         s.serviceType !== "event" &&
         !lower.includes("gong") &&

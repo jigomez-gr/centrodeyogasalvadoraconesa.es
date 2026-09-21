@@ -338,7 +338,6 @@ function ServiciosContent() {
   const getCategoryMeta = (svc: CrmService) => {
     const lower = svc.name.toLowerCase();
     if (lower.includes("bienestar")) return { icon: "🌿", label: "Longevidad & Biohacking" };
-    if (lower.includes("iaidō") || lower.includes("iaido")) return { icon: "⚔️", label: "Arte de la Katana" };
     if (lower.includes("hatha")) return { icon: "🧘", label: "Yoga & Salud Postural" };
     if (lower.includes("meditaci")) return { icon: "✨", label: "Conciencia & Silencio" };
     if (lower.includes("gestalt")) return { icon: "🌱", label: "Psicoterapia Gestalt" };
@@ -347,8 +346,6 @@ function ServiciosContent() {
     if (lower.includes("constelaci")) return { icon: "🕊️", label: "Taller Vivencial" };
     if (lower.includes("ayuno")) return { icon: "🏕️", label: "Retiro Residencial" };
     if (lower.includes("mujeres")) return { icon: "🌸", label: "Círculo Femenino" };
-    if (lower.includes("médica") || lower.includes("clinico")) return { icon: "🩺", label: "Consulta Médica" };
-    if (lower.includes("fisioterapia")) return { icon: "💆", label: "Rehabilitación Postural" };
     return { icon: "🌟", label: svc.serviceType === "recurring" ? "Actividad Regular" : "Evento Especial" };
   };
 
