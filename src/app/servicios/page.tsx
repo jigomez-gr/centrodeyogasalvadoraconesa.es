@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, Suspense } from "react";
+import { useState, useEffect, useMemo, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -259,34 +259,115 @@ function ServiciosContent() {
   const [waLoading, setWaLoading] = useState(false);
   const [waSuccess, setWaSuccess] = useState(false);
 
+  // Helper to identify special activities
+  const isSpecialService = useCallback((s: CrmService) => {
+    const lower = (s.name || "").toLowerCase();
+    return (
+      s.serviceType === "special" ||
+      s.categoryCode === "longevidad_artes" ||
+      s.categoryCode === "actividades_especiales" ||
+      lower.includes("bienestar experience") ||
+      lower.includes("longevidad")
+    );
+  }, []);
+
+  const serviceMatchesType = useCallback(
+    (s: CrmService, type: string) => {
+      if (type === "all") return true;
+      const isSpecial = isSpecialService(s);
+      if (type === "special" || type === "especiales") {
+        return isSpecial;
+      }
+      if (type === "recurring") {
+        return s.serviceType === "recurring" && !isSpecial;
+      }
+      if (type === "event") {
+        return s.serviceType === "event" && !isSpecial;
+      }
+      return s.serviceType === type;
+    },
+    [isSpecialService]
+  );
+
   // Sorted categories by displayOrder
   const sortedCategories = useMemo(() => {
     return [...categories].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
   }, [categories]);
 
+  // Total counts by type
+  const recurringCount = useMemo(
+    () => services.filter((s) => serviceMatchesType(s, "recurring")).length,
+    [services, serviceMatchesType]
+  );
+  const eventCount = useMemo(
+    () => services.filter((s) => serviceMatchesType(s, "event")).length,
+    [services, serviceMatchesType]
+  );
+  const specialCount = useMemo(
+    () => services.filter((s) => serviceMatchesType(s, "special")).length,
+    [services, serviceMatchesType]
+  );
+
+  // Smart selection handlers that prevent 0-match traps
+  const handleSelectCategory = (catCode: string) => {
+    if (catCode === "all") {
+      updateFilters("all", selectedType);
+      return;
+    }
+    const catObj = sortedCategories.find((c) => c.code === catCode || c.id === catCode);
+    const catServices = services.filter((s) =>
+      serviceMatchesCategory(s, catObj || { id: catCode, code: catCode, name: "", displayOrder: 0 })
+    );
+    // If current selectedType would produce 0 results in this category, relax type to "all"!
+    const hasMatchesWithCurrentType =
+      selectedType === "all" || catServices.some((s) => serviceMatchesType(s, selectedType));
+    const nextType = hasMatchesWithCurrentType ? selectedType : "all";
+    updateFilters(catCode, nextType);
+  };
+
+  const handleSelectType = (typeVal: string) => {
+    if (typeVal === "all") {
+      updateFilters(selectedCategoryCode, "all");
+      return;
+    }
+    // If a category is selected, check if it has any services of this type
+    if (selectedCategoryCode !== "all") {
+      const catObj = sortedCategories.find(
+        (c) => c.code === selectedCategoryCode || c.id === selectedCategoryCode
+      );
+      const catServices = services.filter((s) =>
+        serviceMatchesCategory(s, catObj || { id: selectedCategoryCode, code: selectedCategoryCode, name: "", displayOrder: 0 })
+      );
+      const hasMatchesInCat = catServices.some((s) => serviceMatchesType(s, typeVal));
+      if (!hasMatchesInCat) {
+        // If current category does not have services of this type, relax category to "all"
+        updateFilters("all", typeVal);
+        return;
+      }
+    }
+    updateFilters(selectedCategoryCode, typeVal);
+  };
+
+  // Auto-relax incompatible combinations loaded from URL (e.g. ?tipo=special&categoria=yoga_meditacion)
+  useEffect(() => {
+    if (selectedCategoryCode !== "all" && selectedType !== "all" && services.length > 0) {
+      const catObj = sortedCategories.find(
+        (c) => c.code === selectedCategoryCode || c.id === selectedCategoryCode
+      );
+      const catServices = services.filter((s) =>
+        serviceMatchesCategory(s, catObj || { id: selectedCategoryCode, code: selectedCategoryCode, name: "", displayOrder: 0 })
+      );
+      const hasMatches = catServices.some((s) => serviceMatchesType(s, selectedType));
+      if (!hasMatches) {
+        // Automatically relax the type filter so the selected category's activities are displayed
+        updateFilters(selectedCategoryCode, "all");
+      }
+    }
+  }, [services, selectedCategoryCode, selectedType, sortedCategories, serviceMatchesType]);
+
   // Filter services by selectedType
   const filterByType = (list: CrmService[]) =>
-    list.filter((s) => {
-      if (selectedType === "all") return true;
-      const lower = s.name.toLowerCase();
-      const isSpecial =
-        s.serviceType === "special" ||
-        s.categoryCode === "longevidad_artes" ||
-        s.categoryCode === "actividades_especiales" ||
-        lower.includes("bienestar experience") ||
-        lower.includes("longevidad");
-
-      if (selectedType === "special" || selectedType === "especiales") {
-        return isSpecial;
-      }
-      if (selectedType === "recurring") {
-        return s.serviceType === "recurring" && !isSpecial;
-      }
-      if (selectedType === "event") {
-        return s.serviceType === "event" && !isSpecial;
-      }
-      return s.serviceType === selectedType;
-    });
+    list.filter((s) => serviceMatchesType(s, selectedType));
 
   // Dynamic sections by category according to category.displayOrder
   const groupedSections = useMemo(() => {
@@ -304,14 +385,14 @@ function ServiciosContent() {
       }
     }
     return sections;
-  }, [services, sortedCategories, selectedCategoryCode, selectedType]);
+  }, [services, sortedCategories, selectedCategoryCode, selectedType, serviceMatchesType]);
 
   const uncategorizedServices = useMemo(() => {
     if (selectedCategoryCode !== "all") return [];
     return filterByType(
       services.filter((s) => !sortedCategories.some((cat) => serviceMatchesCategory(s, cat)))
     ).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
-  }, [services, sortedCategories, selectedCategoryCode, selectedType]);
+  }, [services, sortedCategories, selectedCategoryCode, selectedType, serviceMatchesType]);
 
   const totalFilteredCount =
     groupedSections.reduce((acc, g) => acc + g.services.length, 0) + uncategorizedServices.length;
@@ -529,25 +610,23 @@ function ServiciosContent() {
 
             <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <button
-                onClick={() => updateFilters("all", selectedType)}
+                onClick={() => handleSelectCategory("all")}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   selectedCategoryCode === "all"
                     ? "bg-[#800020] text-white shadow-xs"
                     : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                 }`}
               >
-                Todas las Categorías ({filterByType(services).length})
+                Todas las Categorías ({services.length})
               </button>
 
               {sortedCategories.map((cat) => {
-                const count = filterByType(
-                  services.filter((s) => serviceMatchesCategory(s, cat))
-                ).length;
+                const count = services.filter((s) => serviceMatchesCategory(s, cat)).length;
 
                 return (
                   <button
                     key={cat.id || cat.code}
-                    onClick={() => updateFilters(cat.code || cat.id, selectedType)}
+                    onClick={() => handleSelectCategory(cat.code || cat.id)}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                       selectedCategoryCode === cat.code || selectedCategoryCode === cat.id
                         ? "bg-[#800020] text-white shadow-xs"
@@ -572,44 +651,44 @@ function ServiciosContent() {
 
             <div className="flex flex-wrap items-center gap-2">
               <button
-                onClick={() => updateFilters(selectedCategoryCode, "all")}
+                onClick={() => handleSelectType("all")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedType === "all"
                     ? "bg-[#0B4A72] text-white font-bold shadow-xs"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                Todos los tipos
+                Todos los tipos ({services.length})
               </button>
               <button
-                onClick={() => updateFilters(selectedCategoryCode, "recurring")}
+                onClick={() => handleSelectType("recurring")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedType === "recurring"
                     ? "bg-[#0B4A72] text-white font-bold shadow-xs"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                🗓️ Clases y Citas Periódicas Regulares
+                🗓️ Clases y Citas Periódicas Regulares ({recurringCount})
               </button>
               <button
-                onClick={() => updateFilters(selectedCategoryCode, "event")}
+                onClick={() => handleSelectType("event")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedType === "event"
                     ? "bg-purple-700 text-white font-bold shadow-xs"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                ✨ Eventos, Talleres y Retiros Regulares
+                ✨ Eventos, Talleres y Retiros Regulares ({eventCount})
               </button>
               <button
-                onClick={() => updateFilters(selectedCategoryCode, "special")}
+                onClick={() => handleSelectType("special")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedType === "special" || selectedType === "especiales"
                     ? "bg-amber-600 text-white font-bold shadow-xs"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                🌟 Actividades Especiales
+                🌟 Actividades Especiales ({specialCount})
               </button>
             </div>
           </div>
