@@ -36,15 +36,27 @@ import {
 } from "@/lib/crmServices";
 
 function ServiceMediaPreview({ act }: { act: CrmService }) {
-  const videoSrc = act.videoParticularUrl || act.videoParticularPath;
-  const flyerSrc =
+  const rawVideo = act.videoParticularUrl || act.videoParticularPath;
+  const videoSrc = rawVideo
+    ? (rawVideo.startsWith("/") || rawVideo.startsWith("http")
+        ? rawVideo
+        : `/videos/${rawVideo.replace(/\\/g, "/").split("/").pop()}`)
+    : null;
+
+  const rawFlyer =
     act.flyerParticularUrl ||
     act.flyerParticularPath ||
     act.flyerUrl ||
     act.flyerPath;
+  const flyerSrc = rawFlyer
+    ? (rawFlyer.startsWith("/") || rawFlyer.startsWith("http")
+        ? rawFlyer
+        : `/${rawFlyer.replace(/\\/g, "/").replace(/^public\//, "")}`)
+    : null;
+
   const hasBoth = Boolean(videoSrc && flyerSrc);
 
-  const [activeTab, setActiveTab] = useState<"video" | "flyer">("video");
+  const [activeTab, setActiveTab] = useState<"video" | "flyer">(flyerSrc ? "flyer" : "video");
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   if (!videoSrc && !flyerSrc) return null;
@@ -59,18 +71,6 @@ function ServiceMediaPreview({ act }: { act: CrmService }) {
           <div className="inline-flex rounded-lg bg-stone-100 p-0.5 border border-stone-200 text-xs">
             <button
               type="button"
-              onClick={() => setActiveTab("video")}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                activeTab === "video"
-                  ? "bg-white text-[#800020] shadow-xs border border-stone-200/80"
-                  : "text-stone-600 hover:text-stone-900"
-              }`}
-            >
-              <Film className="w-3.5 h-3.5" />
-              <span>Ver Vídeo</span>
-            </button>
-            <button
-              type="button"
               onClick={() => setActiveTab("flyer")}
               className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
                 activeTab === "flyer"
@@ -81,22 +81,24 @@ function ServiceMediaPreview({ act }: { act: CrmService }) {
               <ImageIcon className="w-3.5 h-3.5" />
               <span>Ver Flyer</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("video")}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "video"
+                  ? "bg-white text-[#800020] shadow-xs border border-stone-200/80"
+                  : "text-stone-600 hover:text-stone-900"
+              }`}
+            >
+              <Film className="w-3.5 h-3.5" />
+              <span>Ver Vídeo</span>
+            </button>
           </div>
         </div>
       )}
 
-      {/* Visor Multimedia Principal */}
-      {(activeTab === "video" && videoSrc) || (!flyerSrc && videoSrc) ? (
-        <div className="overflow-hidden rounded-2xl border border-stone-200 bg-black aspect-video w-full shadow-xs">
-          <video
-            src={videoSrc}
-            controls
-            playsInline
-            preload="metadata"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      ) : flyerSrc ? (
+      {/* Visor Multimedia Principal: si hay flyer sale primero el flyer, y el vídeo al pulsar el botón */}
+      {(activeTab === "flyer" && flyerSrc) || (!videoSrc && flyerSrc) ? (
         <div className="relative group overflow-hidden rounded-2xl border border-stone-200 bg-stone-100 aspect-video w-full shadow-xs">
           <img
             src={flyerSrc}
@@ -115,6 +117,16 @@ function ServiceMediaPreview({ act }: { act: CrmService }) {
           >
             <Maximize2 className="w-3 h-3" /> Ampliar flyer
           </button>
+        </div>
+      ) : videoSrc ? (
+        <div className="overflow-hidden rounded-2xl border border-stone-200 bg-black aspect-video w-full shadow-xs">
+          <video
+            src={videoSrc}
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
+          />
         </div>
       ) : null}
 

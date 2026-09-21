@@ -224,13 +224,6 @@ const ITIN_DATA: TimelineDay[] = [
         desc: "",
         events: [
             {
-                time: "Salud",
-                title: "Entrenamiento Funcional, Ninjutsú y Taichí",
-                description: "Sesiones especiales impartidas por distinguidos colaboradores para cultivar fuerza, autodefensa consciente, flexibilidad y equilibrio dinámico.",
-                type: "visit",
-                venue: "Zonas específicas",
-            },
-            {
                 time: "Formación",
                 title: "Talleres Temáticos Especiales",
                 description: "Seminarios mensuales sobre salud integral, terapias alternativas, Kai sai Budo y técnicas avanzadas de meditación y consciencia.",

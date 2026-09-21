@@ -122,6 +122,18 @@ export async function GET(
     candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
     candidatePaths.push(path.join(process.cwd(), "public", "videos", baseName));
 
+    // Support both itinerario1.mp4 and itinerario-1.mp4 variations
+    const hyphenatedName = baseName.replace(/^itinerario(\d+)\.mp4$/i, "itinerario-$1.mp4");
+    const dehyphenatedName = baseName.replace(/^itinerario-(\d+)\.mp4$/i, "itinerario$1.mp4");
+    for (const altName of [hyphenatedName, dehyphenatedName]) {
+      if (altName !== baseName) {
+        candidatePaths.push(path.join(videosDir, altName));
+        candidatePaths.push(`/var/data/salvadora/media/videos/${altName}`);
+        candidatePaths.push(path.join(process.cwd(), "public", "videos", altName));
+        candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", altName));
+      }
+    }
+
     // Fallback relative to repository root if media_base or auxiliares is alongside
     candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", rawPath));
     candidatePaths.push(path.resolve(process.cwd(), "..", "media_base", "videos", "el_espacio_para_mejorar_las_asanas", baseName));

@@ -73,6 +73,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: true,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/yoga.jpeg",
+    videoParticularUrl: "/videos/itinerario-1.mp4",
+    videoParticularPath: "media_base/videos/itinerario-1.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Hatha%20Yoga%20Terap%C3%A9utico%20(1%20clase%20semanal).",
   },
   {
@@ -88,6 +91,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: true,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/yoga.jpeg",
+    videoParticularUrl: "/videos/itinerario-1.mp4",
+    videoParticularPath: "media_base/videos/itinerario-1.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Hatha%20Yoga%20Terap%C3%A9utico%20(2%20clases%20semanales).",
   },
   {
@@ -104,6 +110,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     requiresApproval: true,
     firstClassFree: false,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/bienestar.png",
+    videoParticularUrl: "/videos/itinerario-8.mp4",
+    videoParticularPath: "media_base/videos/itinerario-8.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Bienestar%20Experience%20(Longevidad%20y%20Bienestar%20Integral).",
   },
   {
@@ -119,6 +128,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: false,
     freeForYogaStudents: true,
+    flyerUrl: "/flyers/meditacion.jpeg",
+    videoParticularUrl: "/videos/itinerario-2.mp4",
+    videoParticularPath: "media_base/videos/itinerario-2.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Meditaciones%20Guiadas.",
   },
   {
@@ -135,6 +147,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: false,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/banogong.jpeg",
+    videoParticularUrl: "/videos/itinerario-3.mp4",
+    videoParticularPath: "media_base/videos/itinerario-3.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Ba%C3%B1o%20de%20Gong%20y%20Meditaci%C3%B3n%20Sonora.",
   },
   {
@@ -150,6 +165,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: false,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/banogong.jpeg",
+    videoParticularUrl: "/videos/itinerario-4.mp4",
+    videoParticularPath: "media_base/videos/itinerario-4.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Puja%20de%20Gongs%20(Noche%20Sagrada%20de%20Sonido%20-%2011h).",
   },
   {
@@ -165,6 +183,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     allowedModalities: ["in_person"],
     firstClassFree: false,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/constalaciones.jpeg",
+    videoParticularUrl: "/videos/itinerario-6.mp4",
+    videoParticularPath: "media_base/videos/itinerario-6.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Constelaciones%20Familiares.",
   },
   {
@@ -201,6 +222,9 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     requiresApproval: true,
     firstClassFree: false,
     freeForYogaStudents: false,
+    flyerUrl: "/flyers/gestalt.jpeg",
+    videoParticularUrl: "/videos/itinerario-5.mp4",
+    videoParticularPath: "media_base/videos/itinerario-5.mp4",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Terapia%20Gestalt%20(Sesi%C3%B3n%20Individual).",
   },
 ];
