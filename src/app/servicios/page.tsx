@@ -593,10 +593,11 @@ function ServiciosContent() {
           cat.code === "yoga" ||
           cat.name.toLowerCase().includes("yoga");
 
-        const isLongevidadCategory =
-          cat.code === "longevidad_artes" ||
-          cat.code === "longevidad" ||
-          cat.name.toLowerCase().includes("longevidad");
+        const isSaludCategory =
+          cat.code === "salud_terapeutica" ||
+          cat.name.toLowerCase().includes("salud") ||
+          cat.name.toLowerCase().includes("gestalt") ||
+          cat.name.toLowerCase().includes("individual");
 
         const isTalleresCategory =
           cat.code === "talleres_eventos" ||
@@ -604,21 +605,32 @@ function ServiciosContent() {
           cat.name.toLowerCase().includes("retiro") ||
           cat.name.toLowerCase().includes("gong");
 
+        const isEspecialesCategory =
+          cat.code === "longevidad_artes" ||
+          cat.code === "longevidad" ||
+          cat.code === "actividades_especiales" ||
+          cat.name.toLowerCase().includes("especiales") ||
+          cat.name.toLowerCase().includes("longevidad");
+
         // Border & Accent coloring per category
         const borderTopColor = isYogaCategory
           ? "border-[#800020]"
-          : isLongevidadCategory
-          ? "border-[#0B4A72]"
+          : isSaludCategory
+          ? "border-emerald-700"
           : isTalleresCategory
           ? "border-purple-600"
+          : isEspecialesCategory
+          ? "border-[#0B4A72]"
           : "border-stone-400";
 
         const tagColor = isYogaCategory
           ? "text-[#800020]"
-          : isLongevidadCategory
-          ? "text-[#0B4A72]"
+          : isSaludCategory
+          ? "text-emerald-800"
           : isTalleresCategory
           ? "text-purple-900"
+          : isEspecialesCategory
+          ? "text-[#0B4A72]"
           : "text-stone-700";
 
         return (
@@ -632,7 +644,7 @@ function ServiciosContent() {
                     </span>
                     <span className={`text-[11px] font-extrabold uppercase tracking-widest ${tagColor} flex items-center gap-1.5`}>
                       <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                      ESCUELA SALVADORA CONESA · {isLongevidadCategory ? "CLUB SOCIAL PARQUE GRANADA & CENTRO" : "SEDE OFICIAL"}
+                      ESCUELA SALVADORA CONESA · {isEspecialesCategory ? "ACTIVIDADES ESPECIALES" : isSaludCategory ? "SALUD & TERAPIAS INDIVIDUALES" : "SEDE OFICIAL"}
                     </span>
                   </div>
                   <h3 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
@@ -689,7 +701,7 @@ function ServiciosContent() {
             {/* Grid de Servicios de esta Categoría */}
             <div
               className={`grid ${
-                isLongevidadCategory
+                isEspecialesCategory
                   ? "grid-cols-1 lg:grid-cols-2 gap-6"
                   : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
               }`}
