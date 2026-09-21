@@ -266,7 +266,27 @@ function ServiciosContent() {
 
   // Filter services by selectedType
   const filterByType = (list: CrmService[]) =>
-    list.filter((s) => selectedType === "all" || s.serviceType === selectedType);
+    list.filter((s) => {
+      if (selectedType === "all") return true;
+      const lower = s.name.toLowerCase();
+      const isSpecial =
+        s.serviceType === "special" ||
+        s.categoryCode === "longevidad_artes" ||
+        s.categoryCode === "actividades_especiales" ||
+        lower.includes("bienestar experience") ||
+        lower.includes("longevidad");
+
+      if (selectedType === "special" || selectedType === "especiales") {
+        return isSpecial;
+      }
+      if (selectedType === "recurring") {
+        return s.serviceType === "recurring" && !isSpecial;
+      }
+      if (selectedType === "event") {
+        return s.serviceType === "event" && !isSpecial;
+      }
+      return s.serviceType === selectedType;
+    });
 
   // Dynamic sections by category according to category.displayOrder
   const groupedSections = useMemo(() => {
@@ -473,7 +493,7 @@ function ServiciosContent() {
             Descubre tus Actividades de Salud, Conciencia y Armonía
           </h2>
           <p className="text-stone-700 text-sm sm:text-base max-w-3xl leading-relaxed">
-            Catálogo completo actualizado en vivo desde nuestra base de datos. Consulta las clases regulares de <strong>Hatha Yoga Terapéutico</strong>, el programa <strong>Bienestar Experience</strong>, meditaciones, sonoterapia y retiros.
+            Catálogo completo actualizado en vivo desde nuestra base de datos. Consulta las clases regulares de <strong>Hatha Yoga Terapéutico</strong>, el programa <strong>Bienestar Experience</strong>, meditaciones, sonoterapia y retiros, y <strong>Actividades Especiales</strong>.
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
             <button
@@ -569,7 +589,7 @@ function ServiciosContent() {
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                🗓️ Clases y Citas Periódicas
+                🗓️ Clases y Citas Periódicas Regulares
               </button>
               <button
                 onClick={() => updateFilters(selectedCategoryCode, "event")}
@@ -579,7 +599,17 @@ function ServiciosContent() {
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                ✨ Eventos, Talleres y Retiros
+                ✨ Eventos, Talleres y Retiros Regulares
+              </button>
+              <button
+                onClick={() => updateFilters(selectedCategoryCode, "special")}
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  selectedType === "special" || selectedType === "especiales"
+                    ? "bg-amber-600 text-white font-bold shadow-xs"
+                    : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                }`}
+              >
+                🌟 Actividades Especiales
               </button>
             </div>
           </div>
