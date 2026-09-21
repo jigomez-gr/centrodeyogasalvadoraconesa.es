@@ -557,13 +557,13 @@ export default function DemoLandingPage() {
       <section className="max-w-6xl mx-auto px-4 pt-8 pb-6">
         <div className="bg-linear-to-r from-[#800020]/10 via-amber-500/10 to-[#0B4A72]/10 rounded-3xl p-6 sm:p-10 border border-stone-300 shadow-sm text-center sm:text-left space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider border border-emerald-300">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> Yoga, Longevidad, Bienestar y Artes Tradicionales
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" /> Yoga, Longevidad, Sonoterapia y Bienestar Integral
           </div>
           <h2 className="font-serif text-2xl sm:text-4xl font-extrabold text-[#800020] leading-tight">
             Descubre tus Actividades de Salud, Conciencia y Armonía
           </h2>
           <p className="text-stone-700 text-sm sm:text-base max-w-3xl leading-relaxed">
-            Explora las clases regulares de <strong>Hatha Yoga Terapéutico</strong>, nuestro programa <strong>Bienestar Experience (Longevidad & Biohacking)</strong>, las sesiones de <strong>Iaidō</strong> en Parque Granada, meditaciones y retiros especiales. <strong>Pagos en el centro</strong> (pronto también disponibles online con <strong>Stripe</strong> y venta de entradas en <strong>Giglon</strong>).
+            Explora las clases regulares de <strong>Hatha Yoga Terapéutico</strong>, nuestro programa <strong>Bienestar Experience (Longevidad & Biohacking)</strong>, meditaciones y retiros especiales. <strong>Pagos en el centro</strong> (pronto también disponibles online con <strong>Stripe</strong> y venta de entradas en <strong>Giglon</strong>).
           </p>
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-2">
             <button
