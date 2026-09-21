@@ -1,7 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Calendar, Film, ArrowRight, ShieldCheck, Compass, Sparkles, MapPin } from "lucide-react";
+import { Play, Calendar, Film, ArrowRight, ShieldCheck, Compass, Sparkles, MapPin, Maximize2, X, Image as ImageIcon } from "lucide-react";
+
+interface ActivityFlyer {
+    title: string;
+    imagePath: string;
+}
+
+const ACTIVITY_FLYERS: { [key: number]: ActivityFlyer[] } = {
+    1: [
+        { title: "Flyer Nagna Yoga & Yoga Nidra", imagePath: "/flyers/yoga.jpeg" }
+    ],
+    2: [
+        { title: "Flyer Kundalini Yoga & Meditación", imagePath: "/flyers/meditacion.jpeg" }
+    ],
+    3: [
+        { title: "Flyer Baños de Gong", imagePath: "/flyers/banogong.jpeg" }
+    ],
+    4: [
+        { title: "Flyer Puja de Gong", imagePath: "/flyers/banogong.jpeg" }
+    ],
+    5: [
+        { title: "Flyer Terapia Gestalt", imagePath: "/flyers/gestalt.jpeg" }
+    ],
+    6: [
+        { title: "Flyer Constelaciones Familiares", imagePath: "/flyers/constalaciones.jpeg" }
+    ],
+    7: [
+        { title: "Flyer Encuentros de Mujeres", imagePath: "/flyers/encuentros_mujeres.jpeg" }
+    ],
+    8: [
+        { title: "Flyer Ayuno Terapéutico", imagePath: "/flyers/ayuno.jpeg" }
+    ],
+    9: [
+        { title: "Iaidō (Katana)", imagePath: "/flyers/iaido.jpg" },
+        { title: "Intenta (Salud)", imagePath: "/flyers/intenta.jpeg" },
+        { title: "Bienestar", imagePath: "/flyers/bienestar.png" }
+    ]
+};
 
 interface VideoGalleryProps {
     videosExist: {
@@ -178,7 +215,9 @@ const DAYS_DATA: DayItem[] = [
 export default function VideoGallery({ videosExist }: VideoGalleryProps) {
     const [selectedDayId, setSelectedDayId] = useState<number | null>(null);
     const [playingVideoPath, setPlayingVideoPath] = useState<string | null>(null);
-    const [galleryMediaTypes, setGalleryMediaTypes] = useState<{ [key: string]: "completo" | "resumen" }>({});
+    const [galleryMediaTypes, setGalleryMediaTypes] = useState<{ [key: string]: "video" | "flyer" }>({});
+    const [activeFlyerIndex, setActiveFlyerIndex] = useState<{ [key: string]: number }>({});
+    const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
 
     const activeDay = DAYS_DATA.find(d => d.id === selectedDayId);
 
@@ -280,8 +319,10 @@ export default function VideoGallery({ videosExist }: VideoGalleryProps) {
                         {activeDay.videos.map((vid, idx) => {
                             const isPlaying = playingVideoPath === vid.filePath;
                             const videoKey = `${activeDay.id}-${idx}`;
-                            const mediaType = galleryMediaTypes[videoKey] || "completo";
-                            const videoSrc = mediaType === "resumen" ? vid.filePath.replace(".mp4", "_resumen.mp4") : vid.filePath;
+                            const mediaType = galleryMediaTypes[videoKey] || "video";
+                            const dayFlyers = ACTIVITY_FLYERS[activeDay.id] || [];
+                            const currentFlyerIdx = activeFlyerIndex[videoKey] || 0;
+                            const currentFlyer = dayFlyers[currentFlyerIdx] || dayFlyers[0];
 
                             if (vid.youtubeUrl) {
                                 return (
@@ -354,79 +395,179 @@ export default function VideoGallery({ videosExist }: VideoGalleryProps) {
                                     key={idx}
                                     className="flex flex-col bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition duration-300"
                                 >
-                                    {/* Dual Player Toggle Switch */}
+                                    {/* Dual Selector Toggle Switch: Vídeo / Flyer */}
                                     <div className="flex border-b border-stone-100 bg-[#FAF9F6] text-xs">
                                         <button
-                                            onClick={() => setGalleryMediaTypes(prev => ({ ...prev, [videoKey]: "completo" }))}
-                                            className={`flex-1 py-2 text-center font-bold tracking-wider uppercase transition ${mediaType === "completo" ? "bg-[#800020] text-white" : "text-stone-600 hover:bg-[#800020]/10"
+                                            type="button"
+                                            onClick={() => setGalleryMediaTypes(prev => ({ ...prev, [videoKey]: "video" }))}
+                                            className={`flex-1 py-2.5 text-center font-bold tracking-wider uppercase transition flex items-center justify-center gap-1.5 cursor-pointer ${mediaType === "video" ? "bg-[#800020] text-white" : "text-stone-600 hover:bg-[#800020]/10 hover:text-[#800020]"
                                                 }`}
                                         >
-                                            ▶ Vídeo Completo
+                                            <Film className="w-3.5 h-3.5" />
+                                            <span>Vídeo</span>
                                         </button>
                                         <button
-                                            onClick={() => setGalleryMediaTypes(prev => ({ ...prev, [videoKey]: "resumen" }))}
-                                            className={`flex-1 py-2 text-center font-bold tracking-wider uppercase transition ${mediaType === "resumen" ? "bg-[#800020] text-white" : "text-stone-600 hover:bg-[#800020]/10"
+                                            type="button"
+                                            onClick={() => {
+                                                setGalleryMediaTypes(prev => ({ ...prev, [videoKey]: "flyer" }));
+                                                setPlayingVideoPath(null);
+                                            }}
+                                            className={`flex-1 py-2.5 text-center font-bold tracking-wider uppercase transition flex items-center justify-center gap-1.5 cursor-pointer ${mediaType === "flyer" ? "bg-[#800020] text-white" : "text-stone-600 hover:bg-[#800020]/10 hover:text-[#800020]"
                                                 }`}
                                         >
-                                            ⏱ Resumen Corto
+                                            <ImageIcon className="w-3.5 h-3.5" />
+                                            <span>Flyer</span>
                                         </button>
                                     </div>
 
-                                    {/* Video Player Display */}
-                                    <div className="relative aspect-video bg-[#1C1C1C] flex items-center justify-center border-b border-stone-100">
-                                        {isPlaying ? (
-                                            <video
-                                                key={videoSrc}
-                                                src={videoSrc}
-                                                controls
-                                                autoPlay
-                                                playsInline
-                                                muted={false}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div
-                                                onClick={() => handlePlayVideo(vid.filePath)}
-                                                className="relative w-full h-full cursor-pointer group"
-                                            >
-                                                {/* Mini Overlay Cover with Day Photo */}
-                                                <div className="absolute inset-0 bg-black/40 group-hover:bg-[#800020]/25 transition duration-300" />
-                                                <img
-                                                    src={activeDay.image}
-                                                    alt={vid.title}
-                                                    className="w-full h-full object-cover filter brightness-[0.7] group-hover:brightness-[0.9] transition"
+                                    {/* Media Player or Flyer Display */}
+                                    {mediaType === "video" ? (
+                                        <div className="relative aspect-video bg-[#1C1C1C] flex items-center justify-center border-b border-stone-100">
+                                            {isPlaying ? (
+                                                <video
+                                                    key={vid.filePath}
+                                                    src={vid.filePath}
+                                                    controls
+                                                    autoPlay
+                                                    playsInline
+                                                    muted={false}
+                                                    className="w-full h-full object-cover"
                                                 />
-
-                                                {/* Centered Play Button */}
-                                                <button
-                                                    className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-[#800020]/95 text-white flex items-center justify-center shadow-lg group-hover:scale-110 active:scale-95 transition-all border border-[#E9C168]"
-                                                    aria-label={`Reproducir ${vid.title}`}
+                                            ) : (
+                                                <div
+                                                    onClick={() => handlePlayVideo(vid.filePath)}
+                                                    className="relative w-full h-full cursor-pointer group"
                                                 >
-                                                    <Play className="w-6 h-6 fill-current translate-x-0.5" />
-                                                </button>
+                                                    {/* Mini Overlay Cover with Day Photo */}
+                                                    <div className="absolute inset-0 bg-black/40 group-hover:bg-[#800020]/25 transition duration-300" />
+                                                    <img
+                                                        src={activeDay.image}
+                                                        alt={vid.title}
+                                                        className="w-full h-full object-cover filter brightness-[0.7] group-hover:brightness-[0.9] transition"
+                                                    />
 
-                                                {/* Play Call to Action Label */}
-                                                <div className="absolute bottom-3 left-3 bg-stone-950/80 px-2 py-0.5 rounded text-[10px] text-white border border-white/10 uppercase tracking-widest font-bold">
-                                                    Reproducir {mediaType === "resumen" ? "Resumen" : "Fragmento"}
+                                                    {/* Centered Play Button */}
+                                                    <button
+                                                        className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-[#800020]/95 text-white flex items-center justify-center shadow-lg group-hover:scale-110 active:scale-95 transition-all border border-[#E9C168]"
+                                                        aria-label={`Reproducir ${vid.title}`}
+                                                    >
+                                                        <Play className="w-6 h-6 fill-current translate-x-0.5" />
+                                                    </button>
+
+                                                    {/* Play Call to Action Label */}
+                                                    <div className="absolute bottom-3 left-3 bg-stone-950/80 px-2 py-0.5 rounded text-[10px] text-white border border-white/10 uppercase tracking-widest font-bold">
+                                                        Reproducir Vídeo
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="relative aspect-video bg-stone-950 flex items-center justify-center border-b border-stone-100 overflow-hidden group">
+                                            {currentFlyer ? (
+                                                <>
+                                                    <img
+                                                        src={currentFlyer.imagePath}
+                                                        alt={currentFlyer.title}
+                                                        className="w-full h-full object-contain cursor-pointer transition-transform duration-500 group-hover:scale-105"
+                                                        onClick={() => setModalFlyer({ src: currentFlyer.imagePath, title: currentFlyer.title })}
+                                                    />
+                                                    <div
+                                                        onClick={() => setModalFlyer({ src: currentFlyer.imagePath, title: currentFlyer.title })}
+                                                        className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition-all duration-300 flex items-center justify-center cursor-pointer"
+                                                    >
+                                                        <span className="opacity-0 group-hover:opacity-100 bg-stone-950/85 text-white text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-xs flex items-center gap-1.5 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-lg border border-white/20">
+                                                            <Maximize2 className="w-3.5 h-3.5 text-[#E9C168]" /> Ampliar Flyer
+                                                        </span>
+                                                    </div>
+                                                    <div className="absolute bottom-3 left-3 bg-stone-950/80 px-2 py-0.5 rounded text-[10px] text-white border border-white/10 uppercase tracking-widest font-bold pointer-events-none">
+                                                        Flyer Informativo
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setModalFlyer({ src: currentFlyer.imagePath, title: currentFlyer.title });
+                                                        }}
+                                                        className="absolute bottom-2.5 right-2.5 bg-black/70 hover:bg-black/90 text-white text-[11px] font-medium px-2.5 py-1 rounded-lg backdrop-blur-xs flex items-center gap-1 shadow-sm transition cursor-pointer"
+                                                        title="Ampliar flyer"
+                                                    >
+                                                        <Maximize2 className="w-3 h-3" /> Ampliar
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <div className="text-stone-400 text-xs">No hay flyer disponible para esta actividad</div>
+                                            )}
+                                        </div>
+                                    )}
 
-                                    {/* Video metadata */}
+                                    {/* Card metadata */}
                                     <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
                                         <div>
+                                            {mediaType === "flyer" && dayFlyers.length > 1 && (
+                                                <div className="flex flex-wrap gap-2 mb-3">
+                                                    {dayFlyers.map((f, fIdx) => (
+                                                        <button
+                                                            key={fIdx}
+                                                            type="button"
+                                                            onClick={() => setActiveFlyerIndex(prev => ({ ...prev, [videoKey]: fIdx }))}
+                                                            className={`text-[11px] font-bold px-2.5 py-1 rounded-md border transition cursor-pointer ${
+                                                                currentFlyerIdx === fIdx
+                                                                    ? "bg-[#800020] text-white border-[#800020] shadow-xs"
+                                                                    : "bg-white text-stone-700 border-stone-200 hover:bg-stone-50"
+                                                            }`}
+                                                        >
+                                                            {f.title}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                             <h4 className="font-serif text-base sm:text-lg font-bold text-[#800020] mb-2">
-                                                {vid.title}
+                                                {mediaType === "flyer" && currentFlyer ? currentFlyer.title : vid.title}
                                             </h4>
                                             <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
-                                                {vid.description}
+                                                {mediaType === "flyer"
+                                                    ? `Flyer oficial de ${activeDay.title}. Haz clic sobre el flyer o en «Ampliar» para verlo a pantalla completa.`
+                                                    : vid.description}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             );
                         })}
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Lightbox Zoom para el Flyer */}
+            {modalFlyer && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-fadeIn"
+                    onClick={() => setModalFlyer(null)}
+                >
+                    <div
+                        className="relative max-w-4xl w-full max-h-[92vh] bg-stone-950 rounded-2xl overflow-hidden shadow-2xl border border-stone-800 p-3 flex flex-col items-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="w-full flex items-center justify-between pb-2 px-2 text-white border-b border-stone-800 mb-2">
+                            <span className="text-xs sm:text-sm font-semibold text-stone-200 truncate max-w-[80%]">
+                                {modalFlyer.title}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setModalFlyer(null)}
+                                className="p-1.5 rounded-full text-stone-400 hover:text-white hover:bg-stone-800 transition cursor-pointer"
+                                title="Cerrar"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="relative max-h-[80vh] w-full flex items-center justify-center overflow-auto">
+                            <img
+                                src={modalFlyer.src}
+                                alt={modalFlyer.title}
+                                className="max-h-[80vh] w-auto max-w-full object-contain rounded-lg shadow-md"
+                            />
+                        </div>
                     </div>
                 </div>
             )}

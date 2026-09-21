@@ -218,7 +218,7 @@ const ITIN_DATA: TimelineDay[] = [
     },
     {
         id: 9,
-        date: "Varios",
+        date: "Act. Especiales",
         dayName: "Colaboradores y Otras Disciplinas",
         title: "Formaciones Complementarias y Salud con Diversos Especialistas",
         desc: "",
