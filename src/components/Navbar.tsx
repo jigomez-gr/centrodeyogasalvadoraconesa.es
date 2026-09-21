@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { Menu, X, Music, PhoneCall } from "lucide-react";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { triggerVapiCall } from "@/components/VapiCallModal";
+import { isPorVapiEnabled } from "@/lib/featureFlags";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const showPorVapi = isPorVapiEnabled();
 
     const menuItems = [
         { label: "Inicio", href: "/#inicio" },
@@ -86,16 +88,20 @@ export default function Navbar() {
                     >
                         Reservar Plaza
                     </a>
-                    <span className="text-[#C5A059]/40 select-none font-light">|</span>
-                    <button
-                        type="button"
-                        onClick={() => triggerVapiCall({ inquiry: "Consulta general sobre servicios y horarios" })}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#C5A059]/50 text-[#800020] hover:bg-[#800020] hover:text-white bg-[#FAF9F6] transition duration-200 cursor-pointer text-[10px] font-extrabold uppercase tracking-wider shadow-2xs group"
-                        title="Pedir llamada inmediata gratuita con nuestro Asistente de Voz"
-                    >
-                        <PhoneCall className="w-3 h-3 text-[#C5A059] group-hover:text-white transition-colors" />
-                        <span>Te Llamamos</span>
-                    </button>
+                    {showPorVapi && (
+                        <>
+                            <span className="text-[#C5A059]/40 select-none font-light">|</span>
+                            <button
+                                type="button"
+                                onClick={() => triggerVapiCall({ inquiry: "Consulta general sobre servicios y horarios" })}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#C5A059]/50 text-[#800020] hover:bg-[#800020] hover:text-white bg-[#FAF9F6] transition duration-200 cursor-pointer text-[10px] font-extrabold uppercase tracking-wider shadow-2xs group"
+                                title="Pedir llamada inmediata gratuita con nuestro Asistente de Voz"
+                            >
+                                <PhoneCall className="w-3 h-3 text-[#C5A059] group-hover:text-white transition-colors" />
+                                <span>Te Llamamos</span>
+                            </button>
+                        </>
+                    )}
                 </nav>
             </div>
 
@@ -155,17 +161,19 @@ export default function Navbar() {
                                 </a>
                             );
                         })}
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setIsOpen(false);
-                                triggerVapiCall({ inquiry: "Consulta general sobre servicios y horarios" });
-                            }}
-                            className="flex items-center justify-center gap-2 w-full py-2.5 border border-[#C5A059] rounded text-xs font-bold uppercase tracking-widest text-[#800020] bg-[#FAF9F6] hover:bg-[#800020] hover:text-white transition shadow-xs cursor-pointer"
-                        >
-                            <PhoneCall className="w-4 h-4 text-[#C5A059]" />
-                            <span>Te Llamamos Gratis (IA)</span>
-                        </button>
+                        {showPorVapi && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    triggerVapiCall({ inquiry: "Consulta general sobre servicios y horarios" });
+                                }}
+                                className="flex items-center justify-center gap-2 w-full py-2.5 border border-[#C5A059] rounded text-xs font-bold uppercase tracking-widest text-[#800020] bg-[#FAF9F6] hover:bg-[#800020] hover:text-white transition shadow-xs cursor-pointer"
+                            >
+                                <PhoneCall className="w-4 h-4 text-[#C5A059]" />
+                                <span>Te Llamamos Gratis (IA)</span>
+                            </button>
+                        )}
                         <a
                             href="/servicios"
                             onClick={() => setIsOpen(false)}

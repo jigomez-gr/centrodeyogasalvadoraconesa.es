@@ -3,6 +3,7 @@
 import React from "react";
 import { PhoneCall } from "lucide-react";
 import { triggerVapiCall, VapiCallOptions } from "@/components/VapiCallModal";
+import { isPorVapiEnabled } from "@/lib/featureFlags";
 
 interface VapiCallButtonProps {
   className?: string;
@@ -21,6 +22,10 @@ export default function VapiCallButton({
   phone,
   showIcon = true,
 }: VapiCallButtonProps) {
+  if (!isPorVapiEnabled()) {
+    return null;
+  }
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     triggerVapiCall({ inquiry, name, phone });

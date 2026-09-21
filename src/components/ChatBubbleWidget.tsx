@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { MessageSquare, X, Send, Bot, Trash2, ShieldCheck, Check, PhoneCall, MessageCircle, Loader2 } from "lucide-react";
 import { triggerVapiCall } from "@/components/VapiCallModal";
+import { isPorWassapEnabled, isPorVapiEnabled } from "@/lib/featureFlags";
 
 interface ChatMessage {
   id: string;
@@ -23,8 +24,10 @@ export function ChatBubbleWidget({
   apiUrl = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com",
   businessName = process.env.NEXT_PUBLIC_BUSINESS_NAME || "Centro de Yoga y Bienestar Salvadora",
   brandColor = "#800020",
-  welcomeMessage = "¡Hola! 👋 Soy tu asistente de consultas de nuestros servicios, reservas y citas del Centro de Yoga. ¿En qué puedo ayudarte hoy?",
+  welcomeMessage = "¡Hola! Soy el asistente virtual del Centro de Yoga Salvadora Conesa. ¿En qué puedo ayudarte hoy?",
 }: ChatBubbleProps) {
+  const showPorWassap = isPorWassapEnabled();
+  const showPorVapi = isPorVapiEnabled();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -432,31 +435,37 @@ export function ChatBubbleWidget({
             </button>
           </form>
 
-          {/* Quick Action Bar: Pedir por WhatsApp & Pedir por Teléfono (VAPI) - Más pequeño y justo antes de Cumple RGPD */}
-          <div className="flex items-center gap-2 border-t border-stone-100 bg-stone-50/90 px-3 py-1.5">
-            <button
-              type="button"
-              onClick={handleWhatsAppClick}
-              className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] py-1.5 px-2 text-[11px] font-bold text-white shadow-2xs transition active:scale-98 cursor-pointer"
-              title="Pedir por WhatsApp"
-            >
-              <MessageCircle className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">Pedir por WhatsApp</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                triggerVapiCall({
-                  inquiry: inputValue.trim() || (messages.length > 1 ? messages[messages.length - 1].body : "Consulta sobre clases y servicios"),
-                });
-              }}
-              className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#800020] hover:bg-[#800020]/90 py-1.5 px-2 text-[11px] font-bold text-white shadow-2xs transition active:scale-98 cursor-pointer border border-[#C5A059]/30"
-              title="Pedir por Teléfono con Asistente de Voz IA"
-            >
-              <PhoneCall className="h-3.5 w-3.5 shrink-0 text-[#C5A059]" />
-              <span className="truncate">Te Llamamos (IA)</span>
-            </button>
-          </div>
+          {/* Quick Action Bar: Pedir por WhatsApp & Pedir por Teléfono (VAPI) */}
+          {(showPorWassap || showPorVapi) && (
+            <div className="flex items-center gap-2 border-t border-stone-100 bg-stone-50/90 px-3 py-1.5">
+              {showPorWassap && (
+                <button
+                  type="button"
+                  onClick={handleWhatsAppClick}
+                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] py-1.5 px-2 text-[11px] font-bold text-white shadow-2xs transition active:scale-98 cursor-pointer"
+                  title="Pedir por WhatsApp"
+                >
+                  <MessageCircle className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">Pedir por WhatsApp</span>
+                </button>
+              )}
+              {showPorVapi && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    triggerVapiCall({
+                      inquiry: inputValue.trim() || (messages.length > 1 ? messages[messages.length - 1].body : "Consulta sobre clases y servicios"),
+                    });
+                  }}
+                  className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-[#800020] hover:bg-[#800020]/90 py-1.5 px-2 text-[11px] font-bold text-white shadow-2xs transition active:scale-98 cursor-pointer border border-[#C5A059]/30"
+                  title="Pedir por Teléfono con Asistente de Voz IA"
+                >
+                  <PhoneCall className="h-3.5 w-3.5 shrink-0 text-[#C5A059]" />
+                  <span className="truncate">Te Llamamos (IA)</span>
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Permanent Legal & AI Footer in Chat Window */}
           <div className="px-3.5 py-1.5 bg-stone-100 border-t border-stone-200/80 text-[10px] text-stone-500 flex items-center justify-between select-none">

@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    PORWASSAP: process.env.PORWASSAP || process.env.NEXT_PUBLIC_PORWASSAP || "N",
+    NEXT_PUBLIC_PORWASSAP: process.env.NEXT_PUBLIC_PORWASSAP || process.env.PORWASSAP || "N",
+    PORVAPI: process.env.PORVAPI || process.env.NEXT_PUBLIC_PORVAPI || "S",
+    NEXT_PUBLIC_PORVAPI: process.env.NEXT_PUBLIC_PORVAPI || process.env.PORVAPI || "S",
+  },
   async rewrites() {
     return [
       {

@@ -12,6 +12,7 @@ import {
   X,
   CheckCircle2,
   Phone,
+  PhoneCall,
   User,
   Mail,
   ArrowUpRight,
@@ -24,6 +25,8 @@ import {
 import { SimuladorDiagnosticoModal } from "@/components/SimuladorDiagnosticoModal";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { VapiVoiceBookingButton } from "@/components/VapiVoiceBookingButton";
+import { triggerVapiCall } from "@/components/VapiCallModal";
+import { isPorWassapEnabled, isPorVapiEnabled } from "@/lib/featureFlags";
 import {
   CrmCategory,
   CrmService,
@@ -173,6 +176,9 @@ function ServiciosContent() {
     process.env.NEXT_PUBLIC_ENABLE_ANALIZAIA !== "n" &&
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "N" &&
     process.env.NEXT_PUBLIC_SHOW_ANALIZAIA !== "n";
+
+  const showPorWassap = isPorWassapEnabled();
+  const showPorVapi = isPorVapiEnabled();
 
   const searchParams = useSearchParams();
   const paramCategory = searchParams.get("categoria") || searchParams.get("category") || "all";
@@ -470,7 +476,9 @@ function ServiciosContent() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span className="flex h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-medium">
-              <strong>Catálogo Sincronizado en Vivo con CRM Salvadora</strong> · Traspaso directo a WhatsApp
+              <strong>Catálogo Sincronizado en Vivo con CRM Salvadora</strong>
+              {showPorWassap && " · Traspaso directo a WhatsApp"}
+              {showPorVapi && !showPorWassap && " · Asistente Telefónico IA"}
             </span>
           </div>
           <Link
@@ -494,12 +502,14 @@ function ServiciosContent() {
         >
           🔬 Simulador IA
         </button>
-        <button
-          onClick={() => setWaModalOpen(true)}
-          className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 px-3 py-0.5 rounded-full text-white font-semibold transition shadow-xs cursor-pointer"
-        >
-          📱 Continuar por WhatsApp
-        </button>
+        {showPorWassap && (
+          <button
+            onClick={() => setWaModalOpen(true)}
+            className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 px-3 py-0.5 rounded-full text-white font-semibold transition shadow-xs cursor-pointer"
+          >
+            📱 Continuar por WhatsApp
+          </button>
+        )}
       </div>
 
       {/* Main Header */}
@@ -548,12 +558,14 @@ function ServiciosContent() {
                 <Sparkles className="w-3.5 h-3.5" /> Simulador IA
               </button>
             )}
-            <button
-              onClick={() => setWaModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
-            >
-              <Phone className="w-3.5 h-3.5" /> WhatsApp Alta Rápida
-            </button>
+            {showPorWassap && (
+              <button
+                onClick={() => setWaModalOpen(true)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+              >
+                <Phone className="w-3.5 h-3.5" /> WhatsApp Alta Rápida
+              </button>
+            )}
             <button
               onClick={() => triggerCrmChat("Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.", false)}
               className="bg-[#800020] text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-[#800020]/90 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
@@ -583,17 +595,21 @@ function ServiciosContent() {
             >
               <Calendar className="w-4 h-4" /> Consultar Disponibilidad en Vivo
             </button>
-            <VapiVoiceBookingButton
-              buttonText="📞 Reservar por Teléfono (Llamada IA + SMS)"
-              serviceHint="Consulta y reserva de clases de Yoga y actividades"
-              className="!py-2.5 !px-5 !rounded-xl !text-xs !bg-[#800020] hover:!bg-[#660019]"
-            />
-            <button
-              onClick={() => setWaModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
-            >
-              <Phone className="w-4 h-4" /> Traspasar Consulta a WhatsApp
-            </button>
+            {showPorVapi && (
+              <VapiVoiceBookingButton
+                buttonText="📞 Reservar por Teléfono (Llamada IA + SMS)"
+                serviceHint="Consulta y reserva de clases de Yoga y actividades"
+                className="!py-2.5 !px-5 !rounded-xl !text-xs !bg-[#800020] hover:!bg-[#660019]"
+              />
+            )}
+            {showPorWassap && (
+              <button
+                onClick={() => setWaModalOpen(true)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+              >
+                <Phone className="w-4 h-4" /> Traspasar Consulta a WhatsApp
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -955,27 +971,43 @@ function ServiciosContent() {
                         <Calendar className="w-4 h-4" /> Reservar / Consultar Disponibilidad
                       </button>
                       <div className="flex items-center justify-between text-xs pt-1">
-                        {act.whatsappBookingUrl ? (
-                          <a
-                            href={act.whatsappBookingUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1"
-                          >
-                            <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
-                          </a>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              setSelectedService(act.name);
-                              setWaModalOpen(true);
-                            }}
-                            className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1 cursor-pointer"
-                          >
-                            <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
-                          </button>
-                        )}
-                        <span className="text-stone-500 font-medium text-[11px]">Pago en centro</span>
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                          {showPorWassap && (
+                            act.whatsappBookingUrl ? (
+                              <a
+                                href={act.whatsappBookingUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1"
+                              >
+                                <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
+                              </a>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedService(act.name);
+                                  setWaModalOpen(true);
+                                }}
+                                className="text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1 cursor-pointer"
+                              >
+                                <Phone className="w-3.5 h-3.5" /> Pedir por WhatsApp
+                              </button>
+                            )
+                          )}
+
+                          {showPorVapi && (
+                            <button
+                              type="button"
+                              onClick={() => triggerVapiCall({ inquiry: `Consulta y reserva para ${act.name}` })}
+                              className="text-[#800020] hover:text-[#660019] font-bold flex items-center gap-1 cursor-pointer transition hover:underline"
+                              title="Pedir llamada con nuestro Asistente de Voz IA"
+                            >
+                              <PhoneCall className="w-3.5 h-3.5 text-[#C5A059]" /> Pedir por Teléfono
+                            </button>
+                          )}
+                        </div>
+                        <span className="text-stone-500 font-medium text-[11px] shrink-0">Pago en centro</span>
                       </div>
                     </div>
                   </div>
@@ -1043,17 +1075,32 @@ function ServiciosContent() {
                     >
                       <Calendar className="w-3.5 h-3.5" /> Reservar Plaza
                     </button>
-                    <div className="flex items-center justify-between text-[11px] text-stone-500">
+                    <div className="flex items-center justify-between text-[11px] text-stone-500 pt-1">
                       <span>{durationDisplay}</span>
-                      <button
-                        onClick={() => {
-                          setSelectedService(act.name);
-                          setWaModalOpen(true);
-                        }}
-                        className="text-emerald-700 font-bold hover:underline cursor-pointer"
-                      >
-                        WhatsApp
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {showPorWassap && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedService(act.name);
+                              setWaModalOpen(true);
+                            }}
+                            className="text-emerald-700 font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                          >
+                            <Phone className="w-3 h-3" /> WhatsApp
+                          </button>
+                        )}
+                        {showPorVapi && (
+                          <button
+                            type="button"
+                            onClick={() => triggerVapiCall({ inquiry: `Consulta y reserva para ${act.name}` })}
+                            className="text-[#800020] font-bold hover:underline cursor-pointer flex items-center gap-0.5"
+                            title="Pedir llamada con Asistente de Voz IA"
+                          >
+                            <PhoneCall className="w-3 h-3 text-[#C5A059]" /> Pedir por Teléfono
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1131,7 +1178,7 @@ function ServiciosContent() {
       </footer>
 
       {/* ─── MODAL WHATSAPP HANDOFF (RESPONSIVE & TOUCH FRIENDLY) ─── */}
-      {waModalOpen && (
+      {showPorWassap && waModalOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200"
           onClick={() => setWaModalOpen(false)}

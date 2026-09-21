@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Phone, CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
+import { isPorVapiEnabled } from "@/lib/featureFlags";
 
 interface VapiVoiceBookingButtonProps {
   apiUrl?: string;
@@ -18,6 +19,10 @@ export function VapiVoiceBookingButton({
   className = "",
   serviceHint = "Reserva de clase o consulta general",
 }: VapiVoiceBookingButtonProps) {
+  if (!isPorVapiEnabled()) {
+    return null;
+  }
+
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
