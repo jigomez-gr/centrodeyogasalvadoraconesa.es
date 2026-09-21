@@ -338,7 +338,7 @@ export default async function Home() {
                 Además de nuestras sesiones semanales, contamos con renombradas experiencias de terapia de sonido como los Baños de Gong y la transformadora Puja de Gong nocturna, ambas guiadas por sonoterapeutas profesionales. Ofrecemos también una variada propuesta de retiros de Ayuno Terapéutico en plena naturaleza, diseñados para resetear el organismo y descansar profundamente.
               </p>
               <p>
-                Colaboramos activamente con profesionales de disciplinas de salud y defensa como Entrenamiento Funcional, Taichí, Defensa Personal, Ninjutsú y Kai sai Budo, consolidando un espacio de crecimiento y comunidad.
+                Colaboramos activamente con profesionales de disciplinas de salud, longevidad y bienestar integral como Bienestar Experience, nutrición celular consciente y hábitos saludables, consolidando un espacio de crecimiento y comunidad.
               </p>
             </div>
           </div>

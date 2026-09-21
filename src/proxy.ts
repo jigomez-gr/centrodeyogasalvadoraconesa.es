@@ -53,8 +53,8 @@ Explora todas las disciplinas, talleres y actividades impartidas por Salvadora C
 ### Taller Mejorar Asanas
 - **Enfoque**: Perfeccionamiento técnico, biomecánica y ajustes posturales personalizados.
 
-### Actividades de Colaboradores
-- Tai Chi, Yoga Nidra, Entrenamiento Funcional, Aiki, Ninjutsu y Defensa Personal Policial.
+### Actividades Especiales y Colaboradores
+- Bienestar Experience, Asesoramiento en Longevidad, Yoga Nidra y Terapias Complementarias.
 
 ## Reservas
 Para reservar plaza o consultar horarios actualizados, visita [Página de Reservas](/reserva) o contacta por WhatsApp al [+34 695 17 26 25](https://wa.me/34695172625).

@@ -34,7 +34,6 @@ const ACTIVITY_FLYERS: { [key: number]: ActivityFlyer[] } = {
         { title: "Flyer Ayuno Terapéutico", imagePath: "/flyers/ayuno.jpeg" }
     ],
     9: [
-        { title: "Iaidō (Katana)", imagePath: "/flyers/iaido.jpg" },
         { title: "Intenta (Salud)", imagePath: "/flyers/intenta.jpeg" },
         { title: "Bienestar", imagePath: "/flyers/bienestar.png" }
     ]
@@ -197,15 +196,15 @@ const DAYS_DATA: DayItem[] = [
     },
     {
         id: 9,
-        title: "Otras Disciplinas y Más",
-        category: "COLABORADORES Y SALUD",
-        description: "Sesiones de Taichí, Ninjutsú, Defensa personal y salud de la mano de profesionales colaboradores.",
+        title: "Bienestar Experience & Longevidad",
+        category: "ACTIVIDADES ESPECIALES",
+        description: "Asesoramiento personalizado en longevidad, biohacking, nutrición y bienestar integral con especialistas colaboradores.",
         date: "Programación Abierta",
         image: "/imagenes/centro/401_interior_centro_yoga_1920x1085.jpg",
         videos: [
             {
-                title: "Otras Disciplinas de Defensa y Salud",
-                description: "Clases y demostraciones prácticas de Taichí y Ninjutsú para la defensa y fuerza.",
+                title: "Bienestar Experience y Longevidad",
+                description: "Pautas, sesiones y demostraciones de salud integrativa, nutrición celular y biohacking.",
                 filePath: "/videos/itinerario-9.mp4"
             }
         ]

@@ -482,7 +482,6 @@ export function findServiceByCodeOrId(
     constelaciones_constelar: "constelar",
     constelaciones_participar: "participante",
     retiro_encuentro: "retiro de ayuno",
-    iaido: "iaidō",
     bienestar_experience: "bienestar experience",
     meditacion: "meditaciones guiadas",
     gestalt: "terapia gestalt",

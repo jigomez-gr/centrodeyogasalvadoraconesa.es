@@ -219,16 +219,16 @@ const ITIN_DATA: TimelineDay[] = [
     {
         id: 9,
         date: "Act. Especiales",
-        dayName: "Colaboradores y Otras Disciplinas",
-        title: "Formaciones Complementarias y Salud con Diversos Especialistas",
+        dayName: "Bienestar Experience & Longevidad",
+        title: "Actividades Especiales y Longevidad Integral",
         desc: "",
         events: [
             {
-                time: "Formación",
-                title: "Talleres Temáticos Especiales",
-                description: "Seminarios mensuales sobre salud integral, terapias alternativas, Kai sai Budo y técnicas avanzadas de meditación y consciencia.",
+                time: "Asesoramiento",
+                title: "Longevidad y Hábitos Saludables",
+                description: "Sesiones y talleres sobre longevidad activa, biohacking, nutrición celular, ritmos circadianos y bienestar integral con especialistas colaboradores.",
                 type: "visit",
-                venue: "Sala Multiusos",
+                venue: "Sala Multiusos / Online",
             },
         ],
     },
@@ -338,9 +338,9 @@ const DAY_OVERLAY_DETAILS: { [key: number]: { title: string; category: string; d
         date: "Retiros Anuales"
     },
     9: {
-        title: "Otras Disciplinas y Más",
-        category: "COLABORADORES Y FORMACIONES",
-        description: "Taichí, Ninjutsú, Defensa personal y talleres de salud",
+        title: "Bienestar Experience & Longevidad",
+        category: "ACTIVIDADES ESPECIALES",
+        description: "Asesoramiento personalizado en longevidad, biohacking, nutrición y bienestar integral",
         date: "Programación Abierta"
     }
 };
@@ -406,7 +406,6 @@ const ACTIVITY_FLYERS: { [key: number]: ActivityFlyer[] } = {
         { title: "Flyer Ayuno Terapéutico", imagePath: "/flyers/ayuno.jpeg" }
     ],
     9: [
-        { title: "Iaidō (Katana)", imagePath: "/flyers/iaido.jpg" },
         { title: "Intenta (Salud)", imagePath: "/flyers/intenta.jpeg" },
         { title: "Bienestar", imagePath: "/flyers/bienestar.png" }
     ]
@@ -825,7 +824,7 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                                     )}
                                 </div>
 
-                                {/* Multi-flyer selection buttons (e.g. for Day 9 Varios: iaido, intenta, bienestar) */}
+                                {/* Multi-flyer selection buttons (e.g. for Day 9: intenta, bienestar) */}
                                 {currentMode === "flyer" && (ACTIVITY_FLYERS[day.id]?.length || 0) > 1 && (
                                     <div className="mt-3 border-t border-stone-100 pt-3 select-none">
                                         <span className="block text-[8.5px] uppercase tracking-wider text-stone-400 font-bold mb-1.5">
