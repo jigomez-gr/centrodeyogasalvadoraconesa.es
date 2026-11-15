@@ -72,9 +72,9 @@ export default async function BanosDeGongPage() {
       name: "Centro de Yoga Salvadora Conesa",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Calle Pelayos, 1",
+        streetAddress: "Calle Holanda, 1 (Club Social Parque Granada)",
         addressLocality: "Fuenlabrada",
-        postalCode: "28945",
+        postalCode: "28942",
         addressRegion: "Madrid",
         addressCountry: "ES",
       },
@@ -129,7 +129,7 @@ export default async function BanosDeGongPage() {
         name: "¿Dónde se celebran los Baños de Gong y cuál es el precio?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Se celebran en el Centro de Yoga Salvadora Conesa (Calle Pelayos 1, Fuenlabrada, Madrid). La aportación es de 16 € (14 € si vienes acompañado/a).",
+          text: "Se celebran en el Centro de Yoga Salvadora Conesa (Calle Holanda 1, Club Social Parque Granada, Fuenlabrada, Madrid). La aportación es de 16 € (14 € si vienes acompañado/a).",
         },
       },
     ],

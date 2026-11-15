@@ -227,7 +227,7 @@ export default function BanosDeGongExperience({
               </h2>
 
               <p className="text-base sm:text-lg text-stone-600 font-light">
-                Un baño de gong no es un concierto convencional ni una clase de esfuerzo físico: es una <strong>inmersión sonora vivencial</strong> en la que el cuerpo se relaja de forma natural y la mente descansa en la escucha.
+                Un baño de gong no es un concierto convencional ni una clase de esfuerzo físico: es una <strong>inmersión sonora vivencial</strong> que consta de una <strong>preparación física y energética previa</strong> para soltar tensiones corporales y armonizar los centros de energía, seguida del <strong>baño de gong envolvente y una profunda meditación sonora</strong> donde el cuerpo se relaja de forma natural y la mente descansa en la escucha.
               </p>
 
               <p>
@@ -366,10 +366,10 @@ export default function BanosDeGongExperience({
               <span>3. El Desarrollo de la Sesión</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#12241D]">
-              Cómo es una sesión paso a paso
+              Cómo es una sesión paso a paso: preparación física y energética, baño y meditación
             </h2>
             <p className="text-sm sm:text-base text-stone-600 font-light">
-              Diseñamos cada encuentro sonoro con un orden cuidadoso para que la transición desde el ritmo del día hacia el sosiego sea natural y placentera.
+              Diseñamos cada encuentro sonoro con una preparación física y energética previa para soltar tensiones corporales, seguida de la inmersión en el baño de gong y la meditación profunda con integración sonora.
             </p>
           </div>
 
@@ -398,10 +398,10 @@ export default function BanosDeGongExperience({
                 </span>
               </div>
               <h3 className="font-serif text-base font-bold text-stone-900">
-                Respiración y Descarga
+                Preparación Física y Energética
               </h3>
               <p className="text-xs text-stone-600 leading-relaxed font-light">
-                Breve toma de tierra con respiración consciente y estiramientos muy suaves para aflojar tensiones en hombros y cuello, preparando al cuerpo para recibir el sonido.
+                Toma de tierra con respiración consciente y estiramientos suaves de desbloqueo corporal y energético para armonizar la vibración, aflojar tensiones en hombros y cuello, y preparar cuerpo y mente antes de recibir el sonido.
               </p>
             </div>
 
@@ -413,10 +413,10 @@ export default function BanosDeGongExperience({
                 </span>
               </div>
               <h3 className="font-serif text-base font-bold text-[#E5C378]">
-                Inmersión en el Gong
+                Baño de Gong y Meditación Sonora
               </h3>
               <p className="text-xs text-stone-300 leading-relaxed font-light">
-                Tumbados en Savasana, comienza el viaje sonoro. Cuencos, campanas tubulares y los gongs despliegan sus oleadas envolventes de armónicos continuos.
+                Tumbados en Savasana, comienza el viaje sonoro. Cuencos, campanas tubulares y los gongs despliegan sus oleadas envolventes de armónicos continuos para una profunda meditación y reseteo celular.
               </p>
             </div>
 
@@ -567,7 +567,9 @@ export default function BanosDeGongExperience({
               <p className="text-sm sm:text-base font-bold text-stone-900 leading-snug">
                 {durationText}
               </p>
-              <span className="text-[11px] text-stone-500 block">Sesión completa con integración</span>
+              <span className="text-[11px] text-stone-500 block">
+                Preparación física y energética + baño de gong y meditación
+              </span>
             </div>
 
             {/* Tarifa / Aportación */}
@@ -591,10 +593,10 @@ export default function BanosDeGongExperience({
                 Lugar & Aforo
               </span>
               <p className="text-xs sm:text-sm font-bold text-stone-900 leading-snug">
-                Centro Salvadora Conesa
+                Centro Salvadora Conesa (Club Social Parque Granada)
               </p>
               <span className="text-[11px] text-stone-500 block">
-                C/ Pelayos 1, Fuenlabrada · {capacityText}
+                Calle Holanda, 1 · Fuenlabrada · {capacityText}
               </span>
             </div>
           </div>

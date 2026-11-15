@@ -69,9 +69,9 @@ export default async function PracticaYogaPage() {
     priceRange: "25€ - 42€",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Calle Pelayos, 1",
+      streetAddress: "Calle Holanda, 1 (Club Social Parque Granada)",
       addressLocality: "Fuenlabrada",
-      postalCode: "28945",
+      postalCode: "28942",
       addressRegion: "Madrid",
       addressCountry: "ES",
     },
@@ -131,7 +131,7 @@ export default async function PracticaYogaPage() {
         name: "¿Dónde se imparten las clases de yoga y cómo son los horarios?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "En el Centro de Yoga Salvadora Conesa (Calle Pelayos 1, Fuenlabrada, Madrid). Contamos con turnos de mañana y tarde con recuperación de clases avisando con antelación.",
+          text: "En el Centro de Yoga Salvadora Conesa (Calle Holanda 1, Club Social Parque Granada, Fuenlabrada, Madrid). Contamos con turnos de mañana y tarde con recuperación de clases avisando con antelación.",
         },
       },
     ],

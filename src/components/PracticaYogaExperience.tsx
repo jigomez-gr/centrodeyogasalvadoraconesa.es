@@ -684,7 +684,7 @@ export default function PracticaYogaExperience({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-6 sm:p-10 text-white">
               <span className="text-xs font-bold uppercase tracking-wider text-[#E5C378] mb-1">
-                Calle Pelayos, 1 · Fuenlabrada (Madrid)
+                Calle Holanda, 1 (Club Social Parque Granada) · Fuenlabrada (Madrid)
               </span>
               <h3 className="font-serif text-xl sm:text-3xl font-bold text-white mb-2">
                 Un refugio de paz en el centro de Fuenlabrada
