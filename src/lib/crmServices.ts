@@ -369,14 +369,16 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     id: "a1dde6cd-f1bf-4175-95ee-34a53f4838e9",
     name: "Constelaciones Familiares (Constelar / Asunto Propio)",
     serviceType: "event",
-    description: "Taller vivencial mensual de sanación de vínculos y patrones familiares. Modalidad para trabajar un asunto o síntoma personal propio. Próxima fecha: Sábado 14 de Noviembre de 2026 (10:00 a 14:00). Precio: 60€. Aforo: 25 personas. Pago en el centro.",
-    eventDatesText: "Sábado 14 de Noviembre de 2026 (10:00 a 14:00)",
-    scheduleText: "Sábado 14 de Noviembre (10:00 a 14:00)",
+    description: "Taller vivencial mensual de sanación de vínculos y patrones familiares. Modalidad para trabajar un asunto o síntoma personal propio. Fecha por confirmar. Precio: 60€. Aforo: 25 personas. Pago en el centro.",
+    eventDatesText: "Fecha por confirmar",
+    scheduleText: "Fecha por confirmar",
     durationMinutes: 240,
     price: "60.00",
     currency: "EUR",
     maxCapacity: 25,
     allowedModalities: ["in_person"],
+    sinfechadefinitiva: "S",
+    textosinfechadefinitiva: "Fecha por confirmar",
     firstClassFree: false,
     freeForYogaStudents: false,
     flyerUrl: "/flyers/constelaciones_familiares_particular.jpg",
@@ -385,21 +387,23 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     videoUrl: "/videos/itinerario-6.mp4",
     videoParticularUrl: "/videos/constelacionesparticular.mp4",
     videoParticularPath: "media_base/videos/constelacionesparticular.mp4",
-    textoespecifico: "Próxima fecha confirmada: Sábado 14 de Noviembre de 2026 de 10:00 a 14:00 h en el centro. Precio: 60 € (Constelar / Asunto propio) o 20 € (Participar / Representar).",
+    textoespecifico: "comunicaremos la fecha de la próxima sesión cuando la sepamos",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Constelaciones%20Familiares%20(Constelar).",
   },
   {
     id: "2acd3c74-abae-47d0-9b67-147cbbe1a657",
     name: "Constelaciones Familiares (Participante / Representante)",
     serviceType: "event",
-    description: "Taller vivencial mensual de sanación de vínculos familiares. Modalidad para participar como representante u observador en el campo de trabajo. Próxima fecha: Sábado 14 de Noviembre de 2026 (10:00 a 14:00). Precio: 20€. Aforo: 25 personas. Pago en el centro.",
-    eventDatesText: "Sábado 14 de Noviembre de 2026 (10:00 a 14:00)",
-    scheduleText: "Sábado 14 de Noviembre (10:00 a 14:00)",
+    description: "Taller vivencial mensual de sanación de vínculos familiares. Modalidad para participar como representante u observador en el campo de trabajo. Fecha por confirmar. Precio: 20€. Aforo: 25 personas. Pago en el centro.",
+    eventDatesText: "Fecha por confirmar",
+    scheduleText: "Fecha por confirmar",
     durationMinutes: 240,
     price: "20.00",
     currency: "EUR",
     maxCapacity: 25,
     allowedModalities: ["in_person"],
+    sinfechadefinitiva: "S",
+    textosinfechadefinitiva: "Fecha por confirmar",
     firstClassFree: false,
     freeForYogaStudents: false,
     flyerUrl: "/flyers/constelaciones_familiares_particular.jpg",
@@ -408,7 +412,7 @@ export const FALLBACK_CRM_SERVICES: CrmService[] = [
     videoUrl: "/videos/itinerario-6.mp4",
     videoParticularUrl: "/videos/constelacionesparticular.mp4",
     videoParticularPath: "media_base/videos/constelacionesparticular.mp4",
-    textoespecifico: "Próxima fecha confirmada: Sábado 14 de Noviembre de 2026 de 10:00 a 14:00 h en el centro. Precio: 20 € (Participar / Representante) o 60 € (Constelar / Asunto propio).",
+    textoespecifico: "comunicaremos la fecha de la próxima sesión cuando la sepamos",
     whatsappBookingUrl: "https://wa.me/34695172625?text=Hola%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20y%20disponibilidad%20para%20Constelaciones%20Familiares%20(Participante).",
   },
   {
@@ -635,15 +639,15 @@ export async function fetchCrmServices(filters?: {
 
         const isConstelaciones = /constelaci/i.test(s.name);
         if (isConstelaciones) {
-          eventDatesText = "Sábado 14 de Noviembre de 2026 (10:00 a 14:00)";
-          scheduleText = "Sábado 14 de Noviembre (10:00 a 14:00)";
-          textoespecifico = "Próxima fecha confirmada: Sábado 14 de Noviembre de 2026 de 10:00 a 14:00 h en el centro. Precio: 60 € (Constelar / Asunto propio) o 20 € (Participar / Representar).";
-          flyerUrl = "/flyers/constelaciones_familiares_particular.jpg";
-          flyerParticularUrl = "/flyers/constelaciones_familiares_particular.jpg";
-          flyerPath = "public/flyers/constelaciones_familiares_particular.jpg";
-          flyerParticularPath = "public/flyers/constelaciones_familiares_particular.jpg";
-          videoParticularUrl = "/videos/constelacionesparticular.mp4";
-          videoParticularPath = "media_base/videos/constelacionesparticular.mp4";
+          eventDatesText = s.eventDatesText || s.scheduleText || null;
+          scheduleText = s.scheduleText || s.eventDatesText || null;
+          textoespecifico = s.textoespecifico || null;
+          flyerUrl = flyerUrl || "/flyers/constelaciones_familiares_particular.jpg";
+          flyerParticularUrl = flyerParticularUrl || "/flyers/constelaciones_familiares_particular.jpg";
+          flyerPath = flyerPath || "public/flyers/constelaciones_familiares_particular.jpg";
+          flyerParticularPath = flyerParticularPath || "public/flyers/constelaciones_familiares_particular.jpg";
+          videoParticularUrl = videoParticularUrl || "/videos/constelacionesparticular.mp4";
+          videoParticularPath = videoParticularPath || "media_base/videos/constelacionesparticular.mp4";
         }
 
         const isBienestar = /bienestar experience/i.test(s.name) || s.id === "469fa9b9-227d-4168-bda7-cac5cf3e7f46";
