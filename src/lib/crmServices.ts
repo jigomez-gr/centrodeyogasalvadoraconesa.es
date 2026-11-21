@@ -73,6 +73,9 @@ export interface CrmServicesResponse {
   brandColor?: string;
   logoUrl?: string | null;
   whatsappNumber: string;
+  telegramBotUsername?: string | null;
+  telegramBotName?: string | null;
+  telegramEnabled?: boolean;
   categories?: CrmCategory[];
   services: CrmService[];
 }
@@ -560,6 +563,9 @@ export async function fetchCrmServices(filters?: {
   success: boolean;
   businessName: string;
   whatsappNumber: string;
+  telegramBotUsername?: string | null;
+  telegramBotName?: string | null;
+  telegramEnabled?: boolean;
   categories: CrmCategory[];
   services: CrmService[];
 }> {
@@ -684,6 +690,9 @@ export async function fetchCrmServices(filters?: {
         success: true,
         businessName: data.businessName || "Centro de Yoga y Bienestar Salvadora",
         whatsappNumber: data.whatsappNumber || "34695172625",
+        telegramBotUsername: data.telegramBotUsername || null,
+        telegramBotName: data.telegramBotName || null,
+        telegramEnabled: data.telegramEnabled ?? Boolean(data.telegramBotUsername),
         categories: sortedCategories,
         services: resolvedServices,
       };

@@ -301,6 +301,32 @@ export function ChatBubbleWidget({
     }
   };
 
+  const handleTelegramClick = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/api/widget/handoff-telegram/${agentKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: sessionId || "web_guest",
+          note: "Handoff a Telegram iniciado desde la burbuja de chat de la landing web.",
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.telegramUrl && typeof window !== "undefined") {
+          window.open(data.telegramUrl, "_blank", "noopener,noreferrer");
+          return;
+        }
+      }
+    } catch {}
+    const fallbackBot = (
+      process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "SalvadoraConesaBot"
+    ).replace(/^@/, "");
+    if (typeof window !== "undefined") {
+      window.open(`https://t.me/${fallbackBot}`, "_blank", "noopener,noreferrer");
+    }
+  };
+
 
 
   const tooltipText = "Asistente para consultar nuestros servicios, reservas de citas, cancelaciones, reprogramaciones y asistencia a eventos";
@@ -516,6 +542,17 @@ export function ChatBubbleWidget({
             >
               <MessageCircle className="h-4 w-4 shrink-0" />
               <span className="truncate">Consultar Pedir Citas ó Servicios WASSAP (IA)</span>
+            </button>
+
+            {/* Conectar con Telegram (IA) */}
+            <button
+              type="button"
+              onClick={handleTelegramClick}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#0088cc] hover:bg-[#0077b5] py-2 px-3 text-xs font-bold text-white shadow-2xs transition active:scale-98 cursor-pointer"
+              title="Conectar con Telegram (IA)"
+            >
+              <Send className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Conectar con Telegram (IA)</span>
             </button>
           </div>
 

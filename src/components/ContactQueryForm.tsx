@@ -100,7 +100,7 @@ export default function ContactQueryForm({
     } catch (err: any) {
       setError(
         err.message ||
-          "Ocurrió un error al enviar tu mensaje. Por favor, inténtalo de nuevo o contáctanos por WhatsApp."
+          "Ocurrió un error al enviar tu mensaje. Por favor, inténtalo de nuevo o contáctanos por WhatsApp o Telegram."
       );
     } finally {
       setLoading(false);
@@ -272,7 +272,7 @@ export default function ContactQueryForm({
                 />
               </div>
               <p className="text-[11px] text-stone-500">
-                Indícalo si prefieres recibir respuesta también por llamada o WhatsApp.
+                Indícalo si prefieres recibir respuesta también por llamada, WhatsApp o Telegram.
               </p>
             </div>
 

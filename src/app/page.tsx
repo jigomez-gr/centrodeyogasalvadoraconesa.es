@@ -310,13 +310,13 @@ export default async function Home() {
             </a>
 
             <a
-              href="https://salvadora.jigretera.com/#contacto"
+              href="/#contacto"
               className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-2xs transition active:scale-95 text-center cursor-pointer whitespace-nowrap"
-              title="Reservas Email Wassap"
+              title="Reservas Email / Wassap / Telegram"
             >
               <Mail className="w-3.5 h-3.5 text-white shrink-0" />
               <MessageCircle className="w-3.5 h-3.5 text-white shrink-0" />
-              <span>Reservas Email Wassap</span>
+              <span>Reservas Email / Wassap / Telegram</span>
             </a>
           </div>
         </div>
@@ -877,7 +877,7 @@ export default async function Home() {
               Centro de Yoga Fuenlabrada (Salvadora Conesa) • Atención Personalizada
             </span>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]">
-              Consultas y Reservas por Email ó Wassap
+              Consultas y Reservas por Email ó Wassap o Telegram
             </h2>
             <p className="mt-3 text-xs sm:text-sm text-stone-600 max-w-xl mx-auto leading-relaxed">
               ¿Quieres consultar dudas o solicitar tu plaza para clases de yoga, baños de gong, terapias o retiros? Escríbenos directamente y gestionaremos tu solicitud por email de inmediato.

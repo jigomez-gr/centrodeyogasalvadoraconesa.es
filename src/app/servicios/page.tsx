@@ -23,6 +23,7 @@ import {
   Maximize2,
   Play,
   MessageCircle,
+  Send,
 } from "lucide-react";
 import { SimuladorDiagnosticoModal } from "@/components/SimuladorDiagnosticoModal";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
@@ -403,6 +404,9 @@ function ServiciosContent() {
             if (data.whatsappNumber) {
               setWhatsappPhone(data.whatsappNumber);
             }
+            if (data.telegramBotUsername) {
+              setTelegramBotUsername(data.telegramBotUsername);
+            }
           }
         }
       } catch (err) {
@@ -429,6 +433,17 @@ function ServiciosContent() {
   const [waEmail, setWaEmail] = useState("");
   const [waLoading, setWaLoading] = useState(false);
   const [waSuccess, setWaSuccess] = useState(false);
+
+  // Telegram Handoff Form State
+  const [tgModalOpen, setTgModalOpen] = useState(false);
+  const [tgName, setTgName] = useState("");
+  const [tgPhone, setTgPhone] = useState("");
+  const [tgEmail, setTgEmail] = useState("");
+  const [tgLoading, setTgLoading] = useState(false);
+  const [tgSuccess, setTgSuccess] = useState(false);
+  const [telegramBotUsername, setTelegramBotUsername] = useState<string | null>(
+    process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || null
+  );
 
   // Helper to identify special activities
   const isSpecialService = useCallback((s: CrmService) => {
@@ -620,6 +635,47 @@ function ServiciosContent() {
     }
   };
 
+  const handleTelegramHandoff = async (e?: React.FormEvent, directAnonymous = false, serviceOverride?: string) => {
+    if (e) e.preventDefault();
+    setTgLoading(true);
+    const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://crm-salvadoraconesa.jigretera.com";
+    const currentSession = (typeof window !== "undefined" && localStorage.getItem("crm_widget_session_id")) || "web_guest";
+    const svcToUse = serviceOverride || selectedService || undefined;
+    try {
+      const res = await fetch(`${CRM_API_URL}/api/widget/handoff-telegram/booking`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: currentSession,
+          name: directAnonymous ? undefined : (tgName.trim() || undefined),
+          phone: directAnonymous ? undefined : (tgPhone.trim() || undefined),
+          email: directAnonymous ? undefined : (tgEmail.trim() || undefined),
+          serviceName: svcToUse,
+          note: "Vinculación con Telegram iniciada desde el catálogo de servicios de la landing web.",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      setTgLoading(false);
+      if (data?.telegramUrl) {
+        setTgSuccess(true);
+        setTimeout(() => {
+          window.open(data.telegramUrl, "_blank", "noopener,noreferrer");
+          setTgModalOpen(false);
+          setTgSuccess(false);
+        }, directAnonymous ? 100 : 800);
+        return;
+      }
+      const cleanBot = (telegramBotUsername || "SalvadoraConesaBot").replace(/^@/, "");
+      window.open(`https://t.me/${cleanBot}`, "_blank", "noopener,noreferrer");
+      setTgModalOpen(false);
+    } catch {
+      setTgLoading(false);
+      const cleanBot = (telegramBotUsername || "SalvadoraConesaBot").replace(/^@/, "");
+      window.open(`https://t.me/${cleanBot}`, "_blank", "noopener,noreferrer");
+      setTgModalOpen(false);
+    }
+  };
+
   // Helper icons and category labels
   const getCategoryMeta = (svc: CrmService) => {
     const lower = svc.name.toLowerCase();
@@ -671,6 +727,12 @@ function ServiciosContent() {
             📱 Continuar por WhatsApp
           </button>
         )}
+        <button
+          onClick={() => setTgModalOpen(true)}
+          className="inline-flex items-center gap-1 bg-sky-600 hover:bg-sky-500 px-3 py-0.5 rounded-full text-white font-semibold transition shadow-xs cursor-pointer"
+        >
+          ✈️ Conectar con Telegram
+        </button>
       </div>
 
       {/* Main Header */}
@@ -731,6 +793,12 @@ function ServiciosContent() {
               </button>
             )}
             <button
+              onClick={() => setTgModalOpen(true)}
+              className="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              <Send className="w-3.5 h-3.5" /> Conectar con Telegram
+            </button>
+            <button
               onClick={() => triggerCrmChat("¡Hola! Me gustaría consultar disponibilidad de citas y actividades en el centro.", false)}
               className="bg-[#800020] text-white px-3.5 py-2 rounded-lg text-xs font-bold hover:bg-[#800020]/90 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
@@ -767,13 +835,14 @@ function ServiciosContent() {
               />
             )}
             <a
-              href="https://salvadora.jigretera.com/#contacto"
+              href="/#contacto"
               className="bg-[#0B4A72] hover:bg-[#083654] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
-              title="Reservar por Email / Wassap"
+              title="Reservar por Email / Wassap / Telegram"
             >
               <Mail className="w-4 h-4 text-amber-300" />
               <MessageCircle className="w-4 h-4 text-emerald-400" />
-              <span>Reservar por Email / Wassap</span>
+              <Send className="w-3.5 h-3.5 text-sky-300" />
+              <span>Reservar por Email / Wassap / Telegram</span>
             </a>
             {showPorWassap && (
               <button
@@ -783,6 +852,12 @@ function ServiciosContent() {
                 <Phone className="w-4 h-4" /> Traspasar Consulta a WhatsApp
               </button>
             )}
+            <button
+              onClick={() => setTgModalOpen(true)}
+              className="bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm cursor-pointer"
+            >
+              <Send className="w-4 h-4" /> Conectar con Telegram
+            </button>
           </div>
         </div>
       </section>
@@ -1245,6 +1320,17 @@ function ServiciosContent() {
                           >
                             <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> Pedir por Wassap
                           </a>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedService(act.name);
+                              setTgModalOpen(true);
+                            }}
+                            className="text-sky-700 hover:text-sky-900 font-bold flex items-center gap-1 transition hover:underline cursor-pointer"
+                            title={`Consultar o pedir cita por Telegram para ${act.name}`}
+                          >
+                            <Send className="w-3.5 h-3.5 text-sky-600" /> Pedir por Telegram
+                          </button>
                         </div>
                         <span className="text-stone-500 font-medium text-[11px] shrink-0 self-end">Pago en centro</span>
                       </div>
@@ -1397,6 +1483,17 @@ function ServiciosContent() {
                         >
                           <MessageCircle className="w-3.5 h-3.5 text-emerald-600" /> Pedir por Wassap
                         </a>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedService(act.name);
+                            setTgModalOpen(true);
+                          }}
+                          className="text-sky-700 hover:text-sky-900 font-bold hover:underline cursor-pointer flex items-center gap-1 text-[11px]"
+                          title={`Consultar o pedir cita por Telegram para ${act.name}`}
+                        >
+                          <Send className="w-3.5 h-3.5 text-sky-600" /> Pedir por Telegram
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1636,6 +1733,137 @@ function ServiciosContent() {
                 <div className="text-[10px] text-stone-400 text-center flex items-center justify-center gap-1 pt-1">
                   <ShieldCheck className="w-3 h-3 text-emerald-600" />
                   <span>Tus datos quedan registrados de forma segura y privada.</span>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ─── MODAL TELEGRAM HANDOFF (VINCULACIÓN SEGURA CON TOKEN DE UN SOLO USO) ─── */}
+      {tgModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setTgModalOpen(false)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-stone-200 relative max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setTgModalOpen(false)}
+              className="absolute top-4 right-4 p-1.5 text-stone-400 hover:text-stone-700 rounded-lg cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-2 text-sky-600 mb-2">
+              <span className="p-2 rounded-xl bg-sky-100">
+                <Send className="w-5 h-5" />
+              </span>
+              <span className="text-xs font-extrabold uppercase tracking-wider">
+                Conectar con Telegram
+              </span>
+            </div>
+
+            <h3 className="font-serif text-xl font-bold text-stone-900 mb-1.5">
+              Bot Oficial Centro de Yoga Salvadora Conesa
+            </h3>
+            <p className="text-xs text-stone-600 mb-4 leading-relaxed">
+              Introduce tu nombre y teléfono o email para <strong>vincular tu ficha del CRM con Telegram</strong> (recibirás confirmaciones y recordatorios al pulsar <strong>Iniciar</strong> en el bot), o abre el bot directamente.
+            </p>
+
+            {selectedService && (
+              <div className="mb-4 p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs flex items-center justify-between">
+                <span className="text-stone-500">Actividad:</span>
+                <span className="font-bold text-[#800020]">{selectedService}</span>
+              </div>
+            )}
+
+            {tgSuccess ? (
+              <div className="p-4 bg-sky-50 border border-sky-200 rounded-xl text-center space-y-2 text-sky-800 animate-in zoom-in-95">
+                <CheckCircle2 className="w-8 h-8 text-sky-600 mx-auto" />
+                <p className="text-xs font-bold">¡Enlace seguro generado!</p>
+                <p className="text-[11px] text-sky-700">Abriendo Telegram... Pulsa «Iniciar» en el bot para activar tu conexión.</p>
+              </div>
+            ) : (
+              <form onSubmit={(e) => handleTelegramHandoff(e, false)} className="space-y-3.5">
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1">
+                    Tu Nombre y Apellidos
+                  </label>
+                  <div className="relative">
+                    <User className="w-4 h-4 text-stone-400 absolute left-3.5 top-3" />
+                    <input
+                      type="text"
+                      value={tgName}
+                      onChange={(e) => setTgName(e.target.value)}
+                      placeholder="Ej: Carmen Moreno"
+                      className="w-full bg-stone-50 border border-stone-300 focus:border-sky-600 focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-xs text-stone-800 outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1">
+                    Teléfono Móvil (para vincular tus citas)
+                  </label>
+                  <div className="relative">
+                    <Phone className="w-4 h-4 text-stone-400 absolute left-3.5 top-3" />
+                    <input
+                      type="tel"
+                      value={tgPhone}
+                      onChange={(e) => setTgPhone(e.target.value)}
+                      placeholder="Ej: 611 22 33 44"
+                      className="w-full bg-stone-50 border border-stone-300 focus:border-sky-600 focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-xs text-stone-800 outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1">
+                    Correo Electrónico
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-3" />
+                    <input
+                      type="email"
+                      value={tgEmail}
+                      onChange={(e) => setTgEmail(e.target.value)}
+                      placeholder="Ej: carmen@ejemplo.com"
+                      className="w-full bg-stone-50 border border-stone-300 focus:border-sky-600 focus:bg-white rounded-xl pl-10 pr-4 py-2.5 text-xs text-stone-800 outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2 space-y-2">
+                  <button
+                    type="submit"
+                    disabled={tgLoading}
+                    className="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                  >
+                    {tgLoading ? (
+                      "Generando enlace seguro..."
+                    ) : (
+                      <>
+                        <span>Vincular y Abrir Telegram</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={tgLoading}
+                    onClick={() => handleTelegramHandoff(undefined, true)}
+                    className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-[11px] font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Abrir el bot de Telegram sin vincular datos ahora</span>
+                  </button>
+                </div>
+
+                <div className="text-[10px] text-stone-400 text-center flex items-center justify-center gap-1 pt-1">
+                  <ShieldCheck className="w-3 h-3 text-sky-600" />
+                  <span>Token de vinculación seguro, temporal y de un solo uso.</span>
                 </div>
               </form>
             )}

@@ -25,7 +25,7 @@ export default function Navbar() {
         { label: "Testimonios", href: "/#testimonios" },
         { label: "Qué Incluye", href: "/#incluye" },
         { label: "Plazas y Precios", href: "/#precios" },
-        { label: "Consultas / Reservas por Email ó Wassap", href: "/#contacto" },
+        { label: "Consultas / Reservas por Email ó Wassap o Telegram", href: "/#contacto" },
     ];
 
     const handleNavClick = (e: React.MouseEvent, item: MenuItem) => {
