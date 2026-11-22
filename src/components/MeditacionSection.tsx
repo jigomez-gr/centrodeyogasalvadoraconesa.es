@@ -9,6 +9,7 @@ export default function MeditacionSection() {
       description:
         "El blanco no es ausencia de color, sino la síntesis de todos ellos. Meditar no es forzar la mente a no pensar, sino ralentizar el flujo de pensamientos y ensanchar el espacio de silencio entre ellos, alcanzando una paz profunda donde se apagan las preocupaciones cotidianas.",
       src: "/videos/meditacion/Serie_2_mente_en_sintesis.mp4",
+      poster: "/videos/meditacion/Serie_2_mente_en_sintesis-poster.jpg",
     },
     {
       id: "2",
@@ -17,6 +18,7 @@ export default function MeditacionSection() {
       description:
         "La práctica compartida crea una resonancia única que facilita la concentración, como ciclistas que ruedan juntos en pelotón. Aunque un guía marque pautas iniciales de respiración, el silencio es indispensable: si alguien habla continuamente es visualización, no meditación. Con 7 a 11 minutos diarios se asienta el hábito.",
       src: "/videos/meditacion/Serie_6_solo_o_acompanado.mp4",
+      poster: "/videos/meditacion/Serie_6_solo_o_acompanado-poster.jpg",
     },
     {
       id: "3",
@@ -25,6 +27,7 @@ export default function MeditacionSection() {
       description:
         "Tumbados en la cama es muy fácil dormirse porque el cerebro cambia de ondas cerebrales. La meditación requiere presencia: mantener la columna erguida (en esterilla o en una silla con respaldo si la espalda lo necesita) nos permite permanecer despiertos, activos y con el sistema nervioso en calma profunda.",
       src: "/videos/meditacion/Serie_7_meditar_sentado.mp4",
+      poster: "/videos/meditacion/Serie_7_meditar_sentado-poster.jpg",
     },
   ];
 
@@ -66,6 +69,7 @@ export default function MeditacionSection() {
                 <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                   <video
                     src={vid.src}
+                    poster={vid.poster}
                     controls
                     playsInline
                     preload="metadata"
