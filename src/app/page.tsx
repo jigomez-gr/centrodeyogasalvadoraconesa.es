@@ -230,7 +230,7 @@ export default async function Home() {
       <Navbar />
 
       {/* 2. Hero Section Editorial con Vídeo de Fondo Enmarcado */}
-      <section id="inicio" className="hero-compact-laptop relative bg-[#FAF9F6] pt-14 pb-8 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-24 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-start overflow-x-clip">
+      <section id="inicio" className="hero-compact-laptop relative bg-[#FAF9F6] pt-14 pb-8 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-12 xl:pt-28 xl:pb-12 border-b border-[#C5A059]/15 flex flex-col items-center justify-start overflow-x-clip">
         {/* Subtle decorative background elements */}
         <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#800020_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
@@ -263,14 +263,14 @@ export default async function Home() {
               CONSULTA SERVICIOS
             </CrmBookingButton>
             <VapiCallButton
-              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center gap-2 h-12 px-6 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-200 cursor-pointer select-none"
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center gap-2 h-[40px] sm:h-12 px-6 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-200 cursor-pointer select-none"
               inquiry="Consulta general sobre clases de yoga y terapias"
             >
               TE LLAMAMOS GRATIS (IA)
             </VapiCallButton>
             <a
               href="#itinerario"
-              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
+              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-[40px] sm:h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
             >
               Ver Actividades
             </a>

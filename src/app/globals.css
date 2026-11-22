@@ -58,9 +58,9 @@ video:-webkit-full-screen {
    fits entirely in the viewport so that the top title is NOT hidden behind
    the navbar and the 4 action buttons are fully visible without scrolling.
    ========================================================================= */
-@media (min-width: 768px) and (max-height: 840px) {
+@media (min-width: 768px) and (max-width: 1279px) and (max-height: 840px) {
   .hero-compact-laptop {
-    padding-top: 4.5rem !important; /* ~72px, clear navbar comfortably */
+    padding-top: 5rem !important; /* clears 64px mobile header on tablets */
     padding-bottom: 0.75rem !important;
   }
   .hero-compact-laptop .hero-tag {
@@ -68,7 +68,7 @@ video:-webkit-full-screen {
     font-size: 10px !important;
   }
   .hero-compact-laptop .hero-title {
-    font-size: 1.85rem !important; /* ~30px */
+    font-size: 1.85rem !important;
     line-height: 1.15 !important;
     margin-bottom: 0.25rem !important;
   }
@@ -79,7 +79,40 @@ video:-webkit-full-screen {
     max-width: 48rem !important;
   }
   .hero-compact-laptop .hero-video-frame {
-    width: min(90vw, calc((100vh - 280px) * 16 / 9)) !important;
+    width: min(90vw, calc((100vh - 300px) * 16 / 9)) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.375rem !important;
+  }
+  .hero-compact-laptop .hero-cta-btn {
+    height: 2.5rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (min-width: 1280px) and (max-height: 840px) {
+  .hero-compact-laptop {
+    padding-top: 7.25rem !important; /* ~116px, clears 102px desktop navbar comfortably */
+    padding-bottom: 0.75rem !important;
+  }
+  .hero-compact-laptop .hero-tag {
+    margin-bottom: 0.25rem !important;
+    font-size: 10px !important;
+  }
+  .hero-compact-laptop .hero-title {
+    font-size: 1.75rem !important; /* ~28px */
+    line-height: 1.15 !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .hero-compact-laptop .hero-desc {
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.5rem !important;
+    max-width: 48rem !important;
+  }
+  .hero-compact-laptop .hero-video-frame {
+    width: min(90vw, calc((100vh - 340px) * 16 / 9)) !important;
     margin-bottom: 0.5rem !important;
     padding: 0.375rem !important;
   }
@@ -91,13 +124,17 @@ video:-webkit-full-screen {
   }
 }
 
-@media (min-width: 768px) and (max-height: 720px) {
+@media (min-width: 1280px) and (max-height: 720px) {
   .hero-compact-laptop {
-    padding-top: 4rem !important; /* ~64px */
+    padding-top: 7rem !important; /* ~112px */
     padding-bottom: 0.5rem !important;
   }
+  .hero-compact-laptop .hero-tag {
+    margin-bottom: 0.2rem !important;
+    font-size: 9.5px !important;
+  }
   .hero-compact-laptop .hero-title {
-    font-size: 1.55rem !important; /* ~25px */
+    font-size: 1.45rem !important; /* ~23px */
     margin-bottom: 0.2rem !important;
   }
   .hero-compact-laptop .hero-desc {
@@ -106,7 +143,7 @@ video:-webkit-full-screen {
     line-height: 1.25 !important;
   }
   .hero-compact-laptop .hero-video-frame {
-    width: min(90vw, calc((100vh - 250px) * 16 / 9)) !important;
+    width: min(90vw, calc((100vh - 310px) * 16 / 9)) !important;
     margin-bottom: 0.35rem !important;
   }
   .hero-compact-laptop .hero-cta-btn {
