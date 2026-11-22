@@ -67,10 +67,6 @@ video:-webkit-full-screen {
     padding-top: 8.5rem !important; /* ~136px: leaves 12px clean space below 124px navbar */
     padding-bottom: 1rem !important;
   }
-  .hero-compact-laptop .hero-tag {
-    margin-bottom: 0.35rem !important;
-    font-size: 11px !important;
-  }
   .hero-compact-laptop .hero-title {
     font-size: 2.25rem !important; /* ~36px */
     line-height: 1.15 !important;
@@ -101,10 +97,6 @@ video:-webkit-full-screen {
     padding-top: 5rem !important; /* clears 64px mobile header on tablets */
     padding-bottom: 0.75rem !important;
   }
-  .hero-compact-laptop .hero-tag {
-    margin-bottom: 0.25rem !important;
-    font-size: 10px !important;
-  }
   .hero-compact-laptop .hero-title {
     font-size: 1.85rem !important;
     line-height: 1.15 !important;
@@ -134,10 +126,6 @@ video:-webkit-full-screen {
     padding-top: 7.25rem !important; /* ~116px, clears 102px desktop navbar comfortably */
     padding-bottom: 0.75rem !important;
   }
-  .hero-compact-laptop .hero-tag {
-    margin-bottom: 0.25rem !important;
-    font-size: 10px !important;
-  }
   .hero-compact-laptop .hero-title {
     font-size: 1.75rem !important; /* ~28px */
     line-height: 1.15 !important;
@@ -166,10 +154,6 @@ video:-webkit-full-screen {
   .hero-compact-laptop {
     padding-top: 7rem !important; /* ~112px */
     padding-bottom: 0.5rem !important;
-  }
-  .hero-compact-laptop .hero-tag {
-    margin-bottom: 0.2rem !important;
-    font-size: 9.5px !important;
   }
   .hero-compact-laptop .hero-title {
     font-size: 1.45rem !important; /* ~23px */
