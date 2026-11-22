@@ -62,6 +62,12 @@ video:-webkit-full-screen {
    Desktop Screens (PC normal, 1920x1080 and larger)
    Clears the 124px fixed desktop navbar comfortably and fits hero in viewport.
    ========================================================================= */
+@media (min-width: 1280px) and (min-height: 841px) {
+  .hero-compact-laptop .hero-tag {
+    display: none !important; /* Quita la linea extra unica y exclusivamente en monitores grandes */
+  }
+}
+
 @media (min-width: 1280px) {
   .hero-compact-laptop {
     padding-top: 8.5rem !important; /* ~136px: leaves 12px clean space below 124px navbar */
