@@ -236,6 +236,11 @@ export default async function Home() {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center z-10 w-full">
+          <div className="hero-tag inline-flex items-center space-x-2 text-[9px] sm:text-xs tracking-[0.12em] sm:tracking-[0.2em] text-[#96680E] uppercase font-extrabold mb-1.5 sm:mb-2">
+            <span className="hidden sm:inline">Clases Regulares, Yoga, Baños de Gong, Gestalt, Constelaciones Familiares, Pujas Gong, Talleres y Retiros y Actividades Varias</span>
+            <span className="inline sm:hidden">Yoga · Gong · Gestalt · Constelaciones · Retiros</span>
+          </div>
+
           <h1 className="hero-title font-serif text-[15px] min-[380px]:text-[17px] min-[440px]:text-xl sm:text-3.5xl md:text-[44px] lg:text-[48px] whitespace-nowrap font-extrabold tracking-tight text-[#800020] uppercase leading-tight mb-1 sm:mb-1.5 select-none">
             Centro de Yoga en Fuenlabrada
           </h1>
