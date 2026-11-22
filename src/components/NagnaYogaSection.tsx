@@ -2,6 +2,7 @@
 
 import AsanasSection from "@/components/AsanasSection";
 import MeditacionSection from "@/components/MeditacionSection";
+import GongSection from "@/components/GongSection";
 
 export default function NagnaYogaSection() {
   const videos = [
@@ -115,6 +116,9 @@ export default function NagnaYogaSection() {
 
       {/* 4. Sección Detallada 3: SOBRE LA MEDITACIÓN */}
       <MeditacionSection />
+
+      {/* 5. Sección Detallada 4: SOBRE EL GONG */}
+      <GongSection />
     </div>
   );
 }
