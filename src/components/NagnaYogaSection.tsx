@@ -1,6 +1,7 @@
 "use client";
 
 import AsanasSection from "@/components/AsanasSection";
+import MeditacionSection from "@/components/MeditacionSection";
 
 export default function NagnaYogaSection() {
   const videos = [
@@ -111,6 +112,9 @@ export default function NagnaYogaSection() {
 
       {/* 3. Sección Detallada 2: EL ESPACIO PARA MEJORAR LAS ASANAS */}
       <AsanasSection />
+
+      {/* 4. Sección Detallada 3: SOBRE LA MEDITACIÓN */}
+      <MeditacionSection />
     </div>
   );
 }
