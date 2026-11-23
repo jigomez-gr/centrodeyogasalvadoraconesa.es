@@ -50,7 +50,11 @@ export default function Navbar() {
     // Close desktop dropdown on outside click or Esc key
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (desktopDropdownRef.current && !desktopDropdownRef.current.contains(e.target as Node)) {
+            const target = e.target as HTMLElement | null;
+            if (target && target.closest("[data-hero-actividades-trigger]")) {
+                return;
+            }
+            if (desktopDropdownRef.current && !desktopDropdownRef.current.contains(target as Node)) {
                 setIsActividadesOpen(false);
             }
         };
@@ -61,15 +65,32 @@ export default function Navbar() {
             }
         };
 
-        const handleOpenMenu = () => {
-            setIsActividadesOpen(true);
+        const handleOpenTopActividadesMenu = (e?: Event) => {
+            if (e) {
+                e.stopPropagation();
+            }
+
+            const isDesktop = typeof window !== "undefined" && window.innerWidth >= 1280;
+
+            if (isDesktop) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                setTimeout(() => {
+                    setIsActividadesOpen(true);
+                }, 60);
+            } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                setIsOpen(true);
+                setMobileActividadesOpen(true);
+            }
         };
 
-        window.addEventListener("open-actividades-menu", handleOpenMenu);
+        window.addEventListener("open-top-actividades-menu", handleOpenTopActividadesMenu);
+        window.addEventListener("open-actividades-menu", handleOpenTopActividadesMenu);
         document.addEventListener("mousedown", handleClickOutside);
         document.addEventListener("keydown", handleKeyDown);
         return () => {
-            window.removeEventListener("open-actividades-menu", handleOpenMenu);
+            window.removeEventListener("open-top-actividades-menu", handleOpenTopActividadesMenu);
+            window.removeEventListener("open-actividades-menu", handleOpenTopActividadesMenu);
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleKeyDown);
             if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
