@@ -387,7 +387,7 @@ const ITINERARY_VIDEOS: { [key: number]: { title: string; filePath: string; yout
         { title: "Vídeo Ayuno", filePath: "/videos/itinerario-8.mp4" }
     ],
     9: [
-        { title: "Vídeo Centro", filePath: "/videos/itinerario-9.mp4" }
+        { title: "Vídeo Sala Principal", filePath: "/videos/itinerario-9.mp4" }
     ]
 };
 

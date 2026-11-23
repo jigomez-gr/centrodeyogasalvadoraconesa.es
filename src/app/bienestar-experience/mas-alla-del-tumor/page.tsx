@@ -534,7 +534,7 @@ export default function MasAllaDelTumorPage() {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
               {/* Flyer General Bienestar Experience */}
               <div className="bg-[#FAF9F6] p-4 rounded-xl border border-stone-200 flex flex-col justify-between">
                 <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-stone-100 flex items-center justify-center">
@@ -575,6 +575,28 @@ export default function MasAllaDelTumorPage() {
                   </span>
                   <span className="text-[10px] text-stone-500 uppercase tracking-wider">
                     Bienestar Experience 2026 · Más allá del tumor
+                  </span>
+                </div>
+              </div>
+
+              {/* Vídeo de la Sala Principal (itinerario-9.mp4) */}
+              <div className="bg-[#FAF9F6] p-4 rounded-xl border border-stone-200 flex flex-col justify-between">
+                <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden bg-black flex items-center justify-center">
+                  <video
+                    src="/videos/itinerario-9.mp4"
+                    poster="/videos/itinerario-9-poster.jpg"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-contain bg-black"
+                  />
+                </div>
+                <div className="mt-3 text-center">
+                  <span className="text-xs font-bold text-[#800020] block">
+                    Vídeo Sala Principal
+                  </span>
+                  <span className="text-[10px] text-stone-500 uppercase tracking-wider">
+                    Centro de Yoga Salvadora Conesa (itinerario-9.mp4)
                   </span>
                 </div>
               </div>

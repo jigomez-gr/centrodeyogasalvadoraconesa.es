@@ -68,7 +68,7 @@ export default function BienestarExperience({
 
   // Estado del modal multimedia
   const [activeMediaModal, setActiveMediaModal] = useState<
-    "video-particular" | "video-actividad" | "video-madrid" | "flyer" | "flyer-general" | null
+    "video-particular" | "video-sala" | "video-actividad" | "video-madrid" | "flyer" | "flyer-general" | null
   >(null);
 
   // Estado del modal de Telegram
@@ -229,6 +229,15 @@ export default function BienestarExperience({
 
             <button
               type="button"
+              onClick={() => setActiveMediaModal("video-sala")}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#800020]/50 hover:bg-[#800020] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-[#C5A059]/40 backdrop-blur-xs transition duration-200 cursor-pointer shadow-md"
+            >
+              <Play className="w-4 h-4 text-[#E5C378]" />
+              <span>Ver Sala Principal</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => setActiveMediaModal("flyer")}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl border border-white/20 transition duration-200 cursor-pointer"
             >
@@ -297,39 +306,39 @@ export default function BienestarExperience({
             </div>
           </div>
 
-          {/* Tarjeta 2: Vídeo de la Actividad (Itinerario 9) */}
+          {/* Tarjeta 2: Vídeo de la Sala Principal (Itinerario 9) */}
           <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between group">
             <div className="relative aspect-video bg-black overflow-hidden flex items-center justify-center">
               <img
                 src="/videos/itinerario-9-poster.jpg"
-                alt="Vídeo Resumen de Actividades Especiales"
+                alt="Vídeo de la Sala Principal (itinerario-9.mp4)"
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300 opacity-90"
               />
               <button
                 type="button"
-                onClick={() => setActiveMediaModal("video-actividad")}
+                onClick={() => setActiveMediaModal("video-sala")}
                 className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-[#800020]/90 hover:bg-[#800020] text-white flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition cursor-pointer"
-                title="Reproducir Vídeo de la Actividad"
+                title="Reproducir Vídeo de la Sala Principal (itinerario-9.mp4)"
               >
                 <Play className="w-6 h-6 fill-current ml-0.5" />
               </button>
               <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/70 text-white text-[10px] font-bold rounded">
-                Vídeo de la Actividad
+                Vídeo Sala Principal · itinerario-9.mp4
               </span>
             </div>
             <div className="p-4 space-y-2">
               <h4 className="font-serif text-base font-bold text-[#800020]">
-                Espacio de Salud y Encuentro
+                Vídeo de la Sala Principal
               </h4>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Recorrido por las actividades complementarias, talleres de longevidad consciente y la sala principal del centro.
+                Recorrido por la sala acondicionada del Centro de Yoga Salvadora Conesa para talleres especiales, longevidad y Gong.
               </p>
               <button
                 type="button"
-                onClick={() => setActiveMediaModal("video-actividad")}
+                onClick={() => setActiveMediaModal("video-sala")}
                 className="text-xs font-bold text-[#800020] hover:underline inline-flex items-center gap-1 pt-1 cursor-pointer"
               >
-                <span>Ver vídeo de la actividad</span>
+                <span>Ver vídeo de la sala principal</span>
                 <Maximize2 className="w-3 h-3" />
               </button>
             </div>
@@ -895,14 +904,14 @@ export default function BienestarExperience({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActiveMediaModal("video-actividad")}
+                  onClick={() => setActiveMediaModal("video-sala")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                    activeMediaModal === "video-actividad"
+                    activeMediaModal === "video-sala" || activeMediaModal === "video-actividad"
                       ? "bg-[#800020] text-white"
                       : "bg-stone-700 text-stone-300 hover:text-white"
                   }`}
                 >
-                  Vídeo Actividad (Sede)
+                  Vídeo Sala (itinerario-9.mp4)
                 </button>
                 <button
                   type="button"
@@ -966,7 +975,7 @@ export default function BienestarExperience({
                 </div>
               )}
 
-              {activeMediaModal === "video-actividad" && (
+              {(activeMediaModal === "video-sala" || activeMediaModal === "video-actividad") && (
                 <div className="w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
                   <video
                     src="/videos/itinerario-9.mp4"
