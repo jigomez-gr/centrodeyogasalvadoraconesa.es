@@ -34,6 +34,7 @@ import {
 import { getNumeroWassap } from "@/lib/featureFlags";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { triggerVapiCall } from "@/components/VapiCallModal";
+import TelegramBookingModal from "@/components/TelegramBookingModal";
 
 interface PracticaYogaExperienceProps {
   activity?: CrmService;
@@ -71,6 +72,9 @@ export default function PracticaYogaExperience({
   const [activeMediaModal, setActiveMediaModal] = useState<
     "video-yoga" | "video-kundalini" | null
   >(null);
+
+  // Modal para Telegram Handoff
+  const [tgModalOpen, setTgModalOpen] = useState(false);
 
   // Vídeo activo en la galería interactiva de Nagna Yoga
   const [selectedNagnaVideo, setSelectedNagnaVideo] = useState(0);
@@ -906,15 +910,14 @@ export default function PracticaYogaExperience({
                 <span>Pedir mi Clase Gratis por WhatsApp</span>
               </a>
 
-              <a
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => setTgModalOpen(true)}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#0088cc] via-[#0077b5] to-[#006699] hover:from-[#0077b5] hover:to-[#006699] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-sky-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
               >
                 <Send className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 <span>Pedir mi Clase Gratis por Telegram</span>
-              </a>
+              </button>
 
               <button
                 type="button"
@@ -1037,6 +1040,14 @@ export default function PracticaYogaExperience({
           </div>
         </div>
       )}
+      {/* Modal Telegram Handoff */}
+      <TelegramBookingModal
+        isOpen={tgModalOpen}
+        onClose={() => setTgModalOpen(false)}
+        serviceName="Práctica de Yoga - 1ª Clase de Regalo (0 €)"
+        note="Solicitud de 1ª Clase de Yoga Gratis desde la landing web (#dia-1)."
+        prefillMessage="Hola Salvadora, me gustaría consultar horarios y solicitar mi primera clase de regalo (0 €) de Yoga en Fuenlabrada."
+      />
     </div>
   );
 }
