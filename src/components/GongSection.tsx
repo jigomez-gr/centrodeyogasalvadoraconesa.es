@@ -50,12 +50,12 @@ export default function GongSection() {
             Vídeos
           </h3>
 
-          {/* Video Grid (2 items balanced layout) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Video Grid (2 items balanced layout matching Meditacion sizing) */}
+          <div className="flex flex-wrap justify-center gap-8">
             {videos.map((vid) => (
               <div
                 key={vid.id}
-                className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
+                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc((100%-4rem)/3)] bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
               >
                 <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                   <video

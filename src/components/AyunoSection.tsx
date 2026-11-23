@@ -39,9 +39,9 @@ export default function AyunoSection() {
             Vídeo
           </h3>
 
-          {/* Centered Single Video Card */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col">
+          {/* Centered Single Video Card matching Meditacion sizing */}
+          <div className="flex justify-center">
+            <div className="w-full md:w-[calc(50%-1rem)] lg:w-[calc((100%-4rem)/3)] bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col">
               <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                 <video
                   src={video.src}
