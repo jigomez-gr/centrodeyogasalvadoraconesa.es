@@ -824,7 +824,7 @@ export default function ConstelacionesExperience({
                 {activeMediaModal === "video-actividad" &&
                   "Vídeo Resumen · El Círculo de Constelaciones"}
                 {activeMediaModal === "video-sala" &&
-                  "Vídeo del Espacio y Centro de Yoga"}
+                  "Vídeo de la Sala Principal · Constelaciones Familiares"}
                 {activeMediaModal === "flyer" &&
                   "Cartel Oficial · Taller de Constelaciones Familiares"}
               </span>
@@ -873,7 +873,8 @@ export default function ConstelacionesExperience({
               {activeMediaModal === "video-sala" && (
                 <div className="w-full aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
                   <video
-                    src="/videos/itinerario-1.mp4"
+                    src="/videos/itinerario-6.mp4"
+                    poster="/videos/itinerario-6-poster.jpg"
                     controls
                     autoPlay
                     playsInline
