@@ -25,6 +25,7 @@ export interface CrmService {
   firstClassFree?: boolean;
   freeForYogaStudents?: boolean;
   whatsappBookingUrl?: string;
+  telegramBookingUrl?: string;
   categoryId?: string | null;
   categoryCode?: string | null;
   categoryName?: string | null;

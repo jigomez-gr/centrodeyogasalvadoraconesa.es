@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   ShieldCheck,
   MessageCircle,
+  Send,
   Phone,
   Play,
   ArrowRight,
@@ -890,10 +891,20 @@ export default function PracticaYogaExperience({
                 href={wassapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#25D366] via-[#20BD5A] to-[#1BA84E] hover:from-[#20BD5A] hover:to-[#1BA84E] text-white font-extrabold text-sm sm:text-base uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#25D366] via-[#20BD5A] to-[#1BA84E] hover:from-[#20BD5A] hover:to-[#1BA84E] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-current" />
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 <span>Pedir mi Clase Gratis por WhatsApp</span>
+              </a>
+
+              <a
+                href={yogaService.telegramBookingUrl || "https://t.me/escuelayogasalvadoraconesa_bot"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#0088cc] via-[#0077b5] to-[#006699] hover:from-[#0077b5] hover:to-[#006699] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-sky-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
+              >
+                <Send className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+                <span>Pedir mi Clase Gratis por Telegram</span>
               </a>
 
               <button
@@ -903,7 +914,7 @@ export default function PracticaYogaExperience({
                     inquiry: "Consulta sobre Clases de Hatha Yoga y primera clase gratis",
                   })
                 }
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-[#C5A059]/50 font-bold text-sm uppercase tracking-wider rounded-2xl hover:border-[#C5A059] transition duration-200 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-[#C5A059]/50 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-2xl hover:border-[#C5A059] transition duration-200 cursor-pointer"
               >
                 <Phone className="w-4 h-4 text-[#D4AF37]" />
                 <span>Llamar / Asistente IA</span>

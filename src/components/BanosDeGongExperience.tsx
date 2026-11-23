@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   MessageCircle,
+  Send,
   Phone,
   ChevronDown,
   Play,
@@ -99,6 +100,36 @@ export default function BanosDeGongExperience({
     {
       q: "¿Existe alguna contraindicación que deba tener en cuenta?",
       a: "Por prudencia y recomendación general en sonoterapia, rogamos que nos consultes previamente si llevas marcapasos u otros dispositivos electrónicos cardíacos, si te encuentras en el primer trimestre de gestación o si tienes antecedentes de epilepsia inducida por estímulos sonoros.",
+    },
+  ];
+
+  const sobreGongVideos = [
+    {
+      id: "1",
+      num: "I.",
+      title: "El olfato que volvió",
+      description:
+        "Un testimonio conmovedor sobre el impacto profundo de la terapia de sonido: cómo la vibración pura del Gong desbloquea canales sutiles en el organismo, reactiva terminaciones nerviosas y puede devolver facultades que creíamos perdidas, como el sentido del olfato.",
+      src: "/videos/gong/Serie_1_el_olfato_que_volvio.mp4",
+      poster: "/videos/gong/Serie_1_el_olfato_que_volvio-poster.jpg",
+    },
+    {
+      id: "2",
+      num: "II.",
+      title: "El Gong es un maestro",
+      description:
+        "El Gong nunca suena igual: vibra y responde a la atmósfera, la temperatura y la energía de las personas en la sala. Entrar en meditación con el Gong permite una armonización profunda sin esfuerzo, donde el sonido guía la relajación de todo el grupo.",
+      src: "/videos/gong/Serie_3_el_gong_es_un_maestro.mp4",
+      poster: "/videos/gong/Serie_3_el_gong_es_un_maestro-poster.jpg",
+    },
+    {
+      id: "3",
+      num: "III.",
+      title: "Once minutos y la vibración del sonido",
+      description:
+        "Bastan once minutos continuados de práctica para que la mente comience a reorganizarse en calma. El Gong es un maestro vivo: su sonido muta según la energía de la sala, guiándonos hacia un estado meditativo instantáneo donde el esfuerzo desaparece.",
+      src: "/videos/gong/Serie_5_once_minutos_y_gong.mp4",
+      poster: "/videos/gong/Serie_5_once_minutos_y_gong-poster.jpg",
     },
   ];
 
@@ -728,6 +759,82 @@ export default function BanosDeGongExperience({
       </section>
 
       {/* ─────────────────────────────────────────────────────────────
+          7. SECCIÓN 7: SOBRE EL BAÑO DEL GONG (VÍDEOS EXPLICATIVOS)
+      ───────────────────────────────────────────────────────────── */}
+      <section
+        id="sobre-el-bano-del-gong"
+        aria-labelledby="heading-sobre-bano-gong"
+        className="mt-16 sm:mt-24 scroll-mt-24 border-t border-[#C5A059]/20 pt-12 sm:pt-16"
+      >
+        <div className="max-w-5xl mx-auto space-y-10">
+          {/* Encabezado SEO semántico */}
+          <div className="space-y-4">
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold block">
+              Vibración, Sonido y Armonización
+            </span>
+            <h2
+              id="heading-sobre-bano-gong"
+              className="font-serif text-3xl sm:text-5xl font-bold text-[#800020]"
+            >
+              SOBRE EL BAÑO DEL GONG
+            </h2>
+            <div className="space-y-4 text-sm sm:text-base text-[#1C1C1C]/80 leading-relaxed font-sans bg-white p-6 sm:p-8 rounded-2xl border border-[#C5A059]/20 shadow-sm">
+              <p>
+                El Gong no es un instrumento musical al uso, sino una herramienta terapéutica ancestral que trabaja a través de la vibración del sonido. Cada vez que lo toco, el Gong suena y vibra de forma única: responde a la temperatura, a la atmósfera y, sobre todo, a la energía y relajación de las personas presentes en la sala. Por eso decimos que el Gong es, ante todo, un maestro.
+              </p>
+              <p>
+                A través de sus frecuencias armónicas, el sonido penetra en cada célula, aflojando tensiones físicas arraigadas y silenciando el diálogo mental sin necesidad de forzar la concentración. En estos tres vídeos reflexiono sobre su capacidad sanadora, la vibración pura y cómo nos ayuda a profundizar en la práctica interior.
+              </p>
+            </div>
+          </div>
+
+          {/* Cuadrícula de 3 vídeos con descripciones */}
+          <div className="space-y-8 pt-4">
+            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#800020]">
+              Vídeos
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {sobreGongVideos.map((vid) => (
+                <div
+                  key={vid.id}
+                  className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
+                >
+                  <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
+                    <video
+                      src={vid.src}
+                      poster={vid.poster}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-contain bg-black"
+                    />
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                      <h4 className="font-serif text-base sm:text-lg font-bold text-[#800020] mb-2">
+                        {vid.num} {vid.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-[#1C1C1C]/75 leading-relaxed">
+                        {vid.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Nota de cierre */}
+            <div className="bg-[#FAF9F6] p-6 rounded-xl border border-[#C5A059]/30 text-center space-y-2 mt-8">
+              <p className="text-xs sm:text-sm text-[#1C1C1C]/85 font-medium leading-relaxed max-w-3xl mx-auto">
+                El Gong se experimenta con todo el cuerpo. Si sientes la llamada de sumergirte en sus baños de sonido o en las Pujas de Gong nocturnas, te esperamos en nuestras sesiones especiales en el Centro.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
           8. BOTÓN DESTACADO & RESERVA INMEDIATA (CALL TO ACTION FINAL)
       ───────────────────────────────────────────────────────────── */}
       <section
@@ -762,16 +869,26 @@ export default function BanosDeGongExperience({
               </div>
             )}
 
-            {/* BOTÓN PRINCIPAL DESTACADO SOLICITADO */}
+            {/* BOTONES PRINCIPALES DESTACADOS SOLICITADOS (WHATSAPP + TELEGRAM) */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href={wassapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#25D366] via-[#20BD5A] to-[#1BA84E] hover:from-[#20BD5A] hover:to-[#1BA84E] text-white font-extrabold text-sm sm:text-base uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#25D366] via-[#20BD5A] to-[#1BA84E] hover:from-[#20BD5A] hover:to-[#1BA84E] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-emerald-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-current" />
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 <span>Reservar mi experiencia por WhatsApp</span>
+              </a>
+
+              <a
+                href={gongService.telegramBookingUrl || "https://t.me/escuelayogasalvadoraconesa_bot"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-gradient-to-r from-[#0088cc] via-[#0077b5] to-[#006699] hover:from-[#0077b5] hover:to-[#006699] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl shadow-xl shadow-sky-950/40 hover:scale-103 active:scale-97 transition duration-200 cursor-pointer"
+              >
+                <Send className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+                <span>Reservar mi experiencia por Telegram</span>
               </a>
 
               <button
@@ -781,7 +898,7 @@ export default function BanosDeGongExperience({
                     inquiry: "Información y fechas de los Baños de Gong",
                   })
                 }
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-[#C5A059]/50 font-bold text-sm uppercase tracking-wider rounded-2xl hover:border-[#C5A059] transition duration-200 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-[#C5A059]/50 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-2xl hover:border-[#C5A059] transition duration-200 cursor-pointer"
               >
                 <Phone className="w-4 h-4 text-[#D4AF37]" />
                 <span>Llamar / Asistente IA</span>

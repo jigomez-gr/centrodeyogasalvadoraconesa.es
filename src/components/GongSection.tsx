@@ -14,7 +14,16 @@ export default function GongSection() {
     {
       id: "2",
       num: "II.",
-      title: "Once minutos y el Gong como maestro",
+      title: "El Gong es un maestro",
+      description:
+        "El Gong nunca suena igual: vibra y responde a la atmósfera, la temperatura y la energía de las personas en la sala. Entrar en meditación con el Gong permite una armonización profunda sin esfuerzo, donde el sonido guía la relajación de todo el grupo.",
+      src: "/videos/gong/Serie_3_el_gong_es_un_maestro.mp4",
+      poster: "/videos/gong/Serie_3_el_gong_es_un_maestro-poster.jpg",
+    },
+    {
+      id: "3",
+      num: "III.",
+      title: "Once minutos y la vibración del sonido",
       description:
         "Bastan once minutos continuados de práctica para que la mente comience a reorganizarse en calma. El Gong es un maestro vivo: su sonido muta según la energía de la sala, guiándonos hacia un estado meditativo instantáneo donde el esfuerzo desaparece.",
       src: "/videos/gong/Serie_5_once_minutos_y_gong.mp4",
@@ -50,12 +59,12 @@ export default function GongSection() {
             Vídeos
           </h3>
 
-          {/* Video Grid (2 items balanced layout matching Meditacion sizing) */}
-          <div className="flex flex-wrap justify-center gap-8">
+          {/* Video Grid (3 items balanced layout matching Meditacion) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {videos.map((vid) => (
               <div
                 key={vid.id}
-                className="w-full md:w-[calc(50%-1rem)] lg:w-[calc((100%-4rem)/3)] bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
+                className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
               >
                 <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
                   <video
