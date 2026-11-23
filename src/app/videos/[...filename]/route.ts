@@ -127,11 +127,13 @@ export async function GET(
     candidatePaths.push(path.join(videosDir, "meditacion", baseName));
     candidatePaths.push(path.join(videosDir, "gong", baseName));
     candidatePaths.push(path.join(videosDir, "ayuno", baseName));
+    candidatePaths.push(path.join(videosDir, "ayuda", baseName));
     candidatePaths.push(`/var/data/salvadora/media/videos/el_espacio_para_mejorar_las_asanas/${baseName}`);
     candidatePaths.push(`/var/data/salvadora/media/videos/nagna_yoga/${baseName}`);
     candidatePaths.push(`/var/data/salvadora/media/videos/meditacion/${baseName}`);
     candidatePaths.push(`/var/data/salvadora/media/videos/gong/${baseName}`);
     candidatePaths.push(`/var/data/salvadora/media/videos/ayuno/${baseName}`);
+    candidatePaths.push(`/var/data/salvadora/media/videos/ayuda/${baseName}`);
     candidatePaths.push(`/var/data/salvadora/media/videos/${baseName}`);
     candidatePaths.push(path.join(process.cwd(), "public", "videos", baseName));
 
