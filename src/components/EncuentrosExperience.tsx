@@ -581,7 +581,7 @@ export default function EncuentrosExperience({
               },
               {
                 q: "¿Cómo se confirma la plaza y cuándo se realiza el pago?",
-                a: "Las plazas son limitadas (máximo 25 personas) para asegurar la intimidad y la atención personalizada de Salvadora. La preinscripción se solicita fácilmente por WhatsApp o Telegram, y la confirmación se formaliza de forma directa.",
+                a: "Las plazas son limitadas (máximo 25 personas) para asegurar la intimidad y la atención personalizada de Salvadora. La reserva se solicita fácilmente por WhatsApp o Telegram, y el abono se formaliza directamente en el centro el día del encuentro.",
               },
             ].map((faq, idx) => (
               <div
@@ -790,7 +790,7 @@ export default function EncuentrosExperience({
                 Confirmación inmediata por WhatsApp y Telegram
               </span>
               <span>·</span>
-              <span>Reserva sin compromiso previo</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

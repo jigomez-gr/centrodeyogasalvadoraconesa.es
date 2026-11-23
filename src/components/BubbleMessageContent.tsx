@@ -53,9 +53,9 @@ export function FormattedMessageBlock({ text }: FormattedMessageBlockProps) {
             target="_blank"
             rel="noopener noreferrer"
             className="my-1.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-2xs transition active:scale-95 no-underline cursor-pointer"
-            title="Enlace seguro de pago online"
+            title="Enlace de gestión de reserva"
           >
-            <span>💳 Enlace Seguro de Pago Online</span>
+            <span>💳 Enlace de Gestión de Reserva</span>
             <ArrowUpRight className="w-3.5 h-3.5 shrink-0 opacity-90" />
           </a>
         );

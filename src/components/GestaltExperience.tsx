@@ -529,7 +529,7 @@ export default function GestaltExperience({
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-700 font-bold">✓</span>
-                  <span><strong>Duración y Precio Accesible:</strong> Sesiones de 60 minutos a 35 € por sesión, con pago directo en el centro o por transferencia/Bizum para online.</span>
+                  <span><strong>Duración y Precio Accesible:</strong> Sesiones de 60 minutos a 35 € por sesión, con pago directo en el centro.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-700 font-bold">✓</span>
@@ -583,7 +583,7 @@ export default function GestaltExperience({
               },
               {
                 q: "¿Cuál es el coste de cada sesión y cómo se gestiona la reserva?",
-                a: "La aportación es de 35 € por sesión individual de 60 minutos. Las citas se acuerdan de forma individual por WhatsApp o Telegram, garantizando un horario cómodo para ambas partes. El pago se efectúa en el centro en las sesiones presenciales o de forma electrónica para sesiones online.",
+                a: "La aportación es de 35 € por sesión individual de 60 minutos. Las citas se acuerdan de forma individual por WhatsApp o Telegram, garantizando un horario cómodo para ambas partes. El abono se efectúa directamente en el centro.",
               },
             ].map((faq, idx) => (
               <div
@@ -792,7 +792,7 @@ export default function GestaltExperience({
                 Reserva confidencial y sin permanencia
               </span>
               <span>·</span>
-              <span>Pago por sesión individual</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

@@ -47,7 +47,7 @@ function ExitoContent() {
                     </h1>
 
                     <p className="text-[#1C1C1C]/80 text-lg mb-8 max-w-md mx-auto">
-                        Hemos recibido correctamente tu pago. Tu plaza para iniciar este camino de bienestar y armonía interior está asegurada.
+                        Hemos registrado correctamente tu reserva. Tu plaza para iniciar este camino de bienestar y armonía interior está asegurada. El abono se efectúa directamente en el centro el día de tu actividad.
                     </p>
 
                     {/* Details Section */}

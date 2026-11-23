@@ -783,7 +783,7 @@ export default function ConstelacionesExperience({
                 Confirmación inmediata por WhatsApp y Telegram
               </span>
               <span>·</span>
-              <span>Pago en el centro sin compromiso previo</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

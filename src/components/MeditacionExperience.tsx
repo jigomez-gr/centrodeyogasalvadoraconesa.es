@@ -761,7 +761,7 @@ export default function MeditacionExperience({
                 Confirmación inmediata por WhatsApp y Telegram
               </span>
               <span>·</span>
-              <span>Atención guiada y personalizada</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

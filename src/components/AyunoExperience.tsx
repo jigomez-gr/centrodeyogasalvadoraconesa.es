@@ -798,7 +798,7 @@ export default function AyunoExperience({
                 Confirmación inmediata por WhatsApp y Telegram
               </span>
               <span>·</span>
-              <span>Pago seguro con reserva previa</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

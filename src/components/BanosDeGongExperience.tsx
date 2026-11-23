@@ -924,7 +924,7 @@ export default function BanosDeGongExperience({
                 Confirmación inmediata por SMS y Email
               </span>
               <span>·</span>
-              <span>Pago en el centro sin compromiso previo</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

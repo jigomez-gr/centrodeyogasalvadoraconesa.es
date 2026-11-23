@@ -714,25 +714,16 @@ export default function BookingForm({ initialServices, initialCategories }: Book
                                     </div>
                                 </div>
 
-                                {/* OPCIONES DE PAGO */}
+                                {/* MODALIDAD DE PAGO EN EL CENTRO */}
                                 <div className="pt-3 max-w-md mx-auto space-y-2.5">
-                                    <button
-                                        type="button"
-                                        onClick={handlePayInstallment}
-                                        disabled={checkoutLoading}
-                                        className="w-full py-3.5 px-4 bg-[#800020] hover:bg-[#660019] text-white rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
-                                    >
-                                        {checkoutLoading ? (
-                                            <>
-                                                <Loader2 className="w-4 h-4 animate-spin" /> Conectando con Stripe...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <CreditCard className="w-4 h-4" />
-                                                Pagar Ahora Online con Tarjeta (Stripe)
-                                            </>
-                                        )}
-                                    </button>
+                                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-center">
+                                        <p className="text-xs font-bold text-emerald-800 uppercase tracking-wide">
+                                            ✓ Modalidad: Pago en el Centro
+                                        </p>
+                                        <p className="text-[12px] text-stone-600 mt-1 leading-snug">
+                                            El abono de la plaza se realiza directamente en recepción el día de tu asistencia (en efectivo o tarjeta). No requiere ningún pago online previo.
+                                        </p>
+                                    </div>
 
                                     <button
                                         type="button"
@@ -740,9 +731,9 @@ export default function BookingForm({ initialServices, initialCategories }: Book
                                             setBookingSuccessData(null);
                                             setActiveTab("consulta");
                                         }}
-                                        className="w-full py-2.5 px-4 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 rounded-xl font-semibold text-xs transition"
+                                        className="w-full py-3.5 px-4 bg-[#800020] hover:bg-[#660019] text-white rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2"
                                     >
-                                        Pagaré en el Centro / Ver Detalle Completo
+                                        Ver Detalle Completo de mi Reserva
                                     </button>
                                 </div>
                             </div>
@@ -1257,62 +1248,16 @@ export default function BookingForm({ initialServices, initialCategories }: Book
                                 </div>
                             </div>
 
-                            {/* PAGO STRIPE SI QUEDA SALDO */}
+                            {/* MODALIDAD DE PAGO EN EL CENTRO */}
                             {remainingBalance > 0 && (
-                                <form onSubmit={handlePayInstallment} className="bg-white border border-[#C5A059]/30 rounded-xl p-5 space-y-4">
-                                    <h4 className="font-serif text-base font-bold text-[#800020] flex items-center gap-2">
-                                        <CreditCard className="w-4 h-4 text-[#C5A059]" />
-                                        Abonar Pago con Tarjeta (Stripe)
+                                <div className="bg-[#FAF9F6] border border-[#C5A059]/40 rounded-xl p-5 space-y-2 text-center">
+                                    <h4 className="font-serif text-base font-bold text-[#800020]">
+                                        Modalidad: Pago en el Centro
                                     </h4>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <label className={`flex items-center p-3 rounded-xl border cursor-pointer ${paymentOption === "completo" ? "bg-[#800020]/5 border-[#800020]" : "bg-stone-50 border-stone-200"}`}>
-                                            <input
-                                                type="radio"
-                                                name="paymentOption"
-                                                value="completo"
-                                                checked={paymentOption === "completo"}
-                                                onChange={() => setPaymentOption("completo")}
-                                                className="text-[#800020] focus:ring-[#800020]"
-                                            />
-                                            <span className="ml-2.5 text-xs font-bold text-stone-800">
-                                                Liquidar Total ({remainingBalance} €)
-                                            </span>
-                                        </label>
-
-                                        {remainingBalance > 50 && (
-                                            <label className={`flex items-center p-3 rounded-xl border cursor-pointer ${paymentOption === "primer" ? "bg-[#800020]/5 border-[#800020]" : "bg-stone-50 border-stone-200"}`}>
-                                                <input
-                                                    type="radio"
-                                                    name="paymentOption"
-                                                    value="primer"
-                                                    checked={paymentOption === "primer"}
-                                                    onChange={() => setPaymentOption("primer")}
-                                                    className="text-[#800020] focus:ring-[#800020]"
-                                                />
-                                                <span className="ml-2.5 text-xs font-bold text-stone-800">
-                                                    Pago Parcial (50 €)
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        disabled={checkoutLoading}
-                                        className="w-full py-3 bg-[#800020] hover:bg-[#660019] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
-                                    >
-                                        {checkoutLoading ? (
-                                            <>
-                                                <Loader2 className="w-4 h-4 animate-spin" /> Conectando...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <CreditCard className="w-4 h-4" /> Proceder al Pago Seguro
-                                            </>
-                                        )}
-                                    </button>
-                                </form>
+                                    <p className="text-xs text-stone-600 max-w-sm mx-auto leading-relaxed">
+                                        El importe pendiente ({remainingBalance} €) se abona directamente en el centro el día de tu actividad (en efectivo o tarjeta en recepción). No es necesario realizar ningún pago online previo.
+                                    </p>
+                                </div>
                             )}
                         </div>
                     ) : (

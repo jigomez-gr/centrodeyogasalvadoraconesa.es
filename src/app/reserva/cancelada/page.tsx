@@ -25,7 +25,7 @@ function CancelContent() {
                     </h1>
 
                     <p className="text-[#1C1C1C]/80 text-sm mb-6">
-                        El proceso de pago ha sido interrumpido y no se ha realizado ningún cargo en tu tarjeta. Si deseas revisar los datos del viaje o reintentar la solicitud, puedes hacerlo en cualquier momento.
+                        El proceso de reserva ha sido cancelado. Recuerda que no se requiere ningún pago online previo y que los abonos se realizan directamente en el centro. Si deseas reintentar tu solicitud, puedes hacerlo en cualquier momento.
                     </p>
 
                     {reservaId && (

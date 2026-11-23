@@ -939,7 +939,7 @@ export default function PracticaYogaExperience({
                 Confirmación inmediata por SMS y Email
               </span>
               <span>·</span>
-              <span>Flexibilidad de recuperación hasta 3 meses</span>
+              <span>Pago en el centro</span>
               <span>·</span>
               <button
                 type="button"

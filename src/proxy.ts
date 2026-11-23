@@ -65,7 +65,7 @@ Para reservar plaza o consultar horarios actualizados, visita [Página de Reserv
 Gestiona tu plaza para clases regulares, talleres especiales y baños de gong.
 
 ## Opciones de Reserva
-1. **Reserva Directa Online**: Selecciona la actividad, fecha y horario deseado a través de nuestra pasarela segura.
+1. **Reserva de Plaza**: Selecciona la actividad, fecha y horario deseado. El abono se realiza directamente en el centro el día de tu asistencia.
 2. **Asistente Virtual**: Puedes interactuar con nuestro agente conversacional en la web para coordinar tu cita o resolver dudas sobre disponibilidad.
 3. **Atención por WhatsApp**: Escríbenos directamente al [+34 695 17 26 25](https://wa.me/34695172625) para resolver preguntas personalizadas.
 
