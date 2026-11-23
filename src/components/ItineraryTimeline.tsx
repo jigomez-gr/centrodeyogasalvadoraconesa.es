@@ -12,6 +12,7 @@ import BanosDeGongExperience from "@/components/BanosDeGongExperience";
 import PracticaYogaExperience from "@/components/PracticaYogaExperience";
 import MeditacionExperience from "@/components/MeditacionExperience";
 import PujaDeGongExperience from "@/components/PujaDeGongExperience";
+import GestaltExperience from "@/components/GestaltExperience";
 
 interface TimelineDay {
     id: number;
@@ -703,6 +704,14 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                     return (
                         <div key={day.id} className="animate-fadeIn w-full px-2 sm:px-0">
                             <PujaDeGongExperience activity={matchingService} isEmbedded={true} />
+                        </div>
+                    );
+                }
+
+                if (day.id === 5) {
+                    return (
+                        <div key={day.id} className="animate-fadeIn w-full px-2 sm:px-0">
+                            <GestaltExperience activity={matchingService} isEmbedded={true} />
                         </div>
                     );
                 }
