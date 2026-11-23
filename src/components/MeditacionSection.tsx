@@ -64,17 +64,19 @@ export default function MeditacionSection() {
             {videos.map((vid) => (
               <div
                 key={vid.id}
-                className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
+                className="w-full max-w-sm mx-auto md:max-w-none bg-white rounded-xl border border-stone-200 overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col"
               >
-                <div className="relative aspect-video bg-stone-900 border-b border-stone-100">
-                  <video
-                    src={vid.src}
-                    poster={vid.poster}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full object-contain bg-black"
-                  />
+                <div className="relative aspect-video bg-black border-b border-stone-100 flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-full p-3.5 sm:p-0 flex items-center justify-center">
+                    <video
+                      src={vid.src}
+                      poster={vid.poster}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-contain bg-black"
+                    />
+                  </div>
                 </div>
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
                   <div>
