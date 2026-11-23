@@ -27,8 +27,8 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isActividadesOpen, setIsActividadesOpen] = useState(false);
     const [activeCatId, setActiveCatId] = useState<string>("yoga-meditacion");
-    const [mobileActividadesOpen, setMobileActividadesOpen] = useState(true);
-    const [mobileOpenCatId, setMobileOpenCatId] = useState<string | null>("yoga-meditacion");
+    const [mobileActividadesOpen, setMobileActividadesOpen] = useState(false);
+    const [mobileOpenCatId, setMobileOpenCatId] = useState<string | null>(null);
 
     const leaveTimerRef = useRef<NodeJS.Timeout | null>(null);
     const desktopDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -81,6 +81,7 @@ export default function Navbar() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 setIsOpen(true);
                 setMobileActividadesOpen(true);
+                setMobileOpenCatId(null);
             }
         };
 
