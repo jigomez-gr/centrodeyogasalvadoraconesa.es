@@ -56,6 +56,8 @@ export function findActivityBySlugOrId(
     "meditaciones-guiadas": "meditaciones guiadas",
     mujeres: "encuentro de mujeres",
     "encuentro-mujeres": "encuentro de mujeres",
+    encuentros: "encuentro de mujeres",
+    "encuentros-de-mujeres": "encuentro de mujeres",
   };
 
   const aliasTarget = aliases[target];
@@ -83,6 +85,7 @@ export function getActivitySlug(service: CrmService): string {
   if (name.includes("ayuno")) return "retiro-ayuno-terapeutico";
   if (name.includes("bienestar experience")) return "bienestar-experience";
   if (name.includes("gestalt")) return "terapia-gestalt";
+  if (name.includes("mujeres") || name.includes("encuentro")) return "encuentros-de-mujeres";
   if (name.includes("meditaciones")) return "meditaciones-guiadas";
   if (name.includes("hatha yoga") && name.includes("2")) return "hatha-yoga-2-clases";
   if (name.includes("hatha yoga")) return "hatha-yoga";
