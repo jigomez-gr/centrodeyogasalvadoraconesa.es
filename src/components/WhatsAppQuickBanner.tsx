@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { MessageCircle, Send, Loader2, Play, X } from "lucide-react";
+import TelegramBookingModal from "@/components/TelegramBookingModal";
 
 interface VideoHelpModalData {
   type: "whatsapp" | "telegram";
@@ -30,6 +31,7 @@ export default function WhatsAppQuickBanner() {
     (process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "").replace(/^@/, "")
   );
   const [tgConnecting, setTgConnecting] = useState(false);
+  const [tgModalOpen, setTgModalOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<VideoHelpModalData | null>(null);
 
   useEffect(() => {
@@ -233,15 +235,10 @@ export default function WhatsAppQuickBanner() {
           <div className="w-full lg:w-auto shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
             <button
               type="button"
-              onClick={handleTelegramConnect}
-              disabled={tgConnecting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0088cc] hover:bg-[#0077b5] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md shadow-[#0088cc]/25 hover:scale-102 active:scale-98 transition duration-200 cursor-pointer disabled:opacity-60"
+              onClick={() => setTgModalOpen(true)}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#0088cc] hover:bg-[#0077b5] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md shadow-[#0088cc]/25 hover:scale-102 active:scale-98 transition duration-200 cursor-pointer"
             >
-              {tgConnecting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4 fill-current" />
-              )}
+              <Send className="w-4 h-4 fill-current" />
               <span>Chatear por Telegram</span>
             </button>
             <button
@@ -350,7 +347,8 @@ export default function WhatsAppQuickBanner() {
                   <button
                     type="button"
                     onClick={() => {
-                      handleTelegramConnect();
+                      setActiveVideo(null);
+                      setTgModalOpen(true);
                     }}
                     className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#0088cc] hover:bg-[#0077b5] text-white font-bold rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-[#0088cc]/20 cursor-pointer"
                   >
@@ -370,6 +368,15 @@ export default function WhatsAppQuickBanner() {
           </div>
         </div>
       )}
+
+      {/* Modal Conectar con Telegram */}
+      <TelegramBookingModal
+        isOpen={tgModalOpen}
+        onClose={() => setTgModalOpen(false)}
+        serviceName="Consultas y Reservas Generales"
+        note="Conexión iniciada desde el bloque de Telegram en la landing web (#contacto)."
+        prefillMessage="Hola Salvadora, me gustaría consultar información sobre las clases y actividades del Centro de Yoga."
+      />
     </>
   );
 }
