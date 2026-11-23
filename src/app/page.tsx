@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import Navbar from "@/components/Navbar";
+import HeroActividadesDropdown from "@/components/HeroActividadesDropdown";
 import ItineraryTimeline from "@/components/ItineraryTimeline";
 import VideoGallery from "@/components/VideoGallery";
 import ContactQueryForm from "@/components/ContactQueryForm";
@@ -268,12 +269,7 @@ export default async function Home() {
             >
               TE LLAMAMOS GRATIS (IA)
             </VapiCallButton>
-            <a
-              href="#itinerario"
-              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-[40px] sm:h-12 px-8 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-250"
-            >
-              Ver Actividades
-            </a>
+            <HeroActividadesDropdown />
             <Link
               href="/servicios"
               className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-6 sm:px-8 border border-[#800020] text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/90 shadow-md hover:scale-102 transition duration-250 text-center"
