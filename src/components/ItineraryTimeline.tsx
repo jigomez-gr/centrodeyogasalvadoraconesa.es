@@ -16,6 +16,7 @@ import GestaltExperience from "@/components/GestaltExperience";
 import ConstelacionesExperience from "@/components/ConstelacionesExperience";
 import EncuentrosExperience from "@/components/EncuentrosExperience";
 import AyunoExperience from "@/components/AyunoExperience";
+import BienestarExperience from "@/components/BienestarExperience";
 
 interface TimelineDay {
     id: number;
@@ -739,6 +740,14 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
                     return (
                         <div key={day.id} className="animate-fadeIn w-full px-2 sm:px-0">
                             <AyunoExperience activity={matchingService} isEmbedded={true} />
+                        </div>
+                    );
+                }
+
+                if (day.id === 9) {
+                    return (
+                        <div key={day.id} className="animate-fadeIn w-full px-2 sm:px-0">
+                            <BienestarExperience activity={matchingService} isEmbedded={true} />
                         </div>
                     );
                 }
