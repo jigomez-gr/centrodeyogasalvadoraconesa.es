@@ -11,6 +11,7 @@ import PujaDeGongExperience from "@/components/PujaDeGongExperience";
 import GestaltExperience from "@/components/GestaltExperience";
 import ConstelacionesExperience from "@/components/ConstelacionesExperience";
 import EncuentrosExperience from "@/components/EncuentrosExperience";
+import AyunoExperience from "@/components/AyunoExperience";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -358,6 +359,47 @@ export default async function ActividadPage({ params }: PageProps) {
             <span className="text-[#800020] font-bold">Encuentros de Mujeres</span>
           </nav>
           <EncuentrosExperience activity={activity} isEmbedded={false} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Si es Retiro de Ayuno Terapéutico, renderizar la experiencia inmersiva completa
+  if (
+    slug === "ayuno" ||
+    slug === "ayunos" ||
+    slug === "ayuno-terapeutico" ||
+    slug === "retiro-ayuno" ||
+    slug === "retiro-de-ayuno" ||
+    slug === "retiro-de-ayuno-terapeutico" ||
+    /ayuno/i.test(activity.name)
+  ) {
+    return (
+      <div className="bg-[#FAF9F6] text-[#1C1C1C] min-h-screen flex flex-col justify-between selection:bg-[#C5A059]/30 selection:text-[#12241D]">
+        <Navbar />
+        <main className="pt-24 sm:pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-stone-500"
+          >
+            <Link
+              href="/"
+              className="hover:text-[#800020] transition inline-flex items-center gap-1"
+            >
+              <span>Inicio</span>
+            </Link>
+            <span>/</span>
+            <Link
+              href="/servicios"
+              className="hover:text-[#800020] transition inline-flex items-center gap-1"
+            >
+              <span>Actividades</span>
+            </Link>
+            <span>/</span>
+            <span className="text-[#800020] font-bold">Retiro de Ayuno Terapéutico</span>
+          </nav>
+          <AyunoExperience activity={activity} isEmbedded={false} />
         </main>
         <Footer />
       </div>

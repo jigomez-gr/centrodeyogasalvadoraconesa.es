@@ -37,6 +37,8 @@ export function findActivityBySlugOrId(
     constelar: "constelar",
     participante: "participante",
     ayuno: "retiro de ayuno",
+    ayunos: "retiro de ayuno",
+    "ayuno-terapeutico": "retiro de ayuno",
     "retiro-ayuno": "retiro de ayuno",
     "retiro-de-ayuno": "retiro de ayuno",
     "retiro-de-ayuno-terapeutico": "retiro de ayuno",
