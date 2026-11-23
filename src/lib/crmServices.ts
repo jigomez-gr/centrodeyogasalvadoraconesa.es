@@ -25,7 +25,7 @@ export interface CrmService {
   firstClassFree?: boolean;
   freeForYogaStudents?: boolean;
   whatsappBookingUrl?: string;
-  telegramBookingUrl?: string;
+  telegramBookingUrl?: string | null;
   categoryId?: string | null;
   categoryCode?: string | null;
   categoryName?: string | null;
@@ -671,6 +671,13 @@ export async function fetchCrmServices(filters?: {
           videoParticularPath = "media_base/videos/Promo_Bienestar-Experience-2026_1920x1080.mp4";
         }
 
+        const telegramBookingUrl =
+          data.telegramBotUsername
+            ? `https://t.me/${data.telegramBotUsername.replace(/^@/, "")}?text=${encodeURIComponent(
+                `Hola, me gustaría información y disponibilidad para ${s.name}.`
+              )}`
+            : s.telegramBookingUrl || null;
+
         return {
           ...s,
           eventDatesText,
@@ -684,6 +691,7 @@ export async function fetchCrmServices(filters?: {
           videoUrl: resolveUrl(s.videoUrl),
           videoParticularUrl,
           videoParticularPath,
+          telegramBookingUrl,
         };
       });
 
