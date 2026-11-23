@@ -529,12 +529,14 @@ export default function ItineraryTimeline({ videosExist }: ItineraryTimelineProp
         const selectDay = (dayNum: number) => {
             if (dayNum >= 1 && dayNum <= 9) {
                 setActiveDay(dayNum);
-                setTimeout(() => {
+                const scrollToItinerary = () => {
                     const el = document.getElementById("itinerario");
                     if (el) {
                         el.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
-                }, 80);
+                };
+                setTimeout(scrollToItinerary, 60);
+                setTimeout(scrollToItinerary, 260);
             }
         };
 

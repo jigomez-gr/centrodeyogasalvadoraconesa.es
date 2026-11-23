@@ -1,7 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Menu, X, Music, PhoneCall } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import {
+    Menu,
+    X,
+    PhoneCall,
+    ChevronDown,
+    ChevronRight,
+    Sparkles,
+    Eye,
+    ArrowRight,
+    Compass,
+} from "lucide-react";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { triggerVapiCall } from "@/components/VapiCallModal";
 import { isPorVapiEnabled } from "@/lib/featureFlags";
@@ -12,8 +22,150 @@ interface MenuItem {
     dayNum?: number;
 }
 
+export interface ActivityItem {
+    dayNum: number;
+    title: string;
+    subtitle: string;
+    tag: string;
+    icon: string;
+    hrefPortada: string;
+    hrefDedicated: string;
+}
+
+export interface ActivityCategory {
+    id: string;
+    name: string;
+    shortDesc: string;
+    icon: string;
+    activities: ActivityItem[];
+}
+
+export const ACTIVITY_CATEGORIES: ActivityCategory[] = [
+    {
+        id: "yoga-meditacion",
+        name: "Yoga y Meditación",
+        shortDesc: "Alineación corporal, presencia y respiración consciente",
+        icon: "🧘‍♀️",
+        activities: [
+            {
+                dayNum: 1,
+                title: "1. Hatha Yoga Terapéutico",
+                subtitle: "Clases semanales regulares, asanas conscientes y relajación profunda.",
+                tag: "Clases regulares",
+                icon: "🧘",
+                hrefPortada: "/#dia-1",
+                hrefDedicated: "/practica-yoga",
+            },
+            {
+                dayNum: 2,
+                title: "2. Meditación y Centramiento",
+                subtitle: "Sesiones de centramiento mental, silencio interior y presencia consciente.",
+                tag: "Lunes y Jueves",
+                icon: "🕯️",
+                hrefPortada: "/#dia-2",
+                hrefDedicated: "/meditacion",
+            },
+        ],
+    },
+    {
+        id: "sonoterapia-gongs",
+        name: "Sonoterapia y Gongs",
+        shortDesc: "Inmersión acústica, relajación celular y vibración sonora",
+        icon: "🔔",
+        activities: [
+            {
+                dayNum: 3,
+                title: "3. Baños de Gong",
+                subtitle: "Sesión mensual de sonido armónico envolvente para armonizar cuerpo y mente.",
+                tag: "Mensual (Sábados)",
+                icon: "🔔",
+                hrefPortada: "/#dia-3",
+                hrefDedicated: "/banos-de-gong",
+            },
+            {
+                dayNum: 4,
+                title: "4. Puja de Gong (Noche Sagrada)",
+                subtitle: "11 horas ininterrumpidas de vibración sonora sanadora durante toda la noche.",
+                tag: "Evento Especial (11h)",
+                icon: "✨",
+                hrefPortada: "/#dia-4",
+                hrefDedicated: "/puja-de-gong",
+            },
+        ],
+    },
+    {
+        id: "terapia-crecimiento",
+        name: "Terapia y Crecimiento",
+        shortDesc: "Psicoterapia humanista, constelaciones y círculos vivenciales",
+        icon: "🌿",
+        activities: [
+            {
+                dayNum: 5,
+                title: "5. Terapia Gestalt Individual",
+                subtitle: "Acompañamiento psicoterapéutico centrado en el aquí y el ahora.",
+                tag: "Individual",
+                icon: "🌱",
+                hrefPortada: "/#dia-5",
+                hrefDedicated: "/terapia-gestalt",
+            },
+            {
+                dayNum: 6,
+                title: "6. Constelaciones Familiares",
+                subtitle: "Sanación de vínculos familiares, dinámicas ocultas y orden sistémico.",
+                tag: "Talleres Mensuales",
+                icon: "👥",
+                hrefPortada: "/#dia-6",
+                hrefDedicated: "/constelaciones-familiares",
+            },
+            {
+                dayNum: 7,
+                title: "7. Encuentros y Círculos de Mujeres",
+                subtitle: "Espacio seguro de escucha, ciclicidad femenina y reconexión interna.",
+                tag: "Círculos grupales",
+                icon: "🌸",
+                hrefPortada: "/#dia-7",
+                hrefDedicated: "/encuentros-de-mujeres",
+            },
+        ],
+    },
+    {
+        id: "retiros-salud",
+        name: "Retiros y Salud Integral",
+        shortDesc: "Inmersiones residenciales, descanso digestivo y bienestar profundo",
+        icon: "🍃",
+        activities: [
+            {
+                dayNum: 8,
+                title: "8. Retiro de Ayuno Terapéutico",
+                subtitle: "4 días de regeneración celular, caldos biológicos, autofagia y silencio.",
+                tag: "Retiro Residencial",
+                icon: "🍃",
+                hrefPortada: "/#dia-8",
+                hrefDedicated: "/ayuno-terapeutico",
+            },
+            {
+                dayNum: 9,
+                title: "9. Actividades Especiales y Bienestar",
+                subtitle: "Acompañamiento 'Más allá del tumor', longevidad, salud y vitalidad.",
+                tag: "Bienestar & Salud",
+                icon: "☀️",
+                hrefPortada: "/#dia-9",
+                hrefDedicated: "/bienestar-experience",
+            },
+        ],
+    },
+];
+
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isActividadesOpen, setIsActividadesOpen] = useState(false);
+    const [activeCatId, setActiveCatId] = useState<string>("yoga-meditacion");
+    const [mobileActividadesOpen, setMobileActividadesOpen] = useState(true);
+    const [mobileOpenCatId, setMobileOpenCatId] = useState<string | null>("yoga-meditacion");
+
+    const leaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const desktopDropdownRef = useRef<HTMLDivElement | null>(null);
+
     const showPorVapi = isPorVapiEnabled();
 
     const menuItems: MenuItem[] = [
@@ -27,6 +179,63 @@ export default function Navbar() {
         { label: "Plazas y Precios", href: "/#precios" },
         { label: "Consultas / Reservas por Email ó Wassap o Telegram", href: "/#contacto" },
     ];
+
+    // Close desktop dropdown on outside click or Esc key
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (desktopDropdownRef.current && !desktopDropdownRef.current.contains(e.target as Node)) {
+                setIsActividadesOpen(false);
+            }
+        };
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                setIsActividadesOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+            if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+        };
+    }, []);
+
+    const handleDesktopMouseEnter = () => {
+        if (leaveTimerRef.current) {
+            clearTimeout(leaveTimerRef.current);
+            leaveTimerRef.current = null;
+        }
+        setIsActividadesOpen(true);
+    };
+
+    const handleDesktopMouseLeave = () => {
+        if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+        leaveTimerRef.current = setTimeout(() => {
+            setIsActividadesOpen(false);
+        }, 220);
+    };
+
+    const handleActivitySelect = (dayNum: number, hrefPortada: string, e?: React.MouseEvent) => {
+        if (e) e.preventDefault();
+        setIsActividadesOpen(false);
+        setIsOpen(false);
+
+        if (typeof window !== "undefined") {
+            if (window.location.pathname === "/") {
+                window.history.replaceState(null, "", hrefPortada);
+                window.dispatchEvent(new CustomEvent("select-activity-day", { detail: dayNum }));
+                const el = document.getElementById("itinerario");
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            } else {
+                window.location.href = hrefPortada;
+            }
+        }
+    };
 
     const handleNavClick = (e: React.MouseEvent, item: MenuItem) => {
         const isInicio = item.label.toLowerCase() === "inicio";
@@ -62,11 +271,13 @@ export default function Navbar() {
 
     const handleInicioClick = (e: React.MouseEvent) => handleNavClick(e, { label: "Inicio", href: "/#inicio" });
 
+    const currentCategory = ACTIVITY_CATEGORIES.find((c) => c.id === activeCatId) || ACTIVITY_CATEGORIES[0];
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#C5A059]/15 shadow-sm font-sans">
             {/* Desktop Centered Header Layout */}
             <div className="hidden xl:flex flex-col items-center pt-2.5 pb-2.5 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
-                {/* Logo Image absolutely positioned on the top left (aligned with Brand text, NEVER overlapping the nav below) */}
+                {/* Logo Image absolutely positioned on top left */}
                 <a
                     href="/"
                     onClick={handleInicioClick}
@@ -94,6 +305,206 @@ export default function Navbar() {
                 <nav className="flex items-center justify-center space-x-2.5 lg:space-x-3.5 xl:space-x-4 text-[10px] xl:text-[10.5px] font-bold uppercase tracking-widest text-stone-600">
                     {menuItems.map((item, idx) => {
                         const isInicio = item.label.toLowerCase() === "inicio";
+                        const isActividades = item.label.toLowerCase() === "actividades";
+
+                        if (isActividades) {
+                            return (
+                                <span key={item.label} className="flex items-center space-x-2.5 lg:space-x-3.5 xl:space-x-4">
+                                    {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
+
+                                    {/* ACTIVIDADES WITH MULTI-LEVEL CASCADING DROPDOWN */}
+                                    <div
+                                        ref={desktopDropdownRef}
+                                        className="relative inline-flex items-center"
+                                        onMouseEnter={handleDesktopMouseEnter}
+                                        onMouseLeave={handleDesktopMouseLeave}
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                setIsActividadesOpen((prev) => !prev);
+                                            }}
+                                            aria-expanded={isActividadesOpen}
+                                            className={`hover:text-[#800020] transition duration-200 inline-flex items-center gap-1 cursor-pointer font-extrabold py-1 ${
+                                                isActividadesOpen ? "text-[#800020]" : ""
+                                            }`}
+                                        >
+                                            <span>Actividades</span>
+                                            <ChevronDown
+                                                className={`w-3 h-3 text-[#C5A059] transition-transform duration-200 ${
+                                                    isActividadesOpen ? "rotate-180 text-[#800020]" : ""
+                                                }`}
+                                            />
+                                        </button>
+
+                                        {/* CASCADING MENU PANEL (DESKTOP) */}
+                                        {isActividadesOpen && (
+                                            <div
+                                                className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 animate-fadeIn"
+                                                style={{ width: "min(780px, calc(100vw - 32px))" }}
+                                            >
+                                                <div className="bg-white rounded-2xl border border-[#C5A059]/30 shadow-2xl overflow-hidden font-sans">
+                                                    {/* Decorative top gold gradient */}
+                                                    <div className="h-1 bg-gradient-to-r from-[#800020] via-[#C5A059] to-[#800020]" />
+
+                                                    {/* Header bar */}
+                                                    <div className="px-5 py-3 bg-[#0D1F18] text-white flex items-center justify-between border-b border-[#C5A059]/30">
+                                                        <div className="flex items-center gap-2">
+                                                            <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                                                            <span className="text-xs font-bold uppercase tracking-widest text-[#E5C378]">
+                                                                Menú en Cascada · Actividades y Disciplinas
+                                                            </span>
+                                                        </div>
+                                                        <span className="text-[11px] text-stone-300 font-medium">
+                                                            9 Disciplinas del Centro
+                                                        </span>
+                                                    </div>
+
+                                                    {/* 2-Column Cascading Body */}
+                                                    <div className="grid grid-cols-12 min-h-[390px]">
+                                                        {/* Left Column: Categorías (Level 1) */}
+                                                        <div className="col-span-5 bg-stone-50 border-r border-stone-200/80 p-3.5 flex flex-col justify-between">
+                                                            <div className="space-y-1.5">
+                                                                <p className="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-[#96680E]">
+                                                                    Disciplinas & Áreas
+                                                                </p>
+                                                                {ACTIVITY_CATEGORIES.map((cat) => {
+                                                                    const isActive = activeCatId === cat.id;
+                                                                    return (
+                                                                        <button
+                                                                            key={cat.id}
+                                                                            type="button"
+                                                                            onMouseEnter={() => setActiveCatId(cat.id)}
+                                                                            onClick={() => setActiveCatId(cat.id)}
+                                                                            className={`w-full text-left px-3 py-2.5 rounded-xl transition duration-150 flex items-center justify-between group cursor-pointer ${
+                                                                                isActive
+                                                                                    ? "bg-white shadow-xs border border-[#C5A059]/50 text-[#800020]"
+                                                                                    : "hover:bg-white/70 text-stone-700"
+                                                                            }`}
+                                                                        >
+                                                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                                                <span className="text-base select-none shrink-0">{cat.icon}</span>
+                                                                                <div className="min-w-0">
+                                                                                    <p className={`text-xs font-bold tracking-wide truncate ${isActive ? "text-[#800020]" : "text-stone-800"}`}>
+                                                                                        {cat.name}
+                                                                                    </p>
+                                                                                    <p className="text-[10px] text-stone-500 truncate">
+                                                                                        {cat.activities.length} actividades
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <ChevronRight
+                                                                                className={`w-4 h-4 shrink-0 transition-transform ${
+                                                                                    isActive
+                                                                                        ? "text-[#800020] translate-x-0.5"
+                                                                                        : "text-stone-400 group-hover:text-stone-600"
+                                                                                }`}
+                                                                            />
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+
+                                                            {/* Quick link: All activities in Itinerary */}
+                                                            <div className="pt-3 border-t border-stone-200 mt-2">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={(e) => {
+                                                                        setIsActividadesOpen(false);
+                                                                        handleNavClick(e, { label: "Actividades", href: "/#itinerario", dayNum: 1 });
+                                                                    }}
+                                                                    className="w-full py-2.5 px-3 text-center rounded-xl bg-stone-100 hover:bg-[#800020] hover:text-white text-[#800020] text-[11px] font-bold tracking-wider uppercase transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
+                                                                >
+                                                                    <Compass className="w-3.5 h-3.5" />
+                                                                    <span>Ver Todas en Portada (1 a 9)</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Right Column: Actividades de la categoría seleccionada (Level 2) */}
+                                                        <div className="col-span-7 p-4 bg-white flex flex-col justify-between">
+                                                            {currentCategory && (
+                                                                <div className="space-y-3">
+                                                                    {/* Category Header */}
+                                                                    <div className="pb-2 border-b border-stone-100">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <h4 className="text-sm font-bold text-[#800020] font-editorial">
+                                                                                {currentCategory.icon} {currentCategory.name}
+                                                                            </h4>
+                                                                            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF9F6] border border-[#C5A059]/30 text-[#96680E] rounded-full">
+                                                                                {currentCategory.activities.length} opciones
+                                                                            </span>
+                                                                        </div>
+                                                                        <p className="text-[11px] text-stone-500 mt-0.5">
+                                                                            {currentCategory.shortDesc}
+                                                                        </p>
+                                                                    </div>
+
+                                                                    {/* Activities List */}
+                                                                    <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                                                                        {currentCategory.activities.map((act) => (
+                                                                            <div
+                                                                                key={act.dayNum}
+                                                                                className="p-3 rounded-xl border border-stone-200 hover:border-[#C5A059]/60 hover:shadow-xs transition bg-[#FAF9F6]/50 group"
+                                                                            >
+                                                                                <div className="flex items-start justify-between gap-2 mb-1.5">
+                                                                                    <div className="flex items-center gap-2">
+                                                                                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#800020] text-white text-[10px] font-black shrink-0">
+                                                                                            {act.dayNum}
+                                                                                        </span>
+                                                                                        <h5 className="text-xs font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
+                                                                                            {act.title}
+                                                                                        </h5>
+                                                                                    </div>
+                                                                                    <span className="text-[9.5px] uppercase font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60 shrink-0">
+                                                                                        {act.tag}
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                <p className="text-[11px] text-stone-600 leading-relaxed mb-2.5">
+                                                                                    {act.subtitle}
+                                                                                </p>
+
+                                                                                {/* Actions: Direct select to show the activity card below */}
+                                                                                <div className="flex items-center gap-2 pt-1 border-t border-stone-200/60">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
+                                                                                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition cursor-pointer shadow-2xs"
+                                                                                        title="Mostrar esta actividad interactiva en la sección de servicios (Segunda Pantalla)"
+                                                                                    >
+                                                                                        <Eye className="w-3.5 h-3.5 text-[#E5C378]" />
+                                                                                        <span>Mostrar en Portada (#dia-{act.dayNum})</span>
+                                                                                    </button>
+                                                                                    <a
+                                                                                        href={act.hrefDedicated}
+                                                                                        onClick={() => setIsActividadesOpen(false)}
+                                                                                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-300 hover:border-[#800020] hover:text-[#800020] text-stone-600 text-[10.5px] font-semibold transition"
+                                                                                        title="Ir a la página monográfica de esta actividad"
+                                                                                    >
+                                                                                        <span>Página</span>
+                                                                                        <ArrowRight className="w-3 h-3" />
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                            <div className="pt-2 text-[10px] text-stone-400 italic text-center border-t border-stone-100 mt-2">
+                                                                💡 Pulsa «Mostrar en Portada» para activar la ficha con horarios, vídeos y reserva directa.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </span>
+                            );
+                        }
+
                         return (
                             <span key={item.label} className="flex items-center space-x-2.5 lg:space-x-3.5 xl:space-x-4">
                                 {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
@@ -131,13 +542,13 @@ export default function Navbar() {
                 </nav>
             </div>
 
-            {/* Mobile Header Layout */}
+            {/* Mobile / Tablet Header Layout */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between xl:hidden relative h-[64px]">
                 {/* Left side: Hamburger button + Logo */}
                 <div className="flex items-center space-x-2 select-none shrink-0">
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="text-[#1C1C1C] hover:text-[#800020] focus:outline-none p-1"
+                        className="text-[#1C1C1C] hover:text-[#800020] focus:outline-none p-1 cursor-pointer"
                         aria-label="Toggle Menu"
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6 text-stone-700" />}
@@ -165,12 +576,125 @@ export default function Navbar() {
                 <div className="w-[76px] shrink-0" aria-hidden="true" />
             </div>
 
-            {/* Mobile Drawer Overlay */}
+            {/* Mobile / Tablet Drawer Overlay */}
             {isOpen && (
-                <div className="xl:hidden bg-white border-t border-[#C5A059]/15 py-4 px-6 absolute top-full left-0 right-0 shadow-lg animate-slideDown">
-                    <nav className="flex flex-col space-y-4 font-semibold text-xs uppercase tracking-widest text-[#1C1C1C]/60">
+                <div className="xl:hidden bg-white border-t border-[#C5A059]/15 py-4 px-4 sm:px-6 absolute top-full left-0 right-0 shadow-xl max-h-[85vh] overflow-y-auto animate-slideDown">
+                    <nav className="flex flex-col space-y-3 font-semibold text-xs uppercase tracking-widest text-[#1C1C1C]/75">
                         {menuItems.map((item) => {
                             const isInicio = item.label.toLowerCase() === "inicio";
+                            const isActividades = item.label.toLowerCase() === "actividades";
+
+                            if (isActividades) {
+                                return (
+                                    <div key={item.label} className="pt-1 pb-1">
+                                        {/* Multi-level accordion for mobile/tablets */}
+                                        <div className="border border-[#C5A059]/30 rounded-xl overflow-hidden bg-stone-50/70">
+                                            <button
+                                                type="button"
+                                                onClick={() => setMobileActividadesOpen((prev) => !prev)}
+                                                className="w-full flex items-center justify-between p-3 text-left font-bold text-xs uppercase tracking-wider text-[#800020] bg-white cursor-pointer"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <Sparkles className="w-4 h-4 text-[#C5A059]" />
+                                                    <span>Actividades (Menú en Cascada)</span>
+                                                </div>
+                                                <ChevronDown
+                                                    className={`w-4 h-4 text-[#C5A059] transition-transform duration-200 ${
+                                                        mobileActividadesOpen ? "rotate-180 text-[#800020]" : ""
+                                                    }`}
+                                                />
+                                            </button>
+
+                                            {mobileActividadesOpen && (
+                                                <div className="p-2 space-y-2 bg-[#FAF9F6] border-t border-[#C5A059]/20">
+                                                    {ACTIVITY_CATEGORIES.map((cat) => {
+                                                        const isCatOpen = mobileOpenCatId === cat.id;
+                                                        return (
+                                                            <div key={cat.id} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setMobileOpenCatId(isCatOpen ? null : cat.id)}
+                                                                    className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800 hover:text-[#800020] cursor-pointer"
+                                                                >
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span>{cat.icon}</span>
+                                                                        <span>{cat.name}</span>
+                                                                        <span className="text-[10px] text-stone-400 font-normal">
+                                                                            ({cat.activities.length})
+                                                                        </span>
+                                                                    </div>
+                                                                    <ChevronDown
+                                                                        className={`w-3.5 h-3.5 text-stone-400 transition-transform ${
+                                                                            isCatOpen ? "rotate-180 text-[#800020]" : ""
+                                                                        }`}
+                                                                    />
+                                                                </button>
+
+                                                                {isCatOpen && (
+                                                                    <div className="p-2.5 pt-0 space-y-2 border-t border-stone-100">
+                                                                        {cat.activities.map((act) => (
+                                                                            <div
+                                                                                key={act.dayNum}
+                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80"
+                                                                            >
+                                                                                <div className="flex items-center justify-between gap-1 mb-1">
+                                                                                    <div className="flex items-center gap-1.5">
+                                                                                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#800020] text-white text-[9px] font-black shrink-0">
+                                                                                            {act.dayNum}
+                                                                                        </span>
+                                                                                        <span className="font-bold text-[11px] text-stone-900">
+                                                                                            {act.title}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <span className="text-[9px] uppercase font-semibold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
+                                                                                        {act.tag}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <p className="text-[10.5px] text-stone-600 mb-2 leading-relaxed">
+                                                                                    {act.subtitle}
+                                                                                </p>
+                                                                                <div className="flex items-center gap-1.5">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
+                                                                                        className="flex-1 py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                                                                                    >
+                                                                                        <Eye className="w-3 h-3 text-[#E5C378]" />
+                                                                                        <span>Mostrar (#dia-{act.dayNum})</span>
+                                                                                    </button>
+                                                                                    <a
+                                                                                        href={act.hrefDedicated}
+                                                                                        onClick={() => setIsOpen(false)}
+                                                                                        className="py-1.5 px-2.5 rounded border border-stone-300 text-stone-700 text-[10px] font-semibold text-center hover:border-[#800020] hover:text-[#800020]"
+                                                                                    >
+                                                                                        Página
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            setIsOpen(false);
+                                                            handleNavClick(e, { label: "Actividades", href: "/#itinerario", dayNum: 1 });
+                                                        }}
+                                                        className="w-full py-2.5 rounded-lg bg-[#800020] text-white text-[11px] font-bold uppercase tracking-wider text-center cursor-pointer shadow-xs"
+                                                    >
+                                                        ✨ Ver Todas las Actividades (1 a 9)
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            }
+
                             return (
                                 <a
                                     key={item.label}
@@ -185,6 +709,7 @@ export default function Navbar() {
                                 </a>
                             );
                         })}
+
                         {showPorVapi && (
                             <button
                                 type="button"
