@@ -441,54 +441,61 @@ export default function Navbar() {
                                                                     </div>
 
                                                                     {/* Activities List */}
-                                                                    <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
-                                                                        {currentCategory.activities.map((act) => (
-                                                                            <div
-                                                                                key={act.dayNum}
-                                                                                className="p-3 rounded-xl border border-stone-200 hover:border-[#C5A059]/60 hover:shadow-xs transition bg-[#FAF9F6]/50 group"
-                                                                            >
-                                                                                <div className="flex items-start justify-between gap-2 mb-1.5">
-                                                                                    <div className="flex items-center gap-2">
-                                                                                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#800020] text-white text-[10px] font-black shrink-0">
-                                                                                            {act.dayNum}
+                                                                        <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                                                                            {currentCategory.activities.map((act) => (
+                                                                                <div
+                                                                                    key={act.dayNum}
+                                                                                    onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
+                                                                                    className="p-3 rounded-xl border border-stone-200 hover:border-[#800020] hover:shadow-sm transition bg-[#FAF9F6]/60 hover:bg-white cursor-pointer group"
+                                                                                >
+                                                                                    <div className="flex items-start justify-between gap-2 mb-1.5">
+                                                                                        <div className="flex items-center gap-2">
+                                                                                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#800020] text-white text-[10px] font-black shrink-0">
+                                                                                                {act.dayNum}
+                                                                                            </span>
+                                                                                            <h5 className="text-xs font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
+                                                                                                {act.title}
+                                                                                            </h5>
+                                                                                        </div>
+                                                                                        <span className="text-[9.5px] uppercase font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60 shrink-0">
+                                                                                            {act.tag}
                                                                                         </span>
-                                                                                        <h5 className="text-xs font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
-                                                                                            {act.title}
-                                                                                        </h5>
                                                                                     </div>
-                                                                                    <span className="text-[9.5px] uppercase font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60 shrink-0">
-                                                                                        {act.tag}
-                                                                                    </span>
-                                                                                </div>
 
-                                                                                <p className="text-[11px] text-stone-600 leading-relaxed mb-2.5">
-                                                                                    {act.subtitle}
-                                                                                </p>
+                                                                                    <p className="text-[11px] text-stone-600 leading-relaxed mb-2.5">
+                                                                                        {act.subtitle}
+                                                                                    </p>
 
-                                                                                {/* Actions: Direct select to show the activity card below */}
-                                                                                <div className="flex items-center gap-2 pt-1 border-t border-stone-200/60">
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
-                                                                                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition cursor-pointer shadow-2xs"
-                                                                                        title="Mostrar esta actividad interactiva en la sección de servicios (Segunda Pantalla)"
-                                                                                    >
-                                                                                        <Eye className="w-3.5 h-3.5 text-[#E5C378]" />
-                                                                                        <span>Mostrar en Portada (#dia-{act.dayNum})</span>
-                                                                                    </button>
-                                                                                    <a
-                                                                                        href={act.hrefDedicated}
-                                                                                        onClick={() => setIsActividadesOpen(false)}
-                                                                                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-300 hover:border-[#800020] hover:text-[#800020] text-stone-600 text-[10.5px] font-semibold transition"
-                                                                                        title="Ir a la página monográfica de esta actividad"
-                                                                                    >
-                                                                                        <span>Página</span>
-                                                                                        <ArrowRight className="w-3 h-3" />
-                                                                                    </a>
+                                                                                    {/* Actions: Direct select to show the activity card below */}
+                                                                                    <div className="flex items-center gap-2 pt-1 border-t border-stone-200/60">
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            onClick={(e) => {
+                                                                                                e.stopPropagation();
+                                                                                                handleActivitySelect(act.dayNum, act.hrefPortada);
+                                                                                            }}
+                                                                                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition cursor-pointer shadow-2xs"
+                                                                                            title="Mostrar esta actividad interactiva en la sección de servicios (Segunda Pantalla)"
+                                                                                        >
+                                                                                            <Eye className="w-3.5 h-3.5 text-[#E5C378]" />
+                                                                                            <span>Mostrar en Portada (#dia-{act.dayNum})</span>
+                                                                                        </button>
+                                                                                        <a
+                                                                                            href={act.hrefDedicated}
+                                                                                            onClick={(e) => {
+                                                                                                e.stopPropagation();
+                                                                                                setIsActividadesOpen(false);
+                                                                                            }}
+                                                                                            className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-300 hover:border-[#800020] hover:text-[#800020] text-stone-600 text-[10.5px] font-semibold transition"
+                                                                                            title="Ir a la página monográfica de esta actividad"
+                                                                                        >
+                                                                                            <span>Página</span>
+                                                                                            <ArrowRight className="w-3 h-3" />
+                                                                                        </a>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
+                                                                            ))}
+                                                                        </div>
                                                                 </div>
                                                             )}
 
@@ -635,7 +642,8 @@ export default function Navbar() {
                                                                         {cat.activities.map((act) => (
                                                                             <div
                                                                                 key={act.dayNum}
-                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80"
+                                                                                onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
+                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white cursor-pointer transition"
                                                                             >
                                                                                 <div className="flex items-center justify-between gap-1 mb-1">
                                                                                     <div className="flex items-center gap-1.5">
@@ -656,7 +664,10 @@ export default function Navbar() {
                                                                                 <div className="flex items-center gap-1.5">
                                                                                     <button
                                                                                         type="button"
-                                                                                        onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
+                                                                                        onClick={(e) => {
+                                                                                            e.stopPropagation();
+                                                                                            handleActivitySelect(act.dayNum, act.hrefPortada);
+                                                                                        }}
                                                                                         className="flex-1 py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                                                                                     >
                                                                                         <Eye className="w-3 h-3 text-[#E5C378]" />
@@ -664,7 +675,10 @@ export default function Navbar() {
                                                                                     </button>
                                                                                     <a
                                                                                         href={act.hrefDedicated}
-                                                                                        onClick={() => setIsOpen(false)}
+                                                                                        onClick={(e) => {
+                                                                                            e.stopPropagation();
+                                                                                            setIsOpen(false);
+                                                                                        }}
                                                                                         className="py-1.5 px-2.5 rounded border border-stone-300 text-stone-700 text-[10px] font-semibold text-center hover:border-[#800020] hover:text-[#800020]"
                                                                                     >
                                                                                         Página
