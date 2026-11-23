@@ -6,6 +6,7 @@ import { findActivityBySlugOrId } from "@/lib/activitySlug";
 import { FichaMultimediaClient } from "@/components/FichaMultimediaClient";
 import BanosDeGongExperience from "@/components/BanosDeGongExperience";
 import PracticaYogaExperience from "@/components/PracticaYogaExperience";
+import MeditacionExperience from "@/components/MeditacionExperience";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -156,6 +157,45 @@ export default async function ActividadPage({ params }: PageProps) {
             <span className="text-[#800020] font-bold">Practica Yoga</span>
           </nav>
           <PracticaYogaExperience activity={activity} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Si es Meditación / Kundalini Yoga, renderizar la experiencia inmersiva completa
+  if (
+    slug === "meditacion" ||
+    slug === "meditaciones" ||
+    slug === "meditaciones-guiadas" ||
+    slug === "kundalini-yoga" ||
+    slug === "kundalini-yoga-meditacion"
+  ) {
+    return (
+      <div className="bg-[#FAF9F6] text-[#1C1C1C] min-h-screen flex flex-col justify-between selection:bg-[#C5A059]/30 selection:text-[#12241D]">
+        <Navbar />
+        <main className="pt-24 sm:pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-stone-500"
+          >
+            <Link
+              href="/"
+              className="hover:text-[#800020] transition inline-flex items-center gap-1"
+            >
+              <span>Inicio</span>
+            </Link>
+            <span>/</span>
+            <Link
+              href="/servicios"
+              className="hover:text-[#800020] transition inline-flex items-center gap-1"
+            >
+              <span>Actividades</span>
+            </Link>
+            <span>/</span>
+            <span className="text-[#800020] font-bold">Meditaciones Guiadas</span>
+          </nav>
+          <MeditacionExperience activity={activity} />
         </main>
         <Footer />
       </div>
