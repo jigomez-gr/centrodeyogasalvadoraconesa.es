@@ -553,34 +553,43 @@ export default function Navbar() {
                                                         activeReservarCatId === cat.code ||
                                                         activeReservarCatId === cat.id;
                                                     return (
-                                                        <button
+                                                        <div
                                                             key={cat.id || cat.code}
-                                                            type="button"
                                                             onMouseEnter={() => setActiveReservarCatId(cat.code)}
-                                                            onClick={() => setActiveReservarCatId(cat.code)}
-                                                            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition duration-150 cursor-pointer ${
+                                                            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition duration-150 ${
                                                                 isActive
                                                                     ? "bg-white text-[#800020] shadow-sm font-bold border border-[#C5A059]/40"
                                                                     : "text-stone-700 hover:bg-stone-200/50 hover:text-stone-900"
                                                             }`}
                                                         >
-                                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                            <a
+                                                                href={cat.hrefCategory}
+                                                                onClick={() => setIsReservarOpen(false)}
+                                                                className="flex items-center gap-2.5 min-w-0 flex-1 cursor-pointer"
+                                                            >
                                                                 <span className="text-base shrink-0">{cat.icon}</span>
                                                                 <div className="min-w-0">
                                                                     <div className="text-xs font-semibold leading-tight truncate">
                                                                         {cat.name}
                                                                     </div>
                                                                     <div className="text-[10px] text-stone-400 font-normal">
-                                                                        {cat.services.length} opciones de reserva
+                                                                        {cat.services.length} servicios en catálogo
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <ChevronRight
-                                                                className={`w-3.5 h-3.5 shrink-0 transition ${
-                                                                    isActive ? "text-[#800020] translate-x-0.5" : "text-stone-400 opacity-60"
-                                                                }`}
-                                                            />
-                                                        </button>
+                                                            </a>
+                                                            <a
+                                                                href={cat.hrefCategory}
+                                                                onClick={() => setIsReservarOpen(false)}
+                                                                title={`Ir a ${cat.name}`}
+                                                                className="p-1 cursor-pointer"
+                                                            >
+                                                                <ChevronRight
+                                                                    className={`w-3.5 h-3.5 shrink-0 transition ${
+                                                                        isActive ? "text-[#800020] translate-x-0.5" : "text-stone-400 opacity-60"
+                                                                    }`}
+                                                                />
+                                                            </a>
+                                                        </div>
                                                     );
                                                 })}
                                             </div>
@@ -623,9 +632,9 @@ export default function Navbar() {
                                                         <a
                                                             href={currentReservarCategory.hrefCategory}
                                                             onClick={() => setIsReservarOpen(false)}
-                                                            className="text-[10px] font-bold text-[#800020] hover:underline shrink-0 bg-stone-50 px-2.5 py-1 rounded-md border border-stone-200"
+                                                            className="text-[10px] font-bold text-[#800020] hover:text-white hover:bg-[#800020] shrink-0 bg-stone-50 px-2.5 py-1.5 rounded-md border border-stone-200 transition"
                                                         >
-                                                            Ver sección →
+                                                            Ver {currentReservarCategory.services.length} servicios desplegados →
                                                         </a>
                                                     </div>
 
@@ -666,10 +675,10 @@ export default function Navbar() {
                                                                         href={reserva.href}
                                                                         onClick={() => setIsReservarOpen(false)}
                                                                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition shadow-2xs"
-                                                                        title="Ir a reservar esta plaza en la pantalla de Servicios"
+                                                                        title="Ir a la pantalla de Servicios con esta categoría desplegada"
                                                                     >
                                                                         <Ticket className="w-3.5 h-3.5 text-[#E5C378]" />
-                                                                        <span>Reservar en Pantalla de Servicios</span>
+                                                                        <span>Ver Servicios Desplegados</span>
                                                                         <ArrowRight className="w-3 h-3" />
                                                                     </a>
                                                                 </div>
@@ -680,7 +689,7 @@ export default function Navbar() {
                                             )}
 
                                             <div className="pt-2 text-[10px] text-stone-400 italic text-center border-t border-stone-100 mt-2">
-                                                💡 Estas opciones te llevan a la pantalla oficial de reservas (/servicios) con la actividad preseleccionada.
+                                                💡 Al pulsar, vas a la pantalla de servicios con los servicios de esta categoría desplegados.
                                             </div>
                                         </div>
                                     </div>
@@ -778,24 +787,31 @@ export default function Navbar() {
                                                         const isCatOpen = mobileOpenReservarCatId === cat.code;
                                                         return (
                                                             <div key={cat.code} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.code)}
-                                                                    className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800 hover:text-[#800020] cursor-pointer"
-                                                                >
-                                                                    <div className="flex items-center gap-2">
+                                                                <div className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800">
+                                                                    <a
+                                                                        href={cat.hrefCategory}
+                                                                        onClick={() => setIsOpen(false)}
+                                                                        className="flex items-center gap-2 hover:text-[#800020] flex-1 truncate cursor-pointer"
+                                                                    >
                                                                         <span>{cat.icon}</span>
-                                                                        <span>{cat.name}</span>
+                                                                        <span className="truncate">{cat.name}</span>
                                                                         <span className="text-[10px] text-stone-400 font-normal">
                                                                             ({cat.services.length})
                                                                         </span>
-                                                                    </div>
-                                                                    <ChevronDown
-                                                                        className={`w-3.5 h-3.5 text-stone-400 transition-transform ${
-                                                                            isCatOpen ? "rotate-180 text-[#800020]" : ""
-                                                                        }`}
-                                                                    />
-                                                                </button>
+                                                                    </a>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.code)}
+                                                                        className="p-1 text-stone-400 hover:text-[#800020] cursor-pointer shrink-0"
+                                                                        aria-label={`Desplegar subopciones de ${cat.name}`}
+                                                                    >
+                                                                        <ChevronDown
+                                                                            className={`w-4 h-4 transition-transform ${
+                                                                                isCatOpen ? "rotate-180 text-[#800020]" : ""
+                                                                            }`}
+                                                                        />
+                                                                    </button>
+                                                                </div>
 
                                                                 {isCatOpen && (
                                                                     <div className="p-2.5 pt-0 space-y-2 border-t border-stone-100">
@@ -829,11 +845,19 @@ export default function Navbar() {
                                                                                     className="w-full py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                                                                                 >
                                                                                     <Ticket className="w-3 h-3 text-[#E5C378]" />
-                                                                                    <span>Reservar en Pantalla de Servicios</span>
+                                                                                    <span>Ver Servicios Desplegados</span>
                                                                                     <ArrowRight className="w-3 h-3" />
                                                                                 </a>
                                                                             </div>
                                                                         ))}
+
+                                                                        <a
+                                                                            href={cat.hrefCategory}
+                                                                            onClick={() => setIsOpen(false)}
+                                                                            className="block w-full py-2 px-3 rounded-lg bg-stone-100 hover:bg-[#800020] text-stone-700 hover:text-white text-[10.5px] font-bold text-center transition"
+                                                                        >
+                                                                            Ver los {cat.services.length} servicios desplegados →
+                                                                        </a>
                                                                     </div>
                                                                 )}
                                                             </div>

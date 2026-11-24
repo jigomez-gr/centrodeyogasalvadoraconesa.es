@@ -365,23 +365,17 @@ function ServiciosContent() {
   useEffect(() => {
     const cat = searchParams.get("categoria") || searchParams.get("category");
     const typ = searchParams.get("tipo") || searchParams.get("type");
-    if (cat) setSelectedCategoryCode(cat);
-    if (typ) setSelectedType(typ);
-
-    const servId = searchParams.get("servicio") || searchParams.get("service");
-    if (servId) {
+    if (cat) {
+      setSelectedCategoryCode(cat);
       setTimeout(() => {
-        const target = document.getElementById(`servicio-${servId}`);
+        const target = document.getElementById(`categoria-${cat}`) || document.getElementById("filtros-servicios");
         if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "center" });
-          target.classList.add("ring-4", "ring-[#800020]", "ring-offset-2");
-          setTimeout(() => {
-            target.classList.remove("ring-4", "ring-[#800020]", "ring-offset-2");
-          }, 3500);
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 400);
+      }, 300);
     }
-  }, [searchParams, services]);
+    if (typ) setSelectedType(typ);
+  }, [searchParams]);
 
   const updateFilters = (newCat: string, newType: string) => {
     setSelectedCategoryCode(newCat);
@@ -877,7 +871,7 @@ function ServiciosContent() {
       </section>
 
       {/* ─── BARRA DE FILTRADO POR CATEGORÍA Y TIPO ─── */}
-      <section className="max-w-6xl mx-auto px-4 pt-2 pb-4">
+      <section id="filtros-servicios" className="max-w-6xl mx-auto px-4 pt-2 pb-4 scroll-mt-20">
         <div className="bg-white rounded-2xl p-4 border border-stone-200 shadow-xs space-y-3">
           {/* Fila 1: Filtro por Categoría */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
