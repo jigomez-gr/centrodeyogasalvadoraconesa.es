@@ -317,7 +317,7 @@ export default function VapiCallModal() {
 
               <div className="flex items-center justify-center gap-2 text-xs text-[#96680E] font-medium pt-2">
                 <Loader2 className="w-4 h-4 animate-spin text-[#800020]" />
-                <span>Contactando con VAPI & CRM...</span>
+                <span>Conectando con el asistente...</span>
               </div>
             </div>
           )}

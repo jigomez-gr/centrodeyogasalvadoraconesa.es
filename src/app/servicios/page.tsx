@@ -707,7 +707,7 @@ function ServiciosContent() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <span className="flex h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-medium">
-              <strong>Catálogo Sincronizado en Vivo con CRM Salvadora</strong>
+              <strong>Catálogo Oficial de Actividades y Horarios en Vivo</strong>
               {showPorWassap && " · Traspaso directo a WhatsApp"}
               {showPorVapi && !showPorWassap && " · Asistente Telefónico IA"}
             </span>
@@ -1542,7 +1542,7 @@ function ServiciosContent() {
           </p>
           <p>Actividades en Club Social Parque Granada y Sede Principal.</p>
           <p className="text-stone-400 text-[11px]">
-            Consultas y reservas por WhatsApp: <strong>695 172 625</strong> · Pagos directos en el centro y registro en CRM.
+            Consultas y reservas por WhatsApp: <strong>695 172 625</strong> · Pagos directos en el centro.
           </p>
         </div>
 
@@ -1648,7 +1648,7 @@ function ServiciosContent() {
               Continuar Consulta por WhatsApp
             </h3>
             <p className="text-xs text-stone-600 mb-4 leading-relaxed">
-              Introduce tu nombre y teléfono móvil. <strong>Te registraremos automáticamente en el CRM</strong> y abriremos WhatsApp con tu consulta.
+              Introduce tu nombre y teléfono móvil para abrir WhatsApp con tu consulta y formalizar tu reserva.
             </p>
 
             {selectedService && (
@@ -1661,7 +1661,7 @@ function ServiciosContent() {
             {waSuccess ? (
               <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center space-y-2 text-emerald-800 animate-in zoom-in-95">
                 <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
-                <p className="text-xs font-bold">¡Registro completado en el CRM!</p>
+                <p className="text-xs font-bold">¡Consulta preparada para WhatsApp!</p>
                 <p className="text-[11px] text-emerald-700">Abriendo WhatsApp...</p>
               </div>
             ) : (
@@ -1729,7 +1729,7 @@ function ServiciosContent() {
                     className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                   >
                     {waLoading ? (
-                      "Registrando en CRM..."
+                      "Conectando..."
                     ) : (
                       <>
                         <span>Abrir WhatsApp y Enviar Consulta</span>
@@ -1779,7 +1779,7 @@ function ServiciosContent() {
               Bot Oficial Centro de Yoga Salvadora Conesa
             </h3>
             <p className="text-xs text-stone-600 mb-4 leading-relaxed">
-              Introduce tu nombre y teléfono o email para <strong>vincular tu ficha del CRM con Telegram</strong> (recibirás confirmaciones y recordatorios al pulsar <strong>Iniciar</strong> en el bot), o abre el bot directamente.
+              Introduce tu nombre y teléfono o email para <strong>conectar tus avisos por Telegram</strong> (recibirás confirmaciones y recordatorios al pulsar <strong>Iniciar</strong> en el bot), o abre el bot directamente.
             </p>
 
             {selectedService && (

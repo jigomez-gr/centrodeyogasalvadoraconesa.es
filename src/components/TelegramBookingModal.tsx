@@ -128,7 +128,7 @@ export default function TelegramBookingModal({
           Bot Oficial Centro de Yoga Salvadora Conesa
         </h3>
         <p className="text-xs text-stone-600 mb-4 leading-relaxed">
-          Introduce tu nombre y teléfono o email para <strong>vincular tu ficha del CRM con Telegram</strong> (recibirás confirmaciones y recordatorios al pulsar <strong>Iniciar</strong> en el bot), o abre el bot directamente.
+          Introduce tu nombre y teléfono o email para <strong>conectar tus avisos por Telegram</strong> (recibirás confirmaciones y recordatorios al pulsar <strong>Iniciar</strong> en el bot), o abre el bot directamente.
         </p>
 
         {serviceName && (

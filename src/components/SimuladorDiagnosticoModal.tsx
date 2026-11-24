@@ -1447,7 +1447,7 @@ export function SimuladorDiagnosticoModal({
                     ✅ <strong>Doctor notificado por correo electrónico</strong> con el diagnóstico preliminar y la imagen adjunta.
                   </p>
                   <p>
-                    ✅ <strong>Contacto registrado en el CRM</strong> para dar seguimiento inmediato a tu cita.
+                    ✅ <strong>Solicitud registrada correctamente</strong> para dar seguimiento inmediato a tu cita.
                   </p>
                 </div>
 

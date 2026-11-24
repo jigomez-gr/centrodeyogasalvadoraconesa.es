@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         return NextResponse.json(
           {
             success: false,
-            error: crmData.error || `Error del servidor CRM (${crmRes.status}).`,
+            error: crmData.error || `Error del servicio telefónico (${crmRes.status}).`,
           },
           { status: crmRes.status }
         );
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: "Error al contactar con VAPI o el CRM. Puedes llamarnos directamente al 695 172 625.",
+          error: "No se pudo conectar con el asistente telefónico. Puedes llamarnos directamente al 695 172 625.",
         },
         { status: 502 }
       );

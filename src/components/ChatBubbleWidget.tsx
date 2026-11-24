@@ -220,7 +220,7 @@ export function ChatBubbleWidget({
         {
           id: "err-" + Date.now(),
           direction: "inbound",
-          body: "Lo siento, ha habido un problema de conexión con el CRM. Por favor, intenta de nuevo.",
+          body: "Lo siento, ha habido un problema de conexión temporal. Por favor, intenta de nuevo.",
         },
       ]);
     } finally {
