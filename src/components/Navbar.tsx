@@ -110,6 +110,12 @@ export default function Navbar() {
                 setIsOpen(true);
                 setMobileActividadesOpen(true);
                 setMobileOpenCatId(null);
+                setTimeout(() => {
+                    const el = document.getElementById("mobile-actividades-section");
+                    if (el) {
+                        el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                }, 120);
             }
         };
 
@@ -131,6 +137,12 @@ export default function Navbar() {
                 setIsOpen(true);
                 setMobileReservarOpen(true);
                 setMobileOpenReservarCatId(null);
+                setTimeout(() => {
+                    const el = document.getElementById("mobile-reservar-plaza-section");
+                    if (el) {
+                        el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                }, 120);
             }
         };
 
@@ -756,132 +768,11 @@ export default function Navbar() {
                         {menuItems.map((item) => {
                             const isInicio = item.label.toLowerCase() === "inicio";
                             const isActividades = item.label.toLowerCase() === "actividades";
-                            const isBanosGong =
-                                item.label.toLowerCase().includes("baños del gong") ||
-                                item.label.toLowerCase().includes("baño de gong");
 
-                            // Requisito 2 & 3: En móviles, sustituimos el enlace directo "Baños del Gong" por "RESERVAR PLAZA (MENÚ EN CASCADA /servicios)"
-                            if (isBanosGong) {
-                                return (
-                                    <div key="reservar-plaza-mobile" className="pt-1 pb-1">
-                                        <div className="border border-[#C5A059]/30 rounded-xl overflow-hidden bg-stone-50/70">
-                                            <button
-                                                type="button"
-                                                onClick={() => setMobileReservarOpen((prev) => !prev)}
-                                                className="w-full flex items-center justify-between p-3 text-left font-bold text-xs uppercase tracking-wider text-[#800020] bg-white cursor-pointer"
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <Ticket className="w-4 h-4 text-[#C5A059]" />
-                                                    <span>Reservar Plaza (Menú en Cascada)</span>
-                                                </div>
-                                                <ChevronDown
-                                                    className={`w-4 h-4 text-[#C5A059] transition-transform duration-200 ${
-                                                        mobileReservarOpen ? "rotate-180 text-[#800020]" : ""
-                                                    }`}
-                                                />
-                                            </button>
-
-                                            {mobileReservarOpen && (
-                                                <div className="p-2 space-y-2 bg-[#FAF9F6] border-t border-[#C5A059]/20">
-                                                    {RESERVAS_CATEGORIES.map((cat) => {
-                                                        const isCatOpen = mobileOpenReservarCatId === cat.code;
-                                                        return (
-                                                            <div key={cat.code} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
-                                                                <div className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800">
-                                                                    <a
-                                                                        href={cat.hrefCategory}
-                                                                        onClick={() => setIsOpen(false)}
-                                                                        className="flex items-center gap-2 hover:text-[#800020] flex-1 truncate cursor-pointer"
-                                                                    >
-                                                                        <span>{cat.icon}</span>
-                                                                        <span className="truncate">{cat.name}</span>
-                                                                        <span className="text-[10px] text-stone-400 font-normal">
-                                                                            ({cat.services.length})
-                                                                        </span>
-                                                                    </a>
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.code)}
-                                                                        className="p-1 text-stone-400 hover:text-[#800020] cursor-pointer shrink-0"
-                                                                        aria-label={`Desplegar subopciones de ${cat.name}`}
-                                                                    >
-                                                                        <ChevronDown
-                                                                            className={`w-4 h-4 transition-transform ${
-                                                                                isCatOpen ? "rotate-180 text-[#800020]" : ""
-                                                                            }`}
-                                                                        />
-                                                                    </button>
-                                                                </div>
-
-                                                                {isCatOpen && (
-                                                                    <div className="p-2.5 pt-0 space-y-2 border-t border-stone-100">
-                                                                        {cat.services.map((reserva) => (
-                                                                            <div
-                                                                                key={reserva.id}
-                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white transition flex flex-col gap-1.5"
-                                                                            >
-                                                                                <div className="flex items-start justify-between gap-1">
-                                                                                    <div>
-                                                                                        <div className="flex items-center gap-1.5">
-                                                                                            <span className="text-xs">{reserva.icon}</span>
-                                                                                            <span className="font-bold text-[11px] text-stone-900 leading-snug">
-                                                                                                {reserva.title}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        <p className="text-[10.5px] text-stone-600 mt-0.5 leading-relaxed">
-                                                                                            {reserva.subtitle}
-                                                                                        </p>
-                                                                                    </div>
-                                                                                    <div className="text-right shrink-0">
-                                                                                        <span className="inline-block text-[11px] font-black text-[#800020] bg-amber-50 px-2 py-0.5 rounded border border-[#C5A059]/40 font-mono">
-                                                                                            {reserva.price}
-                                                                                        </span>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <a
-                                                                                    href={reserva.href}
-                                                                                    onClick={() => setIsOpen(false)}
-                                                                                    className="w-full py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
-                                                                                >
-                                                                                    <Ticket className="w-3 h-3 text-[#E5C378]" />
-                                                                                    <span>Ver Servicios Desplegados</span>
-                                                                                    <ArrowRight className="w-3 h-3" />
-                                                                                </a>
-                                                                            </div>
-                                                                        ))}
-
-                                                                        <a
-                                                                            href={cat.hrefCategory}
-                                                                            onClick={() => setIsOpen(false)}
-                                                                            className="block w-full py-2 px-3 rounded-lg bg-stone-100 hover:bg-[#800020] text-stone-700 hover:text-white text-[10.5px] font-bold text-center transition"
-                                                                        >
-                                                                            Ver los {cat.services.length} servicios desplegados →
-                                                                        </a>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        );
-                                                    })}
-
-                                                    <a
-                                                        href="/servicios"
-                                                        onClick={() => setIsOpen(false)}
-                                                        className="block w-full py-2.5 rounded-lg bg-[#800020] text-white text-[11px] font-bold uppercase tracking-wider text-center cursor-pointer shadow-xs"
-                                                    >
-                                                        📋 Ver Catálogo Completo de Reservas (/servicios)
-                                                    </a>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            }
-
-                            // ACTIVIDADES (Itinerario de portada)
+                            // 1. ACTIVIDADES (Menú en Cascada - sale primero en el orden natural)
                             if (isActividades) {
                                 return (
-                                    <div key={item.label} className="pt-1 pb-1">
+                                    <div key={item.label} id="mobile-actividades-section" className="pt-1 pb-1 scroll-mt-20">
                                         <div className="border border-[#C5A059]/30 rounded-xl overflow-hidden bg-stone-50/70">
                                             <button
                                                 type="button"
@@ -933,7 +824,7 @@ export default function Navbar() {
                                                                                 className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white cursor-pointer transition"
                                                                             >
                                                                                 <div className="flex items-center justify-between gap-1 mb-1">
-                                                                                    <div className="flex items-center gap-1.5">
+                                                                                <div className="flex items-center gap-1.5">
                                                                                         <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#800020] text-white text-[9px] font-black shrink-0">
                                                                                             {act.dayNum}
                                                                                         </span>
@@ -1010,6 +901,120 @@ export default function Navbar() {
                                 </a>
                             );
                         })}
+
+                        {/* 2. RESERVAR PLAZA (Menú en Cascada - sale después de CONSULTAS / RESERVAS POR EMAIL Ó WASSAP O TELEGRAM) */}
+                        <div id="mobile-reservar-plaza-section" className="pt-1 pb-1 scroll-mt-20">
+                            <div className="border border-[#C5A059]/30 rounded-xl overflow-hidden bg-stone-50/70">
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileReservarOpen((prev) => !prev)}
+                                    className="w-full flex items-center justify-between p-3 text-left font-bold text-xs uppercase tracking-wider text-[#800020] bg-white cursor-pointer"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Ticket className="w-4 h-4 text-[#C5A059]" />
+                                        <span>Reservar Plaza (Menú en Cascada)</span>
+                                    </div>
+                                    <ChevronDown
+                                        className={`w-4 h-4 text-[#C5A059] transition-transform duration-200 ${
+                                            mobileReservarOpen ? "rotate-180 text-[#800020]" : ""
+                                        }`}
+                                    />
+                                </button>
+
+                                {mobileReservarOpen && (
+                                    <div className="p-2 space-y-2 bg-[#FAF9F6] border-t border-[#C5A059]/20">
+                                        {RESERVAS_CATEGORIES.map((cat) => {
+                                            const isCatOpen = mobileOpenReservarCatId === cat.code;
+                                            return (
+                                                <div key={cat.code} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
+                                                    <div className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800">
+                                                        <a
+                                                            href={cat.hrefCategory}
+                                                            onClick={() => setIsOpen(false)}
+                                                            className="flex items-center gap-2 hover:text-[#800020] flex-1 truncate cursor-pointer"
+                                                        >
+                                                            <span>{cat.icon}</span>
+                                                            <span className="truncate">{cat.name}</span>
+                                                            <span className="text-[10px] text-stone-400 font-normal">
+                                                                ({cat.services.length})
+                                                            </span>
+                                                        </a>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.code)}
+                                                            className="p-1 text-stone-400 hover:text-[#800020] cursor-pointer shrink-0"
+                                                            aria-label={`Desplegar subopciones de ${cat.name}`}
+                                                        >
+                                                            <ChevronDown
+                                                                className={`w-4 h-4 transition-transform ${
+                                                                    isCatOpen ? "rotate-180 text-[#800020]" : ""
+                                                                }`}
+                                                            />
+                                                        </button>
+                                                    </div>
+
+                                                    {isCatOpen && (
+                                                        <div className="p-2.5 pt-0 space-y-2 border-t border-stone-100">
+                                                            {cat.services.map((reserva) => (
+                                                                <div
+                                                                    key={reserva.id}
+                                                                    className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white transition flex flex-col gap-1.5"
+                                                                >
+                                                                    <div className="flex items-start justify-between gap-1">
+                                                                        <div>
+                                                                            <div className="flex items-center gap-1.5">
+                                                                                <span className="text-xs">{reserva.icon}</span>
+                                                                                <span className="font-bold text-[11px] text-stone-900 leading-snug">
+                                                                                    {reserva.title}
+                                                                                </span>
+                                                                            </div>
+                                                                            <p className="text-[10.5px] text-stone-600 mt-0.5 leading-relaxed">
+                                                                                {reserva.subtitle}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="text-right shrink-0">
+                                                                            <span className="inline-block text-[11px] font-black text-[#800020] bg-amber-50 px-2 py-0.5 rounded border border-[#C5A059]/40 font-mono">
+                                                                                {reserva.price}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <a
+                                                                        href={reserva.href}
+                                                                        onClick={() => setIsOpen(false)}
+                                                                        className="w-full py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                                                                    >
+                                                                        <Ticket className="w-3 h-3 text-[#E5C378]" />
+                                                                        <span>Ver Servicios Desplegados</span>
+                                                                        <ArrowRight className="w-3 h-3" />
+                                                                    </a>
+                                                                </div>
+                                                            ))}
+
+                                                            <a
+                                                                href={cat.hrefCategory}
+                                                                onClick={() => setIsOpen(false)}
+                                                                className="block w-full py-2 px-3 rounded-lg bg-stone-100 hover:bg-[#800020] text-stone-700 hover:text-white text-[10.5px] font-bold text-center transition"
+                                                            >
+                                                                Ver los {cat.services.length} servicios desplegados →
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+
+                                        <a
+                                            href="/servicios"
+                                            onClick={() => setIsOpen(false)}
+                                            className="block w-full py-2.5 rounded-lg bg-[#800020] text-white text-[11px] font-bold uppercase tracking-wider text-center cursor-pointer shadow-xs"
+                                        >
+                                            📋 Ver Catálogo Completo de Reservas (/servicios)
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
 
                         {showPorVapi && (
                             <button
