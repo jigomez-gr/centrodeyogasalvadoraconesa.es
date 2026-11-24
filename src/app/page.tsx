@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import Navbar from "@/components/Navbar";
 import HeroActividadesDropdown from "@/components/HeroActividadesDropdown";
+import HeroReservarButton from "@/components/HeroReservarButton";
 import ItineraryTimeline from "@/components/ItineraryTimeline";
 import VideoGallery from "@/components/VideoGallery";
 import ContactQueryForm from "@/components/ContactQueryForm";
@@ -270,12 +271,7 @@ export default async function Home() {
               TE LLAMAMOS GRATIS (IA)
             </VapiCallButton>
             <HeroActividadesDropdown />
-            <Link
-              href="/servicios"
-              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-6 sm:px-8 border border-[#800020] text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/90 shadow-md hover:scale-102 transition duration-250 text-center"
-            >
-              RESERVAR YOGA, BAÑO DE GONG Y OTROS EVENTOS
-            </Link>
+            <HeroReservarButton />
           </div>
           {/* Fila única: Instagram + Facebook + Botón verde Reservas Email Wassap a su derecha con misma altura */}
           <div className="w-full max-w-xl mt-2 sm:mt-2.5 px-2 sm:px-0 z-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
