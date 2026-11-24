@@ -12,11 +12,18 @@ import {
     ArrowRight,
     Compass,
     Ticket,
+    CalendarCheck,
 } from "lucide-react";
 import { triggerCrmChat } from "@/components/ChatBubbleWidget";
 import { triggerVapiCall } from "@/components/VapiCallModal";
 import { isPorVapiEnabled } from "@/lib/featureFlags";
 import { ACTIVITY_CATEGORIES, ActivityCategory, ActivityItem } from "@/lib/activityMenuData";
+import {
+    RESERVAS_CATEGORIES,
+    RESERVAS_TYPE_SHORTCUTS,
+    ReservaCategory,
+    ReservaItem,
+} from "@/lib/reservasMenuData";
 
 interface MenuItem {
     label: string;
@@ -32,7 +39,7 @@ export default function Navbar() {
     const [mobileOpenCatId, setMobileOpenCatId] = useState<string | null>(null);
 
     const [isReservarOpen, setIsReservarOpen] = useState(false);
-    const [activeReservarCatId, setActiveReservarCatId] = useState<string>("yoga-meditacion");
+    const [activeReservarCatId, setActiveReservarCatId] = useState<string>("yoga_meditacion");
     const [mobileReservarOpen, setMobileReservarOpen] = useState(true);
     const [mobileOpenReservarCatId, setMobileOpenReservarCatId] = useState<string | null>(null);
 
@@ -177,10 +184,10 @@ export default function Navbar() {
         }, 220);
     };
 
+    // Handler para selección de ACTIVIDADES (lleva a #itinerario en portada)
     const handleActivitySelect = (dayNum: number, hrefPortada: string, e?: React.MouseEvent) => {
         if (e) e.preventDefault();
         setIsActividadesOpen(false);
-        setIsReservarOpen(false);
         setIsOpen(false);
 
         if (typeof window !== "undefined") {
@@ -232,7 +239,9 @@ export default function Navbar() {
     const handleInicioClick = (e: React.MouseEvent) => handleNavClick(e, { label: "Inicio", href: "/#inicio" });
 
     const currentCategory = ACTIVITY_CATEGORIES.find((c) => c.id === activeCatId) || ACTIVITY_CATEGORIES[0];
-    const currentReservarCategory = ACTIVITY_CATEGORIES.find((c) => c.id === activeReservarCatId) || ACTIVITY_CATEGORIES[0];
+    const currentReservarCategory =
+        RESERVAS_CATEGORIES.find((c) => c.code === activeReservarCatId || c.id === activeReservarCatId) ||
+        RESERVAS_CATEGORIES[0];
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#C5A059]/15 shadow-sm font-sans">
@@ -273,7 +282,7 @@ export default function Navbar() {
                                 <span key={item.label} className="flex items-center space-x-2.5 lg:space-x-3.5 xl:space-x-4">
                                     {idx > 0 && <span className="text-[#C5A059]/40 select-none font-light">|</span>}
 
-                                    {/* ACTIVIDADES WITH MULTI-LEVEL CASCADING DROPDOWN */}
+                                    {/* 1. ACTIVIDADES (LLEVA AL ITINERARIO DE LA PORTADA) */}
                                     <div
                                         ref={desktopDropdownRef}
                                         className="relative inline-flex items-center"
@@ -299,14 +308,13 @@ export default function Navbar() {
                                             />
                                         </button>
 
-                                        {/* CASCADING MENU PANEL (DESKTOP) */}
+                                        {/* CASCADING MENU PANEL (DESKTOP - ACTIVIDADES ITINERARIO PORTADA) */}
                                         {isActividadesOpen && (
                                             <div
                                                 className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 animate-fadeIn"
                                                 style={{ width: "min(780px, calc(100vw - 32px))" }}
                                             >
                                                 <div className="bg-white rounded-2xl border border-[#C5A059]/30 shadow-2xl overflow-hidden font-sans">
-                                                    {/* Decorative top gold gradient */}
                                                     <div className="h-1 bg-gradient-to-r from-[#800020] via-[#C5A059] to-[#800020]" />
 
                                                     {/* Header bar */}
@@ -314,21 +322,21 @@ export default function Navbar() {
                                                         <div className="flex items-center gap-2">
                                                             <Sparkles className="w-4 h-4 text-[#D4AF37]" />
                                                             <span className="text-xs font-bold uppercase tracking-widest text-[#E5C378]">
-                                                                Menú en Cascada · Actividades y Disciplinas
+                                                                Menú en Cascada · Actividades en Portada
                                                             </span>
                                                         </div>
                                                         <span className="text-[11px] text-stone-300 font-medium">
-                                                            9 Disciplinas del Centro
+                                                            9 Disciplinas del Itinerario
                                                         </span>
                                                     </div>
 
                                                     {/* 2-Column Cascading Body */}
                                                     <div className="grid grid-cols-12 min-h-[390px]">
-                                                        {/* Left Column: Categorías (Level 1) */}
+                                                        {/* Left Column: Categorías */}
                                                         <div className="col-span-5 bg-[#FAF9F6] p-3 border-r border-stone-200 flex flex-col justify-between">
                                                             <div className="space-y-1.5">
                                                                 <div className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-widest text-stone-400">
-                                                                    Disciplinas & Áreas
+                                                                    Áreas en Portada
                                                                 </div>
                                                                 {ACTIVITY_CATEGORIES.map((cat) => {
                                                                     const isActive = activeCatId === cat.id;
@@ -351,7 +359,7 @@ export default function Navbar() {
                                                                                         {cat.name}
                                                                                     </div>
                                                                                     <div className="text-[10px] text-stone-400 font-normal">
-                                                                                        {cat.activities.length} actividades
+                                                                                        {cat.activities.length} disciplinas
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -376,23 +384,22 @@ export default function Navbar() {
                                                                     className="w-full py-2.5 px-3 text-center rounded-xl bg-stone-100 hover:bg-[#800020] hover:text-white text-[#800020] text-[11px] font-bold tracking-wider uppercase transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
                                                                 >
                                                                     <Compass className="w-3.5 h-3.5" />
-                                                                    <span>Ver Todas en Portada (1 a 9)</span>
+                                                                    <span>Ver Itinerario Completo (1 a 9)</span>
                                                                 </button>
                                                             </div>
                                                         </div>
 
-                                                        {/* Right Column: Actividades de la categoría seleccionada (Level 2) */}
+                                                        {/* Right Column: Actividades */}
                                                         <div className="col-span-7 p-4 bg-white flex flex-col justify-between">
                                                             {currentCategory && (
                                                                 <div className="space-y-3">
-                                                                    {/* Category Header */}
                                                                     <div className="pb-2 border-b border-stone-100">
                                                                         <div className="flex items-center justify-between">
                                                                             <h4 className="text-sm font-bold text-[#800020] font-editorial">
                                                                                 {currentCategory.icon} {currentCategory.name}
                                                                             </h4>
                                                                             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF9F6] border border-[#C5A059]/30 text-[#96680E] rounded-full">
-                                                                                {currentCategory.activities.length} opciones
+                                                                                {currentCategory.activities.length} disciplinas
                                                                             </span>
                                                                         </div>
                                                                         <p className="text-[11px] text-stone-500 mt-0.5">
@@ -400,7 +407,6 @@ export default function Navbar() {
                                                                         </p>
                                                                     </div>
 
-                                                                    {/* Activities List */}
                                                                     <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
                                                                         {currentCategory.activities.map((act) => (
                                                                             <div
@@ -426,7 +432,6 @@ export default function Navbar() {
                                                                                     {act.subtitle}
                                                                                 </p>
 
-                                                                                {/* Actions */}
                                                                                 <div className="flex items-center gap-2 pt-1 border-t border-stone-200/60">
                                                                                     <button
                                                                                         type="button"
@@ -435,7 +440,7 @@ export default function Navbar() {
                                                                                             handleActivitySelect(act.dayNum, act.hrefPortada);
                                                                                         }}
                                                                                         className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition cursor-pointer shadow-2xs"
-                                                                                        title="Mostrar esta actividad interactiva en la sección de servicios (Segunda Pantalla)"
+                                                                                        title="Mostrar esta actividad en el itinerario de portada"
                                                                                     >
                                                                                         <Eye className="w-3.5 h-3.5 text-[#E5C378]" />
                                                                                         <span>Mostrar en Portada (#dia-{act.dayNum})</span>
@@ -460,7 +465,7 @@ export default function Navbar() {
                                                             )}
 
                                                             <div className="pt-2 text-[10px] text-stone-400 italic text-center border-t border-stone-100 mt-2">
-                                                                💡 Pulsa «Mostrar en Portada» para activar la ficha con horarios, vídeos y reserva directa.
+                                                                💡 Pulsa «Mostrar en Portada» para activar la ficha con horarios, vídeos y recorrido del centro.
                                                             </div>
                                                         </div>
                                                     </div>
@@ -486,7 +491,7 @@ export default function Navbar() {
                         );
                     })}
 
-                    {/* RESERVAR PLAZA WITH MULTI-LEVEL CASCADING DROPDOWN (DESKTOP) */}
+                    {/* 2. RESERVAR PLAZA (LLEVA A LA OTRA PANTALLA: /servicios CON CATÁLOGO DE RESERVAS) */}
                     <span className="text-[#C5A059]/40 select-none font-light">|</span>
                     <div
                         ref={desktopReservarDropdownRef}
@@ -513,14 +518,13 @@ export default function Navbar() {
                             />
                         </button>
 
-                        {/* CASCADING RESERVATION MENU PANEL (DESKTOP) */}
+                        {/* CASCADING RESERVATION MENU PANEL (DESKTOP - PANTALLA /servicios) */}
                         {isReservarOpen && (
                             <div
                                 className="absolute top-full right-0 pt-2.5 z-50 animate-fadeIn"
-                                style={{ width: "min(780px, calc(100vw - 32px))" }}
+                                style={{ width: "min(840px, calc(100vw - 32px))" }}
                             >
                                 <div className="bg-white rounded-2xl border border-[#C5A059]/30 shadow-2xl overflow-hidden font-sans">
-                                    {/* Decorative top gold gradient */}
                                     <div className="h-1 bg-gradient-to-r from-[#800020] via-[#C5A059] to-[#800020]" />
 
                                     {/* Header bar */}
@@ -528,49 +532,51 @@ export default function Navbar() {
                                         <div className="flex items-center gap-2">
                                             <Ticket className="w-4 h-4 text-[#D4AF37]" />
                                             <span className="text-xs font-bold uppercase tracking-widest text-[#E5C378]">
-                                                Menú en Cascada · Reserva de Plaza y Citas
+                                                Menú en Cascada · Opciones de Reserva (/servicios)
                                             </span>
                                         </div>
                                         <span className="text-[11px] text-stone-300 font-medium">
-                                            Pago en el Centro · Sin Pago Previo
+                                            Catálogo Oficial de Tarifas y Cuotas
                                         </span>
                                     </div>
 
                                     {/* 2-Column Cascading Body */}
-                                    <div className="grid grid-cols-12 min-h-[390px]">
-                                        {/* Left Column: Categorías (Level 1) */}
+                                    <div className="grid grid-cols-12 min-h-[410px]">
+                                        {/* Left Column: Categorías de Reserva */}
                                         <div className="col-span-5 bg-[#FAF9F6] p-3 border-r border-stone-200 flex flex-col justify-between">
                                             <div className="space-y-1.5">
-                                                <div className="px-3 py-2 text-[10px] font-extrabold uppercase tracking-widest text-stone-400">
-                                                    Disciplinas & Áreas
+                                                <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-stone-400">
+                                                    Categorías de Reserva
                                                 </div>
-                                                {ACTIVITY_CATEGORIES.map((cat) => {
-                                                    const isActive = activeReservarCatId === cat.id;
+                                                {RESERVAS_CATEGORIES.map((cat) => {
+                                                    const isActive =
+                                                        activeReservarCatId === cat.code ||
+                                                        activeReservarCatId === cat.id;
                                                     return (
                                                         <button
-                                                            key={cat.id}
+                                                            key={cat.id || cat.code}
                                                             type="button"
-                                                            onMouseEnter={() => setActiveReservarCatId(cat.id)}
-                                                            onClick={() => setActiveReservarCatId(cat.id)}
-                                                            className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left transition duration-150 cursor-pointer ${
+                                                            onMouseEnter={() => setActiveReservarCatId(cat.code)}
+                                                            onClick={() => setActiveReservarCatId(cat.code)}
+                                                            className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition duration-150 cursor-pointer ${
                                                                 isActive
                                                                     ? "bg-white text-[#800020] shadow-sm font-bold border border-[#C5A059]/40"
                                                                     : "text-stone-700 hover:bg-stone-200/50 hover:text-stone-900"
                                                             }`}
                                                         >
-                                                            <div className="flex items-center gap-2.5 truncate">
-                                                                <span className="text-base">{cat.icon}</span>
-                                                                <div>
+                                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                                <span className="text-base shrink-0">{cat.icon}</span>
+                                                                <div className="min-w-0">
                                                                     <div className="text-xs font-semibold leading-tight truncate">
                                                                         {cat.name}
                                                                     </div>
                                                                     <div className="text-[10px] text-stone-400 font-normal">
-                                                                        {cat.activities.length} actividades
+                                                                        {cat.services.length} opciones de reserva
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <ChevronRight
-                                                                className={`w-3.5 h-3.5 transition ${
+                                                                className={`w-3.5 h-3.5 shrink-0 transition ${
                                                                     isActive ? "text-[#800020] translate-x-0.5" : "text-stone-400 opacity-60"
                                                                 }`}
                                                             />
@@ -579,88 +585,91 @@ export default function Navbar() {
                                                 })}
                                             </div>
 
-                                            {/* Quick link: All reservations catalog */}
-                                            <div className="pt-3 border-t border-stone-200 mt-2">
-                                                <a
-                                                    href="/servicios"
-                                                    onClick={() => setIsReservarOpen(false)}
-                                                    className="w-full py-2.5 px-3 text-center rounded-xl bg-stone-100 hover:bg-[#800020] hover:text-white text-[#800020] text-[11px] font-bold tracking-wider uppercase transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
-                                                >
-                                                    <Ticket className="w-3.5 h-3.5" />
-                                                    <span>Ver Todas las Plazas y Tarifas</span>
-                                                </a>
+                                            {/* Accesos rápidos por Tipo de Reserva */}
+                                            <div className="pt-2.5 border-t border-stone-200 mt-2 space-y-1">
+                                                <div className="text-[9.5px] font-bold uppercase tracking-wider text-stone-400 px-1">
+                                                    Filtrar Catálogo por Tipo:
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-1 text-[10px]">
+                                                    {RESERVAS_TYPE_SHORTCUTS.map((sc) => (
+                                                        <a
+                                                            key={sc.label}
+                                                            href={sc.href}
+                                                            onClick={() => setIsReservarOpen(false)}
+                                                            className="px-2 py-1.5 rounded-lg bg-stone-100 hover:bg-[#800020] hover:text-white text-stone-700 font-semibold truncate transition text-center"
+                                                        >
+                                                            {sc.label}
+                                                        </a>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
 
-                                        {/* Right Column: Actividades de la categoría seleccionada (Level 2) */}
+                                        {/* Right Column: Servicios de la categoría seleccionada */}
                                         <div className="col-span-7 p-4 bg-white flex flex-col justify-between">
                                             {currentReservarCategory && (
                                                 <div className="space-y-3">
-                                                    {/* Category Header */}
-                                                    <div className="pb-2 border-b border-stone-100">
-                                                        <div className="flex items-center justify-between">
-                                                            <h4 className="text-sm font-bold text-[#800020] font-editorial">
-                                                                {currentReservarCategory.icon} {currentReservarCategory.name}
-                                                            </h4>
-                                                            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-[#FAF9F6] border border-[#C5A059]/30 text-[#96680E] rounded-full">
-                                                                {currentReservarCategory.activities.length} opciones
-                                                            </span>
+                                                    <div className="pb-2 border-b border-stone-100 flex items-start justify-between gap-2">
+                                                        <div>
+                                                            <div className="flex items-center gap-2">
+                                                                <h4 className="text-sm font-bold text-[#800020] font-editorial">
+                                                                    {currentReservarCategory.icon} {currentReservarCategory.name}
+                                                                </h4>
+                                                            </div>
+                                                            <p className="text-[11px] text-stone-500 mt-0.5">
+                                                                {currentReservarCategory.shortDesc}
+                                                            </p>
                                                         </div>
-                                                        <p className="text-[11px] text-stone-500 mt-0.5">
-                                                            {currentReservarCategory.shortDesc}
-                                                        </p>
+                                                        <a
+                                                            href={currentReservarCategory.hrefCategory}
+                                                            onClick={() => setIsReservarOpen(false)}
+                                                            className="text-[10px] font-bold text-[#800020] hover:underline shrink-0 bg-stone-50 px-2.5 py-1 rounded-md border border-stone-200"
+                                                        >
+                                                            Ver sección →
+                                                        </a>
                                                     </div>
 
-                                                    {/* Activities List */}
+                                                    {/* Listado de Opciones de Reserva con Precio */}
                                                     <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
-                                                        {currentReservarCategory.activities.map((act) => (
+                                                        {currentReservarCategory.services.map((reserva) => (
                                                             <div
-                                                                key={act.dayNum}
-                                                                onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
-                                                                className="p-3 rounded-xl border border-stone-200 hover:border-[#800020] hover:shadow-sm transition bg-[#FAF9F6]/60 hover:bg-white cursor-pointer group"
+                                                                key={reserva.id}
+                                                                className="p-3 rounded-xl border border-stone-200 hover:border-[#800020] hover:shadow-sm transition bg-[#FAF9F6]/60 hover:bg-white flex flex-col justify-between gap-2"
                                                             >
-                                                                <div className="flex items-start justify-between gap-2 mb-1.5">
-                                                                    <div className="flex items-center gap-2">
-                                                                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#800020] text-white text-[10px] font-black shrink-0">
-                                                                            {act.dayNum}
-                                                                        </span>
-                                                                        <h5 className="text-xs font-bold text-stone-900 group-hover:text-[#800020] transition-colors">
-                                                                            {act.title}
-                                                                        </h5>
+                                                                <div className="flex items-start justify-between gap-2">
+                                                                    <div className="flex items-start gap-2">
+                                                                        <span className="text-base shrink-0 mt-0.5">{reserva.icon}</span>
+                                                                        <div>
+                                                                            <h5 className="text-xs font-bold text-stone-900 leading-snug">
+                                                                                {reserva.title}
+                                                                            </h5>
+                                                                            <p className="text-[10.5px] text-stone-600 leading-relaxed mt-0.5">
+                                                                                {reserva.subtitle}
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                                    <span className="text-[9.5px] uppercase font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-[#800020] border border-[#C5A059]/40 shrink-0 font-mono">
-                                                                        {act.tag}
-                                                                    </span>
+                                                                    <div className="text-right shrink-0">
+                                                                        <span className="inline-block text-xs font-black text-[#800020] bg-amber-50 px-2 py-0.5 rounded-md border border-[#C5A059]/40 font-mono">
+                                                                            {reserva.price}
+                                                                        </span>
+                                                                        <span className="block text-[9px] uppercase font-semibold text-emerald-800 mt-0.5">
+                                                                            {reserva.badge}
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
 
-                                                                <p className="text-[11px] text-stone-600 leading-relaxed mb-2.5">
-                                                                    {act.subtitle}
-                                                                </p>
-
-                                                                {/* Actions */}
-                                                                <div className="flex items-center gap-2 pt-1 border-t border-stone-200/60">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleActivitySelect(act.dayNum, act.hrefPortada);
-                                                                        }}
-                                                                        className="flex-1 inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition cursor-pointer shadow-2xs"
-                                                                        title="Reservar plaza para esta actividad en portada"
+                                                                <div className="pt-1.5 border-t border-stone-200/70 flex items-center justify-between gap-2">
+                                                                    <span className="text-[9.5px] text-stone-400 italic">
+                                                                        Pago seguro en el centro
+                                                                    </span>
+                                                                    <a
+                                                                        href={reserva.href}
+                                                                        onClick={() => setIsReservarOpen(false)}
+                                                                        className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#800020] hover:bg-[#96680E] text-white text-[10.5px] font-bold tracking-wide transition shadow-2xs"
+                                                                        title="Ir a reservar esta plaza en la pantalla de Servicios"
                                                                     >
                                                                         <Ticket className="w-3.5 h-3.5 text-[#E5C378]" />
-                                                                        <span>Reservar Plaza (#dia-{act.dayNum})</span>
-                                                                    </button>
-                                                                    <a
-                                                                        href={act.hrefDedicated}
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            setIsReservarOpen(false);
-                                                                        }}
-                                                                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-300 hover:border-[#800020] hover:text-[#800020] text-stone-600 text-[10.5px] font-semibold transition"
-                                                                        title="Ir a la página monográfica de esta actividad"
-                                                                    >
-                                                                        <span>Ficha</span>
+                                                                        <span>Reservar en Pantalla de Servicios</span>
                                                                         <ArrowRight className="w-3 h-3" />
                                                                     </a>
                                                                 </div>
@@ -671,7 +680,7 @@ export default function Navbar() {
                                             )}
 
                                             <div className="pt-2 text-[10px] text-stone-400 italic text-center border-t border-stone-100 mt-2">
-                                                💡 Pago en el centro · Reserva directa sin pago online ni compromiso.
+                                                💡 Estas opciones te llevan a la pantalla oficial de reservas (/servicios) con la actividad preseleccionada.
                                             </div>
                                         </div>
                                     </div>
@@ -742,7 +751,7 @@ export default function Navbar() {
                                 item.label.toLowerCase().includes("baños del gong") ||
                                 item.label.toLowerCase().includes("baño de gong");
 
-                            // Requisito 2 & 3: En móviles, sustituimos el enlace directo "Baños del Gong" por "RESERVAR PLAZA (MENÚ EN CASCADA)"
+                            // Requisito 2 & 3: En móviles, sustituimos el enlace directo "Baños del Gong" por "RESERVAR PLAZA (MENÚ EN CASCADA /servicios)"
                             if (isBanosGong) {
                                 return (
                                     <div key="reservar-plaza-mobile" className="pt-1 pb-1">
@@ -765,20 +774,20 @@ export default function Navbar() {
 
                                             {mobileReservarOpen && (
                                                 <div className="p-2 space-y-2 bg-[#FAF9F6] border-t border-[#C5A059]/20">
-                                                    {ACTIVITY_CATEGORIES.map((cat) => {
-                                                        const isCatOpen = mobileOpenReservarCatId === cat.id;
+                                                    {RESERVAS_CATEGORIES.map((cat) => {
+                                                        const isCatOpen = mobileOpenReservarCatId === cat.code;
                                                         return (
-                                                            <div key={cat.id} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
+                                                            <div key={cat.code} className="bg-white rounded-lg border border-stone-200/80 overflow-hidden">
                                                                 <button
                                                                     type="button"
-                                                                    onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.id)}
+                                                                    onClick={() => setMobileOpenReservarCatId(isCatOpen ? null : cat.code)}
                                                                     className="w-full flex items-center justify-between p-2.5 text-left text-xs font-bold text-stone-800 hover:text-[#800020] cursor-pointer"
                                                                 >
                                                                     <div className="flex items-center gap-2">
                                                                         <span>{cat.icon}</span>
                                                                         <span>{cat.name}</span>
                                                                         <span className="text-[10px] text-stone-400 font-normal">
-                                                                            ({cat.activities.length})
+                                                                            ({cat.services.length})
                                                                         </span>
                                                                     </div>
                                                                     <ChevronDown
@@ -790,51 +799,39 @@ export default function Navbar() {
 
                                                                 {isCatOpen && (
                                                                     <div className="p-2.5 pt-0 space-y-2 border-t border-stone-100">
-                                                                        {cat.activities.map((act) => (
+                                                                        {cat.services.map((reserva) => (
                                                                             <div
-                                                                                key={act.dayNum}
-                                                                                onClick={() => handleActivitySelect(act.dayNum, act.hrefPortada)}
-                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white cursor-pointer transition"
+                                                                                key={reserva.id}
+                                                                                className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 hover:border-[#800020] hover:bg-white transition flex flex-col gap-1.5"
                                                                             >
-                                                                                <div className="flex items-center justify-between gap-1 mb-1">
-                                                                                    <div className="flex items-center gap-1.5">
-                                                                                        <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#800020] text-white text-[9px] font-black shrink-0">
-                                                                                            {act.dayNum}
-                                                                                        </span>
-                                                                                        <span className="font-bold text-[11px] text-stone-900">
-                                                                                            {act.title}
+                                                                                <div className="flex items-start justify-between gap-1">
+                                                                                    <div>
+                                                                                        <div className="flex items-center gap-1.5">
+                                                                                            <span className="text-xs">{reserva.icon}</span>
+                                                                                            <span className="font-bold text-[11px] text-stone-900 leading-snug">
+                                                                                                {reserva.title}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <p className="text-[10.5px] text-stone-600 mt-0.5 leading-relaxed">
+                                                                                            {reserva.subtitle}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div className="text-right shrink-0">
+                                                                                        <span className="inline-block text-[11px] font-black text-[#800020] bg-amber-50 px-2 py-0.5 rounded border border-[#C5A059]/40 font-mono">
+                                                                                            {reserva.price}
                                                                                         </span>
                                                                                     </div>
-                                                                                    <span className="text-[9px] uppercase font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-[#800020] shrink-0 font-mono">
-                                                                                        {act.tag}
-                                                                                    </span>
                                                                                 </div>
-                                                                                <p className="text-[10.5px] text-stone-600 mb-2 leading-relaxed">
-                                                                                    {act.subtitle}
-                                                                                </p>
-                                                                                <div className="flex items-center gap-1.5">
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        onClick={(e) => {
-                                                                                            e.stopPropagation();
-                                                                                            handleActivitySelect(act.dayNum, act.hrefPortada);
-                                                                                        }}
-                                                                                        className="flex-1 py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
-                                                                                    >
-                                                                                        <Ticket className="w-3 h-3 text-[#E5C378]" />
-                                                                                        <span>Reservar (#dia-{act.dayNum})</span>
-                                                                                    </button>
-                                                                                    <a
-                                                                                        href={act.hrefDedicated}
-                                                                                        onClick={(e) => {
-                                                                                            e.stopPropagation();
-                                                                                            setIsOpen(false);
-                                                                                        }}
-                                                                                        className="py-1.5 px-2.5 rounded border border-stone-300 text-stone-700 text-[10px] font-semibold text-center hover:border-[#800020] hover:text-[#800020]"
-                                                                                    >
-                                                                                        Ficha
-                                                                                    </a>
-                                                                                </div>
+
+                                                                                <a
+                                                                                    href={reserva.href}
+                                                                                    onClick={() => setIsOpen(false)}
+                                                                                    className="w-full py-1.5 px-2 rounded bg-[#800020] hover:bg-[#96680E] text-white text-[10px] font-bold text-center cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                                                                                >
+                                                                                    <Ticket className="w-3 h-3 text-[#E5C378]" />
+                                                                                    <span>Reservar en Pantalla de Servicios</span>
+                                                                                    <ArrowRight className="w-3 h-3" />
+                                                                                </a>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -848,7 +845,7 @@ export default function Navbar() {
                                                         onClick={() => setIsOpen(false)}
                                                         className="block w-full py-2.5 rounded-lg bg-[#800020] text-white text-[11px] font-bold uppercase tracking-wider text-center cursor-pointer shadow-xs"
                                                     >
-                                                        🎟️ Ver Todas las Plazas y Tarifas
+                                                        📋 Ver Catálogo Completo de Reservas (/servicios)
                                                     </a>
                                                 </div>
                                             )}
@@ -857,10 +854,10 @@ export default function Navbar() {
                                 );
                             }
 
+                            // ACTIVIDADES (Itinerario de portada)
                             if (isActividades) {
                                 return (
                                     <div key={item.label} className="pt-1 pb-1">
-                                        {/* Multi-level accordion for mobile: Actividades */}
                                         <div className="border border-[#C5A059]/30 rounded-xl overflow-hidden bg-stone-50/70">
                                             <button
                                                 type="button"

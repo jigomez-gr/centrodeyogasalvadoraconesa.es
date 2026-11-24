@@ -367,7 +367,21 @@ function ServiciosContent() {
     const typ = searchParams.get("tipo") || searchParams.get("type");
     if (cat) setSelectedCategoryCode(cat);
     if (typ) setSelectedType(typ);
-  }, [searchParams]);
+
+    const servId = searchParams.get("servicio") || searchParams.get("service");
+    if (servId) {
+      setTimeout(() => {
+        const target = document.getElementById(`servicio-${servId}`);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+          target.classList.add("ring-4", "ring-[#800020]", "ring-offset-2");
+          setTimeout(() => {
+            target.classList.remove("ring-4", "ring-[#800020]", "ring-offset-2");
+          }, 3500);
+        }
+      }, 400);
+    }
+  }, [searchParams, services]);
 
   const updateFilters = (newCat: string, newType: string) => {
     setSelectedCategoryCode(newCat);
@@ -1007,7 +1021,7 @@ function ServiciosContent() {
           : "text-stone-700";
 
         return (
-          <section key={cat.id || cat.code} className="max-w-6xl mx-auto px-4 py-8">
+          <section key={cat.id || cat.code} id={`categoria-${cat.code || cat.id}`} className="max-w-6xl mx-auto px-4 py-8 scroll-mt-24">
             <div className={`mb-6 pb-3 border-b-2 ${borderTopColor}`}>
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                 <div>
@@ -1089,7 +1103,8 @@ function ServiciosContent() {
                 return (
                   <div
                     key={act.id}
-                    className="bg-white rounded-3xl border-2 border-stone-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:border-[#800020] relative overflow-hidden group"
+                    id={`servicio-${act.id}`}
+                    className="bg-white rounded-3xl border-2 border-stone-200 p-6 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:border-[#800020] relative overflow-hidden group scroll-mt-28"
                   >
                     <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-amber-100/50 via-transparent to-transparent rounded-bl-full pointer-events-none" />
 
