@@ -259,10 +259,14 @@ export default async function Home() {
           {/* Call to Actions in Editorial Style */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
             <CrmBookingButton
-              className="hero-cta-btn w-full sm:w-auto flex items-center justify-center h-12 px-8 border border-transparent text-xs font-bold uppercase tracking-widest rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200 cursor-pointer"
+              className="hero-cta-btn w-full sm:w-auto sm:min-w-[216px] flex items-center justify-center h-12 px-6 sm:px-8 border border-transparent text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200 cursor-pointer text-center"
               message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa."
+              title="Guardamos aquí todo el mes, también lo ya celebrado, para que puedas ver cómo fue y no perderte lo próximo."
             >
-              CONSULTA SERVICIOS
+              <span className="flex flex-col items-center justify-center leading-[1.15]">
+                <span>Lo que ha pasado</span>
+                <span>y lo que viene</span>
+              </span>
             </CrmBookingButton>
             <VapiCallButton
               className="hero-cta-btn w-full sm:w-auto flex items-center justify-center gap-2 h-[40px] sm:h-12 px-6 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-200 cursor-pointer select-none"

@@ -8,6 +8,8 @@ interface CrmBookingButtonProps {
   children?: React.ReactNode;
   message?: string;
   autoSend?: boolean;
+  title?: string;
+  ariaLabel?: string;
 }
 
 export default function CrmBookingButton({
@@ -15,12 +17,16 @@ export default function CrmBookingButton({
   children = "CONSULTA SERVICIOS",
   message = "Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa.",
   autoSend = false,
+  title,
+  ariaLabel,
 }: CrmBookingButtonProps) {
   return (
     <button
       type="button"
       onClick={() => triggerCrmChat(message, autoSend)}
       className={className}
+      title={title}
+      aria-label={ariaLabel || (typeof children === "string" ? children : title)}
     >
       {children}
     </button>
