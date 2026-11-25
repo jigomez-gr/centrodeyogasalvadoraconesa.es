@@ -14,7 +14,6 @@ import PrologoGallery from "@/components/PrologoGallery";
 import AtmosphereGallery from "@/components/AtmosphereGallery";
 import NagnaYogaSection from "@/components/NagnaYogaSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
-import CrmBookingButton from "@/components/CrmBookingButton";
 import VapiCallButton from "@/components/VapiCallButton";
 import { VapiVoiceBookingButton } from "@/components/VapiVoiceBookingButton";
 import Footer from "@/components/Footer";
@@ -75,6 +74,7 @@ function getSubImages(dayNum: number): string[] {
 }
 
 export default async function Home() {
+  const entrevistasUrl = process.env.ENTREVISTAS_URL?.trim();
   const videosExist = checkVideosExist();
   const { services, categories } = await fetchCrmServices();
 
@@ -258,18 +258,23 @@ export default async function Home() {
 
           {/* Call to Actions in Editorial Style */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto items-center justify-center mt-2 sm:mt-3 px-4 sm:px-0">
-            <CrmBookingButton
-              className="hero-cta-btn w-full sm:w-auto sm:min-w-[216px] flex items-center justify-start sm:justify-center min-h-12 sm:h-12 px-4 sm:px-5 py-1.5 sm:py-0 border border-transparent text-[10px] min-[390px]:text-[11px] sm:text-[9px] font-bold uppercase tracking-wide sm:tracking-wider rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200 cursor-pointer text-left sm:text-center"
-              message="Hola, me gustaría consultar los servicios y actividades del Centro de Yoga Salvadora Conesa."
-              title="Lo que ha pasado y lo que viene, para que puedas ver cómo fue y no perderte lo próximo"
-            >
-              <span className="flex flex-col items-start sm:items-center justify-center leading-[1.25] sm:leading-[1.12]">
-                <span>Lo que ha pasado y lo que viene,</span>
-                <span className="sm:hidden text-[9px] min-[390px]:text-[10px] font-semibold opacity-95">para que puedas ver cómo fue y no perderte lo próximo</span>
-                <span className="hidden sm:inline">para que puedas ver cómo fue</span>
-                <span className="hidden sm:inline">y no perderte lo próximo</span>
-              </span>
-            </CrmBookingButton>
+            {entrevistasUrl ? (
+              <a
+                href={entrevistasUrl}
+                target="_blank"
+                rel="noopener"
+                title="Lo que ha pasado y lo que viene, para que puedas ver cómo fue y no perderte lo próximo"
+                aria-label="Actividades del mes y entrevista a Salvadora Conesa"
+                className="hero-cta-btn w-full sm:w-auto sm:min-w-[216px] flex items-center justify-start sm:justify-center min-h-12 sm:h-12 px-4 sm:px-5 py-1.5 sm:py-0 border border-transparent text-[10px] min-[390px]:text-[11px] sm:text-[9px] font-bold uppercase tracking-wide sm:tracking-wider rounded-md text-white bg-[#800020] hover:bg-[#800020]/95 shadow-md shadow-[#800020]/15 hover:scale-102 transition duration-200 cursor-pointer text-left sm:text-center select-none"
+              >
+                <span className="flex flex-col items-start sm:items-center justify-center leading-[1.25] sm:leading-[1.12]">
+                  <span>Lo que ha pasado y lo que viene,</span>
+                  <span className="sm:hidden text-[9px] min-[390px]:text-[10px] font-semibold opacity-95">para que puedas ver cómo fue y no perderte lo próximo</span>
+                  <span className="hidden sm:inline">para que puedas ver cómo fue</span>
+                  <span className="hidden sm:inline">y no perderte lo próximo</span>
+                </span>
+              </a>
+            ) : null}
             <VapiCallButton
               className="hero-cta-btn w-full sm:w-auto flex items-center justify-center gap-2 h-[40px] sm:h-12 px-6 border border-[#C5A059] text-xs font-bold uppercase tracking-widest rounded-md text-[#800020] hover:text-white bg-white hover:bg-[#800020] shadow-sm hover:scale-102 transition duration-200 cursor-pointer select-none"
               inquiry="Consulta general sobre clases de yoga y terapias"
